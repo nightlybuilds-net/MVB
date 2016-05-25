@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{00B80A8F-05B5-4CF7-9C9B-CE9FCA595AB6}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -27,7 +25,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -38,7 +35,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -47,14 +43,13 @@
       <HintPath>..\packages\Plugin.CurrentActivity.1.0.1\lib\MonoAndroid10\Plugin.CurrentActivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RemIoc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RIoc.0.0.2\lib\portable-net45+win8+wp8+MonoTouch10+MonoAndroid10+wpa81+Xamarin.iOS10+UAP10+net40\RemIoc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="RemIoc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\RIoc.0.0.2\lib\portable-net45+win8+wp8+MonoTouch10+MonoAndroid10+wpa81+Xamarin.iOS10+UAP10+net40\RemIoc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -82,15 +77,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mvb.Cross\Mvb.Cross.csproj">
-      <Project>{e89bcc1c-ce0b-491d-b221-3c6ab26eeed0}</Project>
+      <Project>{E89BCC1C-CE0B-491D-B221-3C6AB26EEED0}</Project>
       <Name>Mvb.Cross</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mvb.Droid\Mvb.Droid.csproj">
-      <Project>{67c8ebfb-95b5-471f-bd80-523b5184e9dd}</Project>
+      <Project>{67C8EBFB-95B5-471F-BD80-523B5184E9DD}</Project>
       <Name>Mvb.Droid</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mvb.Test.ViewModels\Mvb.Test.ViewModels.csproj">
-      <Project>{2e68df5c-2130-488a-a998-573bec7a39e2}</Project>
+      <Project>{2E68DF5C-2130-488A-A998-573BEC7A39E2}</Project>
       <Name>Mvb.Test.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
