@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DroidUiRunner.cs" />
-    <Compile Include="MvbInit.cs" />
+    <Compile Include="Mvb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

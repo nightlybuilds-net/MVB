@@ -34,9 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bindable.cs" />
+    <Compile Include="Abstract\NullUiRunner.cs" />
+    <Compile Include="Base\Bindable.cs" />
+    <Compile Include="Mvb.cs" />
     <Compile Include="MvBinder.cs" />
-    <Compile Include="MvbBase.cs" />
+    <Compile Include="Base\MvbBase.cs" />
     <Compile Include="Abstract\IUiRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
