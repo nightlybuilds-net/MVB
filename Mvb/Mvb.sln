@@ -13,6 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.Test.ViewModels", "Mvb.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.Test.Wpf", "Mvb.Test.Wpf\Mvb.Test.Wpf.csproj", "{5BE8A7E8-4190-4DCD-B995-6B3010D34BF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.Droid", "Mvb.Droid\Mvb.Droid.csproj", "{67C8EBFB-95B5-471F-BD80-523B5184E9DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E1276CD7-FE01-422D-8BE3-C751429CBFEB}"
+	ProjectSection(SolutionItems) = preProject
+		Info.txt = Info.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +42,10 @@ Global
 		{5BE8A7E8-4190-4DCD-B995-6B3010D34BF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BE8A7E8-4190-4DCD-B995-6B3010D34BF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BE8A7E8-4190-4DCD-B995-6B3010D34BF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67C8EBFB-95B5-471F-BD80-523B5184E9DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67C8EBFB-95B5-471F-BD80-523B5184E9DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67C8EBFB-95B5-471F-BD80-523B5184E9DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67C8EBFB-95B5-471F-BD80-523B5184E9DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

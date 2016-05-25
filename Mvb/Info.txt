@@ -1,0 +1,2 @@
+DROID PROJECT DEPENDENCIES:
+ http://www.nuget.org/packages/Plugin.CurrentActivity
