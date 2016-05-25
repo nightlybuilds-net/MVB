@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mvb.Cross
+namespace Mvb.Cross.Abstract
 {
     public interface IUiRunner
     {

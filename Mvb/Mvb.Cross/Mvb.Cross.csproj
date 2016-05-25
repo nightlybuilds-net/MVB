@@ -37,7 +37,7 @@
     <Compile Include="Bindable.cs" />
     <Compile Include="MvBinder.cs" />
     <Compile Include="MvbBase.cs" />
-    <Compile Include="IUiRunner.cs" />
+    <Compile Include="Abstract\IUiRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
