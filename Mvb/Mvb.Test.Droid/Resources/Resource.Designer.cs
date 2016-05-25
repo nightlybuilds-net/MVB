@@ -69,6 +69,9 @@ namespace Mvb.Test.Droid
 			// aapt resource value: 0x7f050003
 			public const int button3 = 2131034115;
 			
+			// aapt resource value: 0x7f050004
+			public const int button4 = 2131034116;
+			
 			// aapt resource value: 0x7f050000
 			public const int editText1 = 2131034112;
 			

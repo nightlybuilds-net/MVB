@@ -30,6 +30,7 @@ namespace Mvb.Test.Droid
             var changeBtn = FindViewById<Button>(Resource.Id.button1);
             var addBtn = FindViewById<Button>(Resource.Id.button2);
             var removeBtn = FindViewById<Button>(Resource.Id.button3);
+            var longBtn = FindViewById<Button>(Resource.Id.button4);
 
             changeBtn.Click += (sender, args) =>
             {
@@ -44,6 +45,11 @@ namespace Mvb.Test.Droid
             removeBtn.Click += (sender, args) =>
             {
                 this._vm.TestCollection.RemoveAt(this._vm.TestCollection.Count - 1);
+            };
+
+            longBtn.Click += async (sender, args) =>
+            {
+                await this._vm.LogTaskTest();
             };
 
 
