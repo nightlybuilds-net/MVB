@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -14,23 +15,21 @@ namespace Mvb.Test.WinForm
 {
     public partial class Form1 : Form
     {
-        private MvBinder<TestVm> _vm;
+        private TestVm _vm;
 
         public Form1()
         {
             InitializeComponent();
 
-            this._vm = new MvBinder<TestVm>(new TestVm());
+            this._vm = new TestVm();
 
-            this._vm.AddAction<TestVm>(t=>t.Test, () =>
+            this._vm.Binder.AddAction<TestVm>(t=>t.Test, () =>
             {
                 AppendTextBox("vai cazzo!");
             });
 
-            this._vm.AddAction("Pippo", () =>
-            {
-                AppendTextBox("add!");
-            });
+            this._vm.Binder.AddActionForCollection<TestVm>(t=>t.TestCollection, args =>
+            { MessageBox.Show(args.Action == NotifyCollectionChangedAction.Add ? "Add!" : "NOT Add!"); });
         }
 
         public void AppendTextBox(string value)
@@ -45,12 +44,17 @@ namespace Mvb.Test.WinForm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this._vm.VmInstance.Test = "cambio!";
+            this._vm.Test = "cambio!";
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this._vm.VmInstance.TestCollection.Add("1");
+            this._vm.TestCollection.Add("1");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this._vm.TestCollection.RemoveAt(this._vm.TestCollection.Count-1);
         }
     }
 }

@@ -12,17 +12,19 @@ using RemIoc;
 
 namespace Mvb.Cross
 {
-    public class MvBinder<T> where T: MvbBase
+    public class MvBinder
     {
         //MVB Instance
-        public T VmInstance { get; }
+        public MvbBase VmInstance { get; }
 
         private readonly IUiRunner _uiRunner;
         private readonly Dictionary<string, ICollection<Action>> _runDictionary;
+        private readonly Dictionary<string, ICollection<Action<NotifyCollectionChangedEventArgs>>> _runCollectionDictionary;
 
-        public MvBinder(T vmInstance)
+        public MvBinder(MvbBase vmInstance)
         {
             this._runDictionary = new Dictionary<string, ICollection<Action>>();
+            this._runCollectionDictionary = new Dictionary<string, ICollection<Action<NotifyCollectionChangedEventArgs>>>();
             this.VmInstance = vmInstance;
 
             //On UiThread Runner
@@ -56,8 +58,18 @@ namespace Mvb.Cross
         public void AddAction<TSource>(Expression<Func<TSource, object>> property, Action action)
         {
             var propName = this.GetPropertyName(property);
-
             this.AddAction(propName,action);
+        }
+
+        public void AddActionForCollection<TSource>(Expression<Func<TSource, object>> property, Action<NotifyCollectionChangedEventArgs> action)
+        {
+            var propName = this.GetPropertyName(property);
+
+            //add to list
+            if (this._runCollectionDictionary.ContainsKey(propName))
+                this._runCollectionDictionary[propName].Add(action);
+            else
+                this._runCollectionDictionary.Add(propName, new List<Action<NotifyCollectionChangedEventArgs>> { action });
         }
 
         /// <summary>
@@ -84,6 +96,20 @@ namespace Mvb.Cross
                 this._uiRunner.Run(action);
         }
 
+        /// <summary>
+        /// Run all action for collection changed
+        /// </summary>
+        /// <param name="property"></param>
+        /// <param name="args"></param>
+        public void RunCollection(string property, NotifyCollectionChangedEventArgs args)
+        {
+            ICollection<Action<NotifyCollectionChangedEventArgs>> value;
+            if (!this._runCollectionDictionary.TryGetValue(property, out value)) return;
+
+            foreach (var action in value)
+                this._uiRunner.Run(action,args);
+        }
+
         private string GetPropertyName<T>(Expression<Func<T, object>> property)
         {
             LambdaExpression lambda = property;
@@ -106,7 +132,7 @@ namespace Mvb.Cross
         {
             var typeInfo = obj.GetType().GetTypeInfo();
 
-            foreach (PropertyInfo info in typeInfo.DeclaredProperties)
+            foreach (var info in typeInfo.DeclaredProperties)
             {
 
                 var isObservable = info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(INotifyCollectionChanged));
@@ -117,7 +143,7 @@ namespace Mvb.Cross
 
                 obserableProp.CollectionChanged += (sender, args) =>
                 {
-                    Debug.WriteLine("Sender: " + sender);
+                    this.RunCollection(info.Name,args);
                 };
             }
 

@@ -9,10 +9,10 @@ namespace Mvb.Test.ViewModels
 {
     public class TestVm : MvbBase
     {
-
         public TestVm()
         {
             this.TestCollection = new ObservableCollection<string>();
+            base.InitBinder();
         }
 
         private string _test;

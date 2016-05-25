@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,6 +33,11 @@ namespace Mvb.Test.WinForm
         public void Run(Action action)
         {
             action.Invoke();
+        }
+
+        public void Run(Action<NotifyCollectionChangedEventArgs> action, NotifyCollectionChangedEventArgs args)
+        {
+            action.Invoke(args);
         }
     }
 }
