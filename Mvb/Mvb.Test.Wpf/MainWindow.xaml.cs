@@ -35,6 +35,12 @@ namespace Mvb.Test.Wpf
                 this.label.Content = "Ciao!";
             });
 
+            this._vm.Binder.AddAction<TestVm>(t => t.Wait, () =>
+            {
+                this.label.Background = this._vm.Wait ? Brushes.Blue : Brushes.Transparent;
+
+            });
+
             this._vm.Binder.AddActionForCollection<TestVm>(t => t.TestCollection, args =>
             {
                 this.label.Content = args.Action == NotifyCollectionChangedAction.Add ? $"A: {this._vm.TestCollection.Count}" : $"R: {this._vm.TestCollection.Count}";
@@ -55,6 +61,11 @@ namespace Mvb.Test.Wpf
         private void button3_Click(object sender, RoutedEventArgs e)
         {
             this._vm.TestCollection.RemoveAt(this._vm.TestCollection.Count - 1);
+        }
+
+        private async void Button4_OnClick(object sender, RoutedEventArgs e)
+        {
+            await this._vm.LogTaskTest();
         }
     }
 }

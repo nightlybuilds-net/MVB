@@ -1,35 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Mvb.Cross;
 
 namespace Mvb.Test.ViewModels
 {
     public class TestVm : MvbBase
     {
+        private string _test;
+
+        private ObservableCollection<string> _testCollection;
+
         public TestVm()
         {
             this.TestCollection = new ObservableCollection<string>();
-            base.InitBinder();
+            this.InitBinder();
         }
-
-        private string _test;
 
         public string Test
         {
             get { return this._test; }
-            set { SetProperty(ref _test, value); }
+            set { this.SetProperty(ref this._test, value); }
         }
-
-
-        private ObservableCollection<string> _testCollection;
 
         public ObservableCollection<string> TestCollection
         {
             get { return this._testCollection; }
-            set { SetProperty(ref _testCollection, value); }
+            set { this.SetProperty(ref this._testCollection, value); }
         }
+
+
+        private bool _wait;
+
+        public bool Wait
+        {
+            get { return this._wait; }
+            set { SetProperty(ref _wait, value); }
+        }
+
+        public async Task LogTaskTest()
+        {
+            this.Wait = true;
+            await Task.Delay(2000);
+            this.Wait = false;
+        } 
     }
 }

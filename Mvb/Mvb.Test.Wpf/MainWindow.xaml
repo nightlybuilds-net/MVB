@@ -11,6 +11,7 @@
         <Button x:Name="button1" Content="cambio Testo" Click="button1_Click"/>
         <Button x:Name="button2" Content="Add" Click="button2_Click"/>
         <Button x:Name="button3" Content="remove" Click="button3_Click"/>
+        <Button x:Name="button4" Content="long run" Click="Button4_OnClick"/>
 
     </StackPanel>
 </Window>
