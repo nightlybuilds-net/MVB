@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,8 +12,7 @@ namespace Mvb.Cross
 {
     public class MvBinder
     {
-        //MVB Instance
-        public MvbBase VmInstance { get; }
+        private readonly MvbBase _vmInstance;
 
         private readonly IUiRunner _uiRunner;
         private readonly Dictionary<string, ICollection<Action>> _runDictionary;
@@ -23,9 +20,9 @@ namespace Mvb.Cross
 
         public MvBinder(MvbBase vmInstance)
         {
+            this._vmInstance = vmInstance;
             this._runDictionary = new Dictionary<string, ICollection<Action>>();
             this._runCollectionDictionary = new Dictionary<string, ICollection<Action<NotifyCollectionChangedEventArgs>>>();
-            this.VmInstance = vmInstance;
 
             //On UiThread Runner
             this._uiRunner = RIoc.Resolve<IUiRunner>();
@@ -33,18 +30,7 @@ namespace Mvb.Cross
             //Active listener on VM
             this.ActiveListener();
         }
-
-        private void ActiveListener()
-        {
-            //Subscribe
-            this.VmInstance.PropertyChanged += (sender, args) =>
-            {
-                Debug.WriteLine($"Property changed: {args.PropertyName}");
-                this.Run(args.PropertyName);
-            };
-            this.ActiveListenerOnObservableCollection(this.VmInstance);
-        }
-
+        
         public void AddAction(string id, Action action)
         {
             //add to list
@@ -53,7 +39,6 @@ namespace Mvb.Cross
             else
                 this._runDictionary.Add(id, new List<Action> { action });
         }
-
 
         public void AddAction<TSource>(Expression<Func<TSource, object>> property, Action action)
         {
@@ -65,11 +50,16 @@ namespace Mvb.Cross
         {
             var propName = this.GetPropertyName(property);
 
+            this.AddActionForCollection(propName, action);
+        }
+
+        public void AddActionForCollection(string propertyName, Action<NotifyCollectionChangedEventArgs> action)
+        {
             //add to list
-            if (this._runCollectionDictionary.ContainsKey(propName))
-                this._runCollectionDictionary[propName].Add(action);
+            if (this._runCollectionDictionary.ContainsKey(propertyName))
+                this._runCollectionDictionary[propertyName].Add(action);
             else
-                this._runCollectionDictionary.Add(propName, new List<Action<NotifyCollectionChangedEventArgs>> { action });
+                this._runCollectionDictionary.Add(propertyName, new List<Action<NotifyCollectionChangedEventArgs>> { action });
         }
 
         /// <summary>
@@ -101,6 +91,17 @@ namespace Mvb.Cross
         /// </summary>
         /// <param name="property"></param>
         /// <param name="args"></param>
+        public void RunCollection<TSource>(Expression<Func<TSource, object>> property, NotifyCollectionChangedEventArgs args)
+        {
+            var propName = this.GetPropertyName(property);
+            this.RunCollection(propName,args);
+        }
+
+        /// <summary>
+        /// Run all action for collection changed
+        /// </summary>
+        /// <param name="property"></param>
+        /// <param name="args"></param>
         public void RunCollection(string property, NotifyCollectionChangedEventArgs args)
         {
             ICollection<Action<NotifyCollectionChangedEventArgs>> value;
@@ -110,6 +111,7 @@ namespace Mvb.Cross
                 this._uiRunner.Run(action,args);
         }
 
+        #region PRIVATE
         private string GetPropertyName<T>(Expression<Func<T, object>> property)
         {
             LambdaExpression lambda = property;
@@ -117,15 +119,15 @@ namespace Mvb.Cross
 
             if (lambda.Body is UnaryExpression)
             {
-                var unaryExpression = (UnaryExpression) lambda.Body;
-                memberExpression = (MemberExpression) unaryExpression.Operand;
+                var unaryExpression = (UnaryExpression)lambda.Body;
+                memberExpression = (MemberExpression)unaryExpression.Operand;
             }
             else
             {
-                memberExpression = (MemberExpression) lambda.Body;
+                memberExpression = (MemberExpression)lambda.Body;
             }
 
-            return ((PropertyInfo) memberExpression.Member).Name;
+            return ((PropertyInfo)memberExpression.Member).Name;
         }
 
         private void ActiveListenerOnObservableCollection(object obj)
@@ -137,16 +139,29 @@ namespace Mvb.Cross
 
                 var isObservable = info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(INotifyCollectionChanged));
 
-                if(!isObservable) continue;
+                if (!isObservable) continue;
 
                 var obserableProp = (INotifyCollectionChanged)info.GetValue(obj, null);
 
                 obserableProp.CollectionChanged += (sender, args) =>
                 {
-                    this.RunCollection(info.Name,args);
+                    this.RunCollection(info.Name, args);
                 };
             }
 
         }
+
+
+        private void ActiveListener()
+        {
+            //Subscribe
+            this._vmInstance.PropertyChanged += (sender, args) =>
+            {
+                Debug.WriteLine($"Property changed: {args.PropertyName}");
+                this.Run(args.PropertyName);
+            };
+            this.ActiveListenerOnObservableCollection(this._vmInstance);
+        } 
+        #endregion
     }
 }
