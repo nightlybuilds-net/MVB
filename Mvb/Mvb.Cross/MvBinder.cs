@@ -11,7 +11,7 @@ using RemIoc;
 
 namespace Mvb.Cross
 {
-    internal class Binder<T> where T: MvbBase
+    public class MvBinder<T> where T: MvbBase
     {
         //MVB Instance
         public T VmInstance { get; }
@@ -19,7 +19,7 @@ namespace Mvb.Cross
         private readonly IUiRunner _uiRunner;
         private readonly Dictionary<string, ICollection<Action>> _runDictionary;
 
-        public Binder(T vmInstance)
+        public MvBinder(T vmInstance)
         {
             this._runDictionary = new Dictionary<string, ICollection<Action>>();
             this.VmInstance = vmInstance;
@@ -42,16 +42,21 @@ namespace Mvb.Cross
             this.ActiveListenerOnObservableCollection(this.VmInstance);
         }
 
+        public void AddAction(string id, Action action)
+        {
+            //add to list
+            if (this._runDictionary.ContainsKey(id))
+                this._runDictionary[id].Add(action);
+            else
+                this._runDictionary.Add(id, new List<Action> { action });
+        }
+
 
         public void AddAction<TSource>(Expression<Func<TSource, object>> property, Action action)
         {
             var propName = this.GetPropertyName(property);
 
-            //add to list
-            if (this._runDictionary.ContainsKey(propName))
-                this._runDictionary[propName].Add(action);
-            else
-                this._runDictionary.Add(propName,new List<Action> {action});
+            this.AddAction(propName,action);
         }
 
         /// <summary>
@@ -107,9 +112,12 @@ namespace Mvb.Cross
 
                 if(!isObservable) continue;
 
-                var obserableProp = (INotifyCollectionChanged) info;
+                var obserableProp = (INotifyCollectionChanged)info.GetValue(obj, null);
 
-                obserableProp.CollectionChanged += (sender, args) => { Debug.WriteLine("Cambio!"); };
+                obserableProp.CollectionChanged += (sender, args) =>
+                {
+                    Debug.WriteLine("Sender: " + sender);
+                };
             }
 
         }
