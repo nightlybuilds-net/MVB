@@ -3,7 +3,7 @@ using RemIoc;
 
 namespace Mvb.Droid
 {
-    public class MvbInit
+    public class Mvb
     {
         public static void Init()
         {
