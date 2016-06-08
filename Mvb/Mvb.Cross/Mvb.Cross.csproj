@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Abstract\NullUiRunner.cs" />
     <Compile Include="Base\Bindable.cs" />
+    <Compile Include="MvbCollection.cs" />
     <Compile Include="Mvb.cs" />
     <Compile Include="MvBinder.cs" />
     <Compile Include="Base\MvbBase.cs" />

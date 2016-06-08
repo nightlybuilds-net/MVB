@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -8,6 +9,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Mvb.Test.ViewModels;
+using Debug = System.Diagnostics.Debug;
 
 namespace Mvb.Test.Droid
 {
@@ -31,6 +33,7 @@ namespace Mvb.Test.Droid
             var addBtn = FindViewById<Button>(Resource.Id.button2);
             var removeBtn = FindViewById<Button>(Resource.Id.button3);
             var longBtn = FindViewById<Button>(Resource.Id.button4);
+            var addRangeBtn = FindViewById<Button>(Resource.Id.button5);
 
             changeBtn.Click += (sender, args) =>
             {
@@ -52,6 +55,13 @@ namespace Mvb.Test.Droid
                 await this._vm.LogTaskTest();
             };
 
+            addRangeBtn.Click += (sender, args) =>
+            {
+                var newList = Enumerable.Range(1, 50);
+
+                this._vm.TestCollection.AddRange(newList.Select(s=>s.ToString()));
+            };
+
 
             this._vm = new TestVm();
 
@@ -65,6 +75,16 @@ namespace Mvb.Test.Droid
 
             this._vm.Binder.AddActionForCollection<TestVm>(t => t.TestCollection, args =>
             {
+                if (args.Action == NotifyCollectionChangedAction.Add)
+                {
+                    var t = args.NewItems.Count;
+
+                    foreach (var newItem in args.NewItems)
+                    {
+                        Debug.WriteLine(newItem);
+                    }
+                }
+
                 editText.Text = args.Action == NotifyCollectionChangedAction.Add ? $"A: {this._vm.TestCollection.Count}" : $"R: {this._vm.TestCollection.Count}";
             });
 

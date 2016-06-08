@@ -8,11 +8,11 @@ namespace Mvb.Test.ViewModels
     {
         private string _test;
 
-        private ObservableCollection<string> _testCollection;
+        private MvbCollection<string> _testCollection;
 
         public TestVm()
         {
-            this.TestCollection = new ObservableCollection<string>();
+            this.TestCollection = new MvbCollection<string>();
             this.InitBinder();
         }
 
@@ -22,7 +22,7 @@ namespace Mvb.Test.ViewModels
             set { this.SetProperty(ref this._test, value); }
         }
 
-        public ObservableCollection<string> TestCollection
+        public MvbCollection<string> TestCollection
         {
             get { return this._testCollection; }
             set { this.SetProperty(ref this._testCollection, value); }
