@@ -1,5 +1,4 @@
 ﻿using Mvb.Cross.Abstract;
-using RemIoc;
 
 namespace Mvb.Cross
 {
@@ -11,7 +10,7 @@ namespace Mvb.Cross
         /// </summary>
         public static void NullInit()
         {
-            RIoc.Register<IUiRunner,NullUiRunner>();
+            UiRunnerDispenser.RegisterRunner(() => new NullUiRunner());
         }
     }
 }

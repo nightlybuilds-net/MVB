@@ -5,7 +5,7 @@ using Plugin.CurrentActivity;
 
 namespace Mvb.Droid
 {
-    class DroidUiRunner : IUiRunner
+    public class DroidUiRunner : IUiRunner
     {
         public void Run(Action action)
         {

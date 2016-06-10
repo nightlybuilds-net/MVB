@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Mvb.Cross.Abstract;
-using RemIoc;
 
 namespace Mvb.Cross
 {
@@ -25,7 +23,7 @@ namespace Mvb.Cross
             this._runCollectionDictionary = new Dictionary<string, ICollection<Action<NotifyCollectionChangedEventArgs>>>();
 
             //On UiThread Runner
-            this._uiRunner = RIoc.Resolve<IUiRunner>();
+            this._uiRunner = UiRunnerDispenser.GetRunner();
 
             //Active listener on VM
             this.ActiveListener();
@@ -157,7 +155,6 @@ namespace Mvb.Cross
             //Subscribe
             this._vmInstance.PropertyChanged += (sender, args) =>
             {
-                Debug.WriteLine($"Property changed: {args.PropertyName}");
                 this.Run(args.PropertyName);
             };
             this.ActiveListenerOnObservableCollection(this._vmInstance);

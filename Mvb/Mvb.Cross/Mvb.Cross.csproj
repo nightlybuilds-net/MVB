@@ -36,20 +36,14 @@
   <ItemGroup>
     <Compile Include="Abstract\NullUiRunner.cs" />
     <Compile Include="Base\Bindable.cs" />
+    <Compile Include="UiRunnerDispenser.cs" />
+    <Compile Include="MvbMessenger.cs" />
     <Compile Include="MvbCollection.cs" />
     <Compile Include="Mvb.cs" />
     <Compile Include="MvBinder.cs" />
     <Compile Include="Base\MvbBase.cs" />
     <Compile Include="Abstract\IUiRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="RemIoc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\RIoc.0.0.2\lib\portable-net45+win8+wp8+MonoTouch10+MonoAndroid10+wpa81+Xamarin.iOS10+UAP10+net40\RemIoc.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

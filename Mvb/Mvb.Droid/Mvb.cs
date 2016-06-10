@@ -1,5 +1,4 @@
-using Mvb.Cross.Abstract;
-using RemIoc;
+using Mvb.Cross;
 
 namespace Mvb.Droid
 {
@@ -7,7 +6,7 @@ namespace Mvb.Droid
     {
         public static void Init()
         {
-            RIoc.Register<IUiRunner,DroidUiRunner>();
+            UiRunnerDispenser.RegisterRunner(()=> new DroidUiRunner());
         }
     }
 }

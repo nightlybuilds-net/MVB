@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Mvb.Cross.Abstract;
-using RemIoc;
+﻿using Mvb.Cross;
 
 namespace Mvb.Ios
 {
@@ -10,7 +6,7 @@ namespace Mvb.Ios
     {
         public static void Init()
         {
-            RIoc.Register<IUiRunner,IosUiRunner>();
+            UiRunnerDispenser.RegisterRunner(() => new IosUiRunner());
         }
     }
 }
