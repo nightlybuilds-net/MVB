@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Mvb.Cross;
+using Mvb.Cross.Base;
 
 namespace Mvb.Test.ViewModels
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Mvb.Cross
+﻿namespace Mvb.Cross.Base
 {
     public abstract class MvbBase : Bindable
     {

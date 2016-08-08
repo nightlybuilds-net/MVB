@@ -28,14 +28,15 @@ namespace Mvb.Cross
         public void AddRange(IEnumerable<T> range)
         {
             var startIndexd = this.Items.Count-1;
-            foreach (var item in range)
+		    var enumerable = range as T[] ?? range.ToArray();
+		    foreach (var item in enumerable)
             {
-                Items.Add(item);
+                this.Items.Add(item);
             }
 
             this.OnPropertyChanged(new PropertyChangedEventArgs("Count"));
             this.OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
-            this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, range.ToList(), startIndexd));
+            this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, enumerable.ToList(), startIndexd));
         }
 
 		/// <summary>

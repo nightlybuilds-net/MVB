@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Mvb.Cross.Abstract;
+using Mvb.Cross.Base;
 
 namespace Mvb.Cross
 {

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Mvb.Cross
+namespace Mvb.Cross.Base
 {
     /// <summary>
     ///     Implementation of <see cref="INotifyPropertyChanged" /> to simplify models.
