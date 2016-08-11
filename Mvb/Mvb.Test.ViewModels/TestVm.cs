@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Mvb.Cross;
 using Mvb.Cross.Base;
+using Mvb.Cross.Components;
 
 namespace Mvb.Test.ViewModels
 {

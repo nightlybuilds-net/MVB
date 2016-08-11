@@ -4,11 +4,16 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using Mvb.Cross.Args;
+using Mvb.Cross.Base;
 
-namespace Mvb.Cross
+namespace Mvb.Cross.Components
 {
     public class MvbCollection<T> : ObservableCollection<T>, IMvbCollection
     {
+        public event EventHandler<MvbCollectionItemChanged> MvbItemCollectionChanged;
+
+
         public MvbCollection()
             : base()
         {
@@ -21,10 +26,10 @@ namespace Mvb.Cross
             {
                 foreach (T item in notifyCollectionChangedEventArgs.OldItems)
                 {
-                    if(!(item is INotifyPropertyChanged)) continue;
+                    if(!(item is IMvbNotifyPropertyChanged)) continue;
 
                     //Removed items
-                    ((INotifyPropertyChanged)item).PropertyChanged -= this.OnPropertyChanged;
+                    ((IMvbNotifyPropertyChanged)item).MvbPropertyChanged -= this.OnPropertyChanged;
                 }
             }
 
@@ -32,18 +37,18 @@ namespace Mvb.Cross
             {
                 foreach (T item in notifyCollectionChangedEventArgs.NewItems)
                 {
-                    if (!(item is INotifyPropertyChanged)) continue;
+                    if (!(item is IMvbNotifyPropertyChanged)) continue;
 
                     //Added items
-                    ((INotifyPropertyChanged)item).PropertyChanged += this.OnPropertyChanged;
+                    ((IMvbNotifyPropertyChanged)item).MvbPropertyChanged += this.OnPropertyChanged;
                 }
             }
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private void OnPropertyChanged(object sender, MvbPropertyChanged args)
         {
             var index = this.IndexOf((T) sender);
-            this.IndexUpdate?.Invoke(this,new IndexUpdateArgs(index));
+            this.MvbItemCollectionChanged?.Invoke(this,new MvbCollectionItemChanged(index,args.PropertyName,args.OldValue,args.NewValue));
         }
 
         public MvbCollection(IEnumerable<T> collection)
@@ -85,21 +90,12 @@ namespace Mvb.Cross
 			this.AddRange(range);
         }
 
-        public event EventHandler<IndexUpdateArgs> IndexUpdate;
     }
 
     public interface IMvbCollection : INotifyCollectionChanged
     {
-        event EventHandler<IndexUpdateArgs> IndexUpdate;
+        event EventHandler<MvbCollectionItemChanged> MvbItemCollectionChanged;
     }
 
-    public class IndexUpdateArgs : EventArgs
-    {
-        public int Index { get; private set; }
-
-        public IndexUpdateArgs(int index)
-        {
-            this.Index = index;
-        }
-    }
+   
 }

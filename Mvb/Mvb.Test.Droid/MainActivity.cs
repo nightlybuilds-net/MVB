@@ -8,6 +8,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Mvb.Cross.Args;
 using Mvb.Test.ViewModels;
 using Debug = System.Diagnostics.Debug;
 
@@ -87,17 +88,26 @@ namespace Mvb.Test.Droid
 
             this._vm.Binder.AddActionForCollection<TestVm>(t => t.TestCollection, args =>
             {
-                if (args.Action == NotifyCollectionChangedAction.Add)
+                if (args.MvbUpdateAction == MvbUpdateAction.CollectionChanged)
                 {
-                    var t = args.NewItems.Count;
-
-                    foreach (var newItem in args.NewItems)
+                    if (args.NotifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Add)
                     {
-                        Debug.WriteLine(newItem);
+                        var t = args.NotifyCollectionChangedEventArgs.NewItems.Count;
+
+                        foreach (var newItem in args.NotifyCollectionChangedEventArgs.NewItems)
+                        {
+                            Debug.WriteLine(newItem);
+                        }
                     }
+
+                    editText.Text = args.NotifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Add ? $"A: {this._vm.TestCollection.Count}" : $"R: {this._vm.TestCollection.Count}";
                 }
 
-                editText.Text = args.Action == NotifyCollectionChangedAction.Add ? $"A: {this._vm.TestCollection.Count}" : $"R: {this._vm.TestCollection.Count}";
+                if (args.MvbUpdateAction == MvbUpdateAction.ItemChanged)
+                {
+                    editText.Text = $"[0] from {args.MvbCollectionItemChanged.NewValue} to {args.MvbCollectionItemChanged.OldValue}";
+                }
+                
             });
 
 

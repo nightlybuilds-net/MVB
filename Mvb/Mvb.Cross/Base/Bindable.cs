@@ -1,18 +1,25 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Mvb.Cross.Args;
 
 namespace Mvb.Cross.Base
 {
     /// <summary>
     ///     Implementation of <see cref="INotifyPropertyChanged" /> to simplify models.
     /// </summary>
-    public abstract class Bindable : INotifyPropertyChanged
+    public abstract class Bindable : IMvbNotifyPropertyChanged
     {
         /// <summary>
         ///     Multicast event for property change notifications.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Event for MvbItemChanged
+        /// </summary>
+        public event EventHandler<MvbPropertyChanged> MvbPropertyChanged;
+
 
         /// <summary>
         ///     Checks if a property already matches a desired value.  Sets the property and
@@ -34,8 +41,13 @@ namespace Mvb.Cross.Base
         {
             if (Equals(storage, value)) return false;
 
+            if(propertyName != null)
+                this.MvbPropertyChanged?.Invoke(this, new MvbPropertyChanged(propertyName,storage,value));
+            
             storage = value;
-            if (propertyName != null) this.OnPropertyChanged(propertyName);
+            if (propertyName != null)
+                this.OnPropertyChanged(propertyName);
+
             return true;
         }
 
@@ -51,5 +63,12 @@ namespace Mvb.Cross.Base
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
+
+    public interface IMvbNotifyPropertyChanged : INotifyPropertyChanged
+    {
+        event EventHandler<MvbPropertyChanged> MvbPropertyChanged;
+    }
+
 }

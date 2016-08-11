@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using Mvb.Cross.Abstract;
+using Mvb.Cross.Args;
 using Plugin.CurrentActivity;
 
 namespace Mvb.Droid
@@ -12,9 +13,9 @@ namespace Mvb.Droid
             CrossCurrentActivity.Current.Activity.RunOnUiThread(action.Invoke);
         }
 
-        public void Run(Action<NotifyCollectionChangedEventArgs> action, NotifyCollectionChangedEventArgs args)
+        public void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args)
         {
-            CrossCurrentActivity.Current.Activity.RunOnUiThread(() => {action.Invoke(args);});
+            CrossCurrentActivity.Current.Activity.RunOnUiThread(() => { action.Invoke(args); });
         }
 
     }
