@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -136,16 +137,23 @@ namespace Mvb.Cross
             foreach (var info in typeInfo.DeclaredProperties)
             {
 
-                var isObservable = info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(INotifyCollectionChanged));
+                var isMvbCollection = info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IMvbCollection));
 
-                if (!isObservable) continue;
+                if (!isMvbCollection) continue;
 
-                var obserableProp = (INotifyCollectionChanged)info.GetValue(obj, null);
+                var obserableProp = (IMvbCollection)info.GetValue(obj, null);
 
                 obserableProp.CollectionChanged += (sender, args) =>
                 {
                     this.RunCollection(info.Name, args);
                 };
+
+                obserableProp.IndexUpdate += (sender, args) =>
+                {
+                    var t = args.Index;
+                };
+
+
             }
 
         }
@@ -162,4 +170,5 @@ namespace Mvb.Cross
         } 
         #endregion
     }
+
 }

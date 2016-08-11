@@ -9,11 +9,11 @@ namespace Mvb.Test.ViewModels
     {
         private string _test;
 
-        private MvbCollection<string> _testCollection;
+        private MvbCollection<TestObservable> _testCollection;
 
         public TestVm()
         {
-            this.TestCollection = new MvbCollection<string>();
+            this.TestCollection = new MvbCollection<TestObservable>();
             this.InitBinder();
         }
 
@@ -23,7 +23,7 @@ namespace Mvb.Test.ViewModels
             set { this.SetProperty(ref this._test, value); }
         }
 
-        public MvbCollection<string> TestCollection
+        public MvbCollection<TestObservable> TestCollection
         {
             get { return this._testCollection; }
             set { this.SetProperty(ref this._testCollection, value); }
@@ -44,5 +44,16 @@ namespace Mvb.Test.ViewModels
             await Task.Delay(2000);
             this.Wait = false;
         } 
+    }
+
+    public class TestObservable : Bindable
+    {
+        private string _name;
+
+        public string Name
+        {
+            get { return this._name; }
+            set { SetProperty(ref _name, value); }
+        }
     }
 }

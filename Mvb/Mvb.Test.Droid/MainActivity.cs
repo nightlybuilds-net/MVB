@@ -34,6 +34,7 @@ namespace Mvb.Test.Droid
             var removeBtn = FindViewById<Button>(Resource.Id.button3);
             var longBtn = FindViewById<Button>(Resource.Id.button4);
             var addRangeBtn = FindViewById<Button>(Resource.Id.button5);
+            var changeItemZero = FindViewById<Button>(Resource.Id.button6);
 
             changeBtn.Click += (sender, args) =>
             {
@@ -42,7 +43,10 @@ namespace Mvb.Test.Droid
 
             addBtn.Click += (sender, args) =>
             {
-                this._vm.TestCollection.Add("ofewinf");
+                this._vm.TestCollection.Add(new TestObservable()
+                {
+                    Name = "ofewinf"
+                });
             };
 
             removeBtn.Click += (sender, args) =>
@@ -59,7 +63,15 @@ namespace Mvb.Test.Droid
             {
                 var newList = Enumerable.Range(1, 50);
 
-                this._vm.TestCollection.AddRange(newList.Select(s=>s.ToString()));
+                this._vm.TestCollection.AddRange(newList.Select(s => new TestObservable
+                {
+                    Name = s.ToString()
+                }));
+            };
+
+            changeItemZero.Click += (sender, args) =>
+            {
+                this._vm.TestCollection[0].Name = "Pippo2";
             };
 
 
