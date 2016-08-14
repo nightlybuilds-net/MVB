@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.Cross", "Mvb.Cross\Mvb.Cross.csproj", "{E89BCC1C-CE0B-491D-B221-3C6AB26EEED0}"
 EndProject
@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test App", "Test App", "{25
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.Test.WinForm", "Mvb.Test.WinForm\Mvb.Test.WinForm.csproj", "{1AE1BE55-B3AC-4C6A-A457-61B72ABA5FE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.Test.ViewModels", "Mvb.Test.ViewModels\Mvb.Test.ViewModels.csproj", "{2E68DF5C-2130-488A-A998-573BEC7A39E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.Test.ModelBinders", "Mvb.Test.ViewModels\Mvb.Test.ModelBinders.csproj", "{2E68DF5C-2130-488A-A998-573BEC7A39E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.Test.Wpf", "Mvb.Test.Wpf\Mvb.Test.Wpf.csproj", "{5BE8A7E8-4190-4DCD-B995-6B3010D34BF6}"
 EndProject

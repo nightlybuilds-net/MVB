@@ -1,20 +1,18 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using Mvb.Cross;
+﻿using System.Threading.Tasks;
 using Mvb.Cross.Base;
 using Mvb.Cross.Components;
 
-namespace Mvb.Test.ViewModels
+namespace Mvb.Test.ModelBinders
 {
-    public class TestVm : MvbBase
+    public class StockMb : MvbBase
     {
         private string _test;
 
-        private MvbCollection<TestObservable> _testCollection;
+        private MvbCollection<Stock> _testCollection;
 
-        public TestVm()
+        public StockMb()
         {
-            this.TestCollection = new MvbCollection<TestObservable>();
+            this.TestCollection = new MvbCollection<Stock>();
             this.InitBinder();
         }
 
@@ -24,7 +22,7 @@ namespace Mvb.Test.ViewModels
             set { this.SetProperty(ref this._test, value); }
         }
 
-        public MvbCollection<TestObservable> TestCollection
+        public MvbCollection<Stock> TestCollection
         {
             get { return this._testCollection; }
             set { this.SetProperty(ref this._testCollection, value); }
@@ -36,7 +34,7 @@ namespace Mvb.Test.ViewModels
         public bool Wait
         {
             get { return this._wait; }
-            set { SetProperty(ref _wait, value); }
+            set { this.SetProperty(ref this._wait, value); }
         }
 
         public async Task LogTaskTest()
@@ -47,14 +45,22 @@ namespace Mvb.Test.ViewModels
         } 
     }
 
-    public class TestObservable : Bindable
+    public class Stock : Bindable
     {
         private string _name;
 
         public string Name
         {
             get { return this._name; }
-            set { SetProperty(ref _name, value); }
+            set { this.SetProperty(ref this._name, value); }
+        }
+
+        private float _value;
+
+        public float Value
+        {
+            get { return this._value; }
+            set { this.SetProperty(ref this._value, value); }
         }
     }
 }

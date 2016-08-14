@@ -41,12 +41,14 @@ namespace Mvb.Cross.Base
         {
             if (Equals(storage, value)) return false;
 
-            if(propertyName != null)
-                this.MvbPropertyChanged?.Invoke(this, new MvbPropertyChanged(propertyName,storage,value));
-            
+            var temp = storage; 
             storage = value;
+
             if (propertyName != null)
+            {
                 this.OnPropertyChanged(propertyName);
+                this.MvbPropertyChanged?.Invoke(this, new MvbPropertyChanged(propertyName, temp, value));
+            }
 
             return true;
         }

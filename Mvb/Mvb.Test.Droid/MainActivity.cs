@@ -9,7 +9,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Mvb.Cross.Args;
-using Mvb.Test.ViewModels;
+using Mvb.Test.ModelBinders;
 using Debug = System.Diagnostics.Debug;
 
 namespace Mvb.Test.Droid
@@ -18,7 +18,7 @@ namespace Mvb.Test.Droid
     public class MainActivity : Activity
     {
         int count = 1;
-        private TestVm _vm;
+        private StockMb _mb;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -39,12 +39,12 @@ namespace Mvb.Test.Droid
 
             changeBtn.Click += (sender, args) =>
             {
-                this._vm.Test = "Cambio!";
+                this._mb.Test = "Cambio!";
             };
 
             addBtn.Click += (sender, args) =>
             {
-                this._vm.TestCollection.Add(new TestObservable()
+                this._mb.TestCollection.Add(new Stock()
                 {
                     Name = "ofewinf"
                 });
@@ -52,19 +52,19 @@ namespace Mvb.Test.Droid
 
             removeBtn.Click += (sender, args) =>
             {
-                this._vm.TestCollection.RemoveAt(this._vm.TestCollection.Count - 1);
+                this._mb.TestCollection.RemoveAt(this._mb.TestCollection.Count - 1);
             };
 
             longBtn.Click += async (sender, args) =>
             {
-                await this._vm.LogTaskTest();
+                await this._mb.LogTaskTest();
             };
 
             addRangeBtn.Click += (sender, args) =>
             {
                 var newList = Enumerable.Range(1, 50);
 
-                this._vm.TestCollection.AddRange(newList.Select(s => new TestObservable
+                this._mb.TestCollection.AddRange(newList.Select(s => new Stock
                 {
                     Name = s.ToString()
                 }));
@@ -72,21 +72,21 @@ namespace Mvb.Test.Droid
 
             changeItemZero.Click += (sender, args) =>
             {
-                this._vm.TestCollection[0].Name = "Pippo2";
+                this._mb.TestCollection[0].Name = "Pippo2";
             };
 
 
-            this._vm = new TestVm();
+            this._mb = new StockMb();
 
-            this._vm.Binder.AddAction<TestVm>(t => t.Test, () =>
+            this._mb.Binder.AddAction<StockMb>(t => t.Test, () =>
             {
                 editText.Text = "Cambiato!";
             });
 
-            this._vm.Binder.AddAction<TestVm>(t => t.Wait, () =>
-            { editText.SetBackgroundColor(this._vm.Wait ? Color.Red : Color.Transparent); });
+            this._mb.Binder.AddAction<StockMb>(t => t.Wait, () =>
+            { editText.SetBackgroundColor(this._mb.Wait ? Color.Red : Color.Transparent); });
 
-            this._vm.Binder.AddActionForCollection<TestVm>(t => t.TestCollection, args =>
+            this._mb.Binder.AddActionForCollection<StockMb>(t => t.TestCollection, args =>
             {
                 if (args.MvbUpdateAction == MvbUpdateAction.CollectionChanged)
                 {
@@ -100,7 +100,7 @@ namespace Mvb.Test.Droid
                         }
                     }
 
-                    editText.Text = args.NotifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Add ? $"A: {this._vm.TestCollection.Count}" : $"R: {this._vm.TestCollection.Count}";
+                    editText.Text = args.NotifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Add ? $"A: {this._mb.TestCollection.Count}" : $"R: {this._mb.TestCollection.Count}";
                 }
 
                 if (args.MvbUpdateAction == MvbUpdateAction.ItemChanged)
