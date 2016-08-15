@@ -25,17 +25,15 @@ namespace Mvb.Test.Droid
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
-            SetContentView(Resource.Layout.Main);
+            this.SetContentView(Resource.Layout.Main);
 
-
-
-            var editText = FindViewById<EditText>(Resource.Id.editText1);
-            var changeBtn = FindViewById<Button>(Resource.Id.button1);
-            var addBtn = FindViewById<Button>(Resource.Id.button2);
-            var removeBtn = FindViewById<Button>(Resource.Id.button3);
-            var longBtn = FindViewById<Button>(Resource.Id.button4);
-            var addRangeBtn = FindViewById<Button>(Resource.Id.button5);
-            var changeItemZero = FindViewById<Button>(Resource.Id.button6);
+            var editText = this.FindViewById<EditText>(Resource.Id.editText1);
+            var changeBtn = this.FindViewById<Button>(Resource.Id.button1);
+            var addBtn = this.FindViewById<Button>(Resource.Id.button2);
+            var removeBtn = this.FindViewById<Button>(Resource.Id.button3);
+            var longBtn = this.FindViewById<Button>(Resource.Id.button4);
+            var addRangeBtn = this.FindViewById<Button>(Resource.Id.button5);
+            var changeItemZero = this.FindViewById<Button>(Resource.Id.button6);
 
             changeBtn.Click += (sender, args) =>
             {
@@ -105,7 +103,7 @@ namespace Mvb.Test.Droid
 
                 if (args.MvbUpdateAction == MvbUpdateAction.ItemChanged)
                 {
-                    editText.Text = $"[0] from {args.MvbCollectionItemChanged.NewValue} to {args.MvbCollectionItemChanged.OldValue}";
+                    editText.Text = $"[{args.MvbCollectionItemChanged.Index}] from {args.MvbCollectionItemChanged.NewValue} to {args.MvbCollectionItemChanged.OldValue}";
                 }
                 
             });
