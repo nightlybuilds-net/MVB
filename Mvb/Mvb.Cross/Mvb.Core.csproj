@@ -34,11 +34,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Args\MvbPropertyChanged.cs" />
     <Compile Include="Args\MvbUpdateAction.cs" />
     <Compile Include="Args\MvbCollectionItemChanged.cs" />
     <Compile Include="Args\MvbCollectionUpdateArgs.cs" />
     <Compile Include="Abstract\NullUiRunner.cs" />
     <Compile Include="Base\Bindable.cs" />
+    <Compile Include="Abstract\IMvbCollection.cs" />
     <Compile Include="UiRunnerDispenser.cs" />
     <Compile Include="Components\MvbMessenger.cs" />
     <Compile Include="Components\MvbCollection.cs" />

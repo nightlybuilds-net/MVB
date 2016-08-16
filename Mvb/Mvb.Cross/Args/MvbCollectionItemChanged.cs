@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Mvb.Core.Args
+﻿namespace Mvb.Core.Args
 {
     public class MvbCollectionItemChanged : MvbPropertyChanged
     {
@@ -10,19 +8,5 @@ namespace Mvb.Core.Args
         }
 
         public int Index { get; }
-    }
-
-    public class MvbPropertyChanged : EventArgs
-    {
-        public MvbPropertyChanged(string propertyName, object oldValue, object newValue)
-        {
-            this.PropertyName = propertyName;
-            this.OldValue = oldValue;
-            this.NewValue = newValue;
-        }
-
-        public string PropertyName { get; }
-        public object OldValue { get; }
-        public object NewValue { get; }
     }
 }

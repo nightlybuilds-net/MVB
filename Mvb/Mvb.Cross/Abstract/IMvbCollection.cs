@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using Mvb.Core.Args;
 
-namespace Mvb.Core.Components
+namespace Mvb.Core.Abstract
 {
     public interface IMvbCollection : INotifyCollectionChanged
     {

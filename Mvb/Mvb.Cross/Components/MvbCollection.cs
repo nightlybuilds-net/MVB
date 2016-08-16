@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using Mvb.Core.Abstract;
 using Mvb.Core.Args;
 using Mvb.Core.Base;
 
@@ -19,38 +20,7 @@ namespace Mvb.Core.Components
         {
             base.CollectionChanged += this.OnCollectionChanged;
         }
-
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-        {
-            if (notifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Remove)
-            {
-                foreach (T item in notifyCollectionChangedEventArgs.OldItems)
-                {
-                    if(!(item is IMvbNotifyPropertyChanged)) continue;
-
-                    //Removed items
-                    ((IMvbNotifyPropertyChanged)item).MvbPropertyChanged -= this.OnPropertyChanged;
-                }
-            }
-
-            if (notifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (T item in notifyCollectionChangedEventArgs.NewItems)
-                {
-                    if (!(item is IMvbNotifyPropertyChanged)) continue;
-
-                    //Added items
-                    ((IMvbNotifyPropertyChanged)item).MvbPropertyChanged += this.OnPropertyChanged;
-                }
-            }
-        }
-
-        private void OnPropertyChanged(object sender, MvbPropertyChanged args)
-        {
-            var index = this.IndexOf((T) sender);
-            this.MvbItemCollectionChanged?.Invoke(this,new MvbCollectionItemChanged(index,args.PropertyName,args.OldValue,args.NewValue));
-        }
-
+        
         public MvbCollection(IEnumerable<T> collection)
             : base(collection)
         {}
@@ -90,12 +60,46 @@ namespace Mvb.Core.Components
 			this.AddRange(range);
         }
 
-    }
+        /// <summary>
+        /// On Collection Changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="notifyCollectionChangedEventArgs"></param>
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            if (notifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (T item in notifyCollectionChangedEventArgs.OldItems)
+                {
+                    if (!(item is IMvbNotifyPropertyChanged)) continue;
 
-    public interface IMvbCollection : INotifyCollectionChanged
-    {
-        event EventHandler<MvbCollectionItemChanged> MvbItemCollectionChanged;
-    }
+                    //Removed items
+                    ((IMvbNotifyPropertyChanged)item).MvbPropertyChanged -= this.OnPropertyChanged;
+                }
+            }
 
-   
+            if (notifyCollectionChangedEventArgs.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (T item in notifyCollectionChangedEventArgs.NewItems)
+                {
+                    if (!(item is IMvbNotifyPropertyChanged)) continue;
+
+                    //Added items
+                    ((IMvbNotifyPropertyChanged)item).MvbPropertyChanged += this.OnPropertyChanged;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Item Property Changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnPropertyChanged(object sender, MvbPropertyChanged args)
+        {
+            var index = this.IndexOf((T)sender);
+            this.MvbItemCollectionChanged?.Invoke(this, new MvbCollectionItemChanged(index, args.PropertyName, args.OldValue, args.NewValue));
+        }
+
+    }
 }
