@@ -73,9 +73,9 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mvb.Cross\Mvb.Cross.csproj">
+    <ProjectReference Include="..\Mvb.Cross\Mvb.Core.csproj">
       <Project>{E89BCC1C-CE0B-491D-B221-3C6AB26EEED0}</Project>
-      <Name>Mvb.Cross</Name>
+      <Name>Mvb.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mvb.Droid\Mvb.Droid.csproj">
       <Project>{67C8EBFB-95B5-471F-BD80-523B5184E9DD}</Project>

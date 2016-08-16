@@ -8,8 +8,8 @@
     <ProjectGuid>{E89BCC1C-CE0B-491D-B221-3C6AB26EEED0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mvb.Cross</RootNamespace>
-    <AssemblyName>Mvb.Cross</AssemblyName>
+    <RootNamespace>Mvb.Core</RootNamespace>
+    <AssemblyName>Mvb.Core</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
