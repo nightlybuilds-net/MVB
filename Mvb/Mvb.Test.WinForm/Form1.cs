@@ -9,26 +9,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Mvb.Cross;
-using Mvb.Test.ViewModels;
+using Mvb.Test.ModelBinders;
 
 namespace Mvb.Test.WinForm
 {
     public partial class Form1 : Form
     {
-        private TestVm _vm;
+        private StockMb _mb;
 
         public Form1()
         {
             InitializeComponent();
 
-            this._vm = new TestVm();
+            this._mb = new StockMb();
 
-            this._vm.Binder.AddAction<TestVm>(t=>t.Test, () =>
+            this._mb.Binder.AddAction<StockMb>(t=>t.Test, () =>
             {
                 AppendTextBox("vai cazzo!");
             });
 
-            this._vm.Binder.AddActionForCollection<TestVm>(t=>t.TestCollection, args =>
+            this._mb.Binder.AddActionForCollection<StockMb>(t=>t.TestCollection, args =>
             { MessageBox.Show(args.Action == NotifyCollectionChangedAction.Add ? "Add!" : "NOT Add!"); });
         }
 
@@ -44,17 +44,17 @@ namespace Mvb.Test.WinForm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this._vm.Test = "cambio!";
+            this._mb.Test = "cambio!";
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this._vm.TestCollection.Add("1");
+            this._mb.TestCollection.Add("1");
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            this._vm.TestCollection.RemoveAt(this._vm.TestCollection.Count-1);
+            this._mb.TestCollection.RemoveAt(this._mb.TestCollection.Count-1);
         }
     }
 }

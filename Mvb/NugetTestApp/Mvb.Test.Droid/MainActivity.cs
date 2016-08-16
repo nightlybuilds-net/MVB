@@ -7,7 +7,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using Mvb.Test.ViewModels;
+using Mvb.Test.ModelBinders;
 
 namespace Mvb.Test.Droid
 {
@@ -15,7 +15,7 @@ namespace Mvb.Test.Droid
     public class MainActivity : Activity
     {
         int count = 1;
-        private TestVm _vm;
+        private StockMb _mb;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -34,38 +34,38 @@ namespace Mvb.Test.Droid
 
             changeBtn.Click += (sender, args) =>
             {
-                this._vm.Test = "Cambio!";
+                this._mb.Test = "Cambio!";
             };
 
             addBtn.Click += (sender, args) =>
             {
-                this._vm.TestCollection.Add("ofewinf");
+                this._mb.TestCollection.Add("ofewinf");
             };
 
             removeBtn.Click += (sender, args) =>
             {
-                this._vm.TestCollection.RemoveAt(this._vm.TestCollection.Count - 1);
+                this._mb.TestCollection.RemoveAt(this._mb.TestCollection.Count - 1);
             };
 
             longBtn.Click += async (sender, args) =>
             {
-                await this._vm.LogTaskTest();
+                await this._mb.LogTaskTest();
             };
 
 
-            this._vm = new TestVm();
+            this._mb = new StockMb();
 
-            this._vm.Binder.AddAction<TestVm>(t => t.Test, () =>
+            this._mb.Binder.AddAction<StockMb>(t => t.Test, () =>
             {
                 editText.Text = "Cambiato!";
             });
 
-            this._vm.Binder.AddAction<TestVm>(t => t.Wait, () =>
-            { editText.SetBackgroundColor(this._vm.Wait ? Color.Red : Color.Transparent); });
+            this._mb.Binder.AddAction<StockMb>(t => t.Wait, () =>
+            { editText.SetBackgroundColor(this._mb.Wait ? Color.Red : Color.Transparent); });
 
-            this._vm.Binder.AddActionForCollection<TestVm>(t => t.TestCollection, args =>
+            this._mb.Binder.AddActionForCollection<StockMb>(t => t.TestCollection, args =>
             {
-                editText.Text = args.Action == NotifyCollectionChangedAction.Add ? $"A: {this._vm.TestCollection.Count}" : $"R: {this._vm.TestCollection.Count}";
+                editText.Text = args.Action == NotifyCollectionChangedAction.Add ? $"A: {this._mb.TestCollection.Count}" : $"R: {this._mb.TestCollection.Count}";
             });
 
 

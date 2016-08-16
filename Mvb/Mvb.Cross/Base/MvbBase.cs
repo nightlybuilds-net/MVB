@@ -1,4 +1,6 @@
-﻿namespace Mvb.Cross.Base
+﻿using Mvb.Cross.Components;
+
+namespace Mvb.Cross.Base
 {
     public abstract class MvbBase : Bindable
     {

@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Mvb.Test.ViewModels;
+using Mvb.Test.ModelBinders;
 
 namespace Mvb.Test.Wpf
 {
@@ -22,50 +22,50 @@ namespace Mvb.Test.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TestVm _vm;
+        private StockMb _mb;
         
         public MainWindow()
         {
             InitializeComponent();
 
-            this._vm = new TestVm();
+            this._mb = new StockMb();
 
-            this._vm.Binder.AddAction<TestVm>(t => t.Test, () =>
+            this._mb.Binder.AddAction<StockMb>(t => t.Test, () =>
             {
                 this.label.Content = "Ciao!";
             });
 
-            this._vm.Binder.AddAction<TestVm>(t => t.Wait, () =>
+            this._mb.Binder.AddAction<StockMb>(t => t.Wait, () =>
             {
-                this.label.Background = this._vm.Wait ? Brushes.Blue : Brushes.Transparent;
+                this.label.Background = this._mb.Wait ? Brushes.Blue : Brushes.Transparent;
 
             });
 
-            this._vm.Binder.AddActionForCollection<TestVm>(t => t.TestCollection, args =>
+            this._mb.Binder.AddActionForCollection<StockMb>(t => t.TestCollection, args =>
             {
-                this.label.Content = args.Action == NotifyCollectionChangedAction.Add ? $"A: {this._vm.TestCollection.Count}" : $"R: {this._vm.TestCollection.Count}";
+                this.label.Content = args.Action == NotifyCollectionChangedAction.Add ? $"A: {this._mb.TestCollection.Count}" : $"R: {this._mb.TestCollection.Count}";
                 ;
             });
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            this._vm.Test = "cambia";
+            this._mb.Test = "cambia";
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            this._vm.TestCollection.Add("a");
+            this._mb.TestCollection.Add("a");
         }
 
         private void button3_Click(object sender, RoutedEventArgs e)
         {
-            this._vm.TestCollection.RemoveAt(this._vm.TestCollection.Count - 1);
+            this._mb.TestCollection.RemoveAt(this._mb.TestCollection.Count - 1);
         }
 
         private async void Button4_OnClick(object sender, RoutedEventArgs e)
         {
-            await this._vm.LogTaskTest();
+            await this._mb.LogTaskTest();
         }
     }
 }

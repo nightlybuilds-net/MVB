@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using Mvb.Cross.Args;
 
 namespace Mvb.Cross.Abstract
 {
@@ -16,6 +17,6 @@ namespace Mvb.Cross.Abstract
         /// </summary>
         /// <param name="action"></param>
         /// <param name="args"></param>
-        void Run(Action<NotifyCollectionChangedEventArgs> action, NotifyCollectionChangedEventArgs args);
+        void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args);
     }
 }

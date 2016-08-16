@@ -81,9 +81,9 @@
       <Project>{67C8EBFB-95B5-471F-BD80-523B5184E9DD}</Project>
       <Name>Mvb.Droid</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mvb.Test.ViewModels\Mvb.Test.ViewModels.csproj">
+    <ProjectReference Include="..\Mvb.Test.ViewModels\Mvb.Test.ModelBinders.csproj">
       <Project>{2E68DF5C-2130-488A-A998-573BEC7A39E2}</Project>
-      <Name>Mvb.Test.ViewModels</Name>
+      <Name>Mvb.Test.ModelBinders</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

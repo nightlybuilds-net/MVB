@@ -8,8 +8,8 @@
     <ProjectGuid>{2E68DF5C-2130-488A-A998-573BEC7A39E2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mvb.Test.ViewModels</RootNamespace>
-    <AssemblyName>Mvb.Test.ViewModels</AssemblyName>
+    <RootNamespace>Mvb.Test.ModelBinders</RootNamespace>
+    <AssemblyName>Mvb.Test.ModelBinders</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -41,7 +41,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestVm.cs" />
+    <Compile Include="StockMb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

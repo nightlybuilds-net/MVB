@@ -104,9 +104,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mvb.Test.ViewModels\Mvb.Test.ViewModels.csproj">
+    <ProjectReference Include="..\..\Mvb.Test.ViewModels\Mvb.Test.ModelBinders.csproj">
       <Project>{2E68DF5C-2130-488A-A998-573BEC7A39E2}</Project>
-      <Name>Mvb.Test.ViewModels</Name>
+      <Name>Mvb.Test.ModelBinders</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
