@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Mvb.Cross.Components
+namespace Mvb.Core.Components
 {
     public static class MvbMessenger
     {

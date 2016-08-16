@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Specialized;
-using Mvb.Cross.Abstract;
+using Mvb.Core.Abstract;
 
 namespace Mvb.Test.WinForm
 {

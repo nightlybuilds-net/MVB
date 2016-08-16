@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mvb.Cross.Args
+namespace Mvb.Core.Args
 {
     public class MvbCollectionItemChanged : MvbPropertyChanged
     {

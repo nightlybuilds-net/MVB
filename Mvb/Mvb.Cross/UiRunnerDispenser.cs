@@ -1,7 +1,7 @@
 ﻿using System;
-using Mvb.Cross.Abstract;
+using Mvb.Core.Abstract;
 
-namespace Mvb.Cross
+namespace Mvb.Core
 {
     public static class UiRunnerDispenser
     {

@@ -1,4 +1,4 @@
-﻿namespace Mvb.Cross.Args
+﻿namespace Mvb.Core.Args
 {
     public enum MvbUpdateAction
     {

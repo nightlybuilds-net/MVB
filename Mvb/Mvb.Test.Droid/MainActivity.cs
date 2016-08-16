@@ -8,7 +8,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using Mvb.Cross.Args;
+using Mvb.Core.Args;
 using Mvb.Test.ModelBinders;
 using Debug = System.Diagnostics.Debug;
 

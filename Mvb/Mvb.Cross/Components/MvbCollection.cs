@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using Mvb.Cross.Args;
-using Mvb.Cross.Base;
+using Mvb.Core.Args;
+using Mvb.Core.Base;
 
-namespace Mvb.Cross.Components
+namespace Mvb.Core.Components
 {
     public class MvbCollection<T> : ObservableCollection<T>, IMvbCollection
     {

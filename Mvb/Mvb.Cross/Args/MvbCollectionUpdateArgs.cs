@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 
-namespace Mvb.Cross.Args
+namespace Mvb.Core.Args
 {
     public class MvbCollectionUpdateArgs
     {

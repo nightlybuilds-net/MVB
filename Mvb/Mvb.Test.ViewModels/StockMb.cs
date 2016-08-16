@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Mvb.Cross.Base;
-using Mvb.Cross.Components;
+using Mvb.Core.Base;
+using Mvb.Core.Components;
 
 namespace Mvb.Test.ModelBinders
 {

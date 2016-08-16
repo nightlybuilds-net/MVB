@@ -1,4 +1,4 @@
-using Mvb.Cross;
+using Mvb.Core;
 
 namespace Mvb.Droid
 {

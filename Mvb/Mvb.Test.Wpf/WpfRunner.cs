@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Mvb.Cross.Abstract;
+using Mvb.Core.Abstract;
 
 namespace Mvb.Test.Wpf
 {

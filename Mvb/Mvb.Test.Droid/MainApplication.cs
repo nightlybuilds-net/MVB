@@ -3,7 +3,6 @@ using System;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
-using Mvb.Cross;
 using Mvb.Droid;
 using Plugin.CurrentActivity;
 

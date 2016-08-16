@@ -1,6 +1,6 @@
-﻿using Mvb.Cross.Components;
+﻿using Mvb.Core.Components;
 
-namespace Mvb.Cross.Base
+namespace Mvb.Core.Base
 {
     public abstract class MvbBase : Bindable
     {

@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Mvb.Cross.Abstract;
+using Mvb.Core.Abstract;
 using RemIoc;
 
 namespace Mvb.Test.Wpf

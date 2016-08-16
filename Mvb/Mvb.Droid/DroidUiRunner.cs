@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
-using Mvb.Cross.Abstract;
-using Mvb.Cross.Args;
+using Mvb.Core.Abstract;
+using Mvb.Core.Args;
 using Plugin.CurrentActivity;
 
 namespace Mvb.Droid

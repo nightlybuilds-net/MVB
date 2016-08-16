@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Mvb.Cross.Args;
+using Mvb.Core.Args;
 
-namespace Mvb.Cross.Base
+namespace Mvb.Core.Base
 {
     /// <summary>
     ///     Implementation of <see cref="INotifyPropertyChanged" /> to simplify models.

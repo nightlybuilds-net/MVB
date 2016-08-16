@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Specialized;
-using Mvb.Cross.Args;
+using Mvb.Core.Args;
 
-namespace Mvb.Cross.Abstract
+namespace Mvb.Core.Abstract
 {
     class NullUiRunner : IUiRunner
     {

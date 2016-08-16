@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Mvb.Cross.Abstract;
-using Mvb.Cross.Args;
-using Mvb.Cross.Base;
+using Mvb.Core.Abstract;
+using Mvb.Core.Args;
+using Mvb.Core.Base;
 
-namespace Mvb.Cross.Components
+namespace Mvb.Core.Components
 {
     public class MvBinder
     {

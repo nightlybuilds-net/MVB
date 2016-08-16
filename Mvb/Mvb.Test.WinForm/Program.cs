@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Mvb.Cross;
-using Mvb.Cross.Abstract;
+using Mvb.Core.Abstract;
 using RemIoc;
 
 namespace Mvb.Test.WinForm
