@@ -12,7 +12,6 @@ namespace Mvb.FakeContacts.ModelBinders
             });
 
             this.Summary = "Hi there.. i'm summary from 'ContactsSummaryModelBinders'";
-
             this.InitBinder();
         }
 

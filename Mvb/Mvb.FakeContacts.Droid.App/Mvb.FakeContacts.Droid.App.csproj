@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\ContactViewHolder.cs" />
+    <Compile Include="Components\ContactRowAdapter.cs" />
     <Compile Include="DryIoc\Container.cs" />
     <Compile Include="DryIoc\ImTools.cs" />
     <Compile Include="MainActivity.cs" />
@@ -65,6 +67,9 @@
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
+    <AndroidResource Include="Resources\layout\ListRow.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -96,6 +101,10 @@
     <ProjectReference Include="..\Mvb.FakeContacts.Concrete\Mvb.FakeContacts.Concrete.csproj">
       <Project>{B010240E-A655-486C-A63B-A7180E810AE8}</Project>
       <Name>Mvb.FakeContacts.Concrete</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mvb.FakeContacts.Domain\Mvb.FakeContacts.Domain.csproj">
+      <Project>{E6B91186-198B-4711-AD16-683D8782B044}</Project>
+      <Name>Mvb.FakeContacts.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mvb.FakeContacts.Droid.Services\Mvb.FakeContacts.Droid.Services.csproj">
       <Project>{789CE0F7-1EAA-47EA-9071-740CE5D35336}</Project>

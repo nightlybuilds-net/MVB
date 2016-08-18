@@ -29,7 +29,7 @@ namespace Mvb.FakeContacts.Droid.Services
                     {
                         contactList.Add(new Contact() {Name = cursor.GetString(
                                 cursor.GetColumnIndex(projection[1]))});
-                    } while (cursor.MoveToNext());
+                    } while (cursor.MoveToNext() && contactList.Count <20);
                 }
 
                 return contactList;

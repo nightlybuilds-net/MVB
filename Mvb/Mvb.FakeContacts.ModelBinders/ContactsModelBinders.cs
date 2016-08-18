@@ -35,13 +35,23 @@ namespace Mvb.FakeContacts.ModelBinders
                     base.OnErroraised(new ModelBindersErrorArgs("error during recovery of the contacts"));
                 else
                 {
-                    this.Contacts.AddRange(contacts.Result);
-                //Notify recovery of contacts to others binders
-                MvbMessenger.Send(this, BindersMessages.ContactsLoaded.ToString(), contacts.Result.Count());
+                    this.Contacts.Reset(contacts.Result);
+                    //Notify recovery of contacts to others binders
+                    MvbMessenger.Send(this, BindersMessages.ContactsLoaded.ToString(), contacts.Result.Count());
+
+                    //now we can load the avatars.. in async mode
+                    this.LoadAvatars();
                 }
                 this.IsBusy = false;
             }).ConfigureAwait(false);
             
+        }
+
+
+        private async Task LoadAvatars()
+        {
+            foreach (var contact in this.Contacts)
+                await this._avatarServices.LoadAvatarUrl(contact).ConfigureAwait(false);
         }
 
         #region PROPERTIES
