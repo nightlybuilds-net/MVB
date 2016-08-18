@@ -25,19 +25,23 @@ namespace Mvb.FakeContacts.ModelBinders
         /// Load Contacts
         /// </summary>
         /// <returns></returns>
-        public async Task LoadContacts()
+        public async void LoadContacts()
         {
+            this.IsBusy = true;
+            await Task.Delay(1000);
             await this._contactServices.GetContacts().ContinueWith(contacts =>
             {
-                if(contacts.IsFaulted)
+                if (contacts.IsFaulted)
                     base.OnErroraised(new ModelBindersErrorArgs("error during recovery of the contacts"));
                 else
                 {
                     this.Contacts.AddRange(contacts.Result);
-                    //Notify recovery of contacts to others binders
-                    MvbMessenger.Send(this, "loadedContacts", contacts.Result.Count());
+                //Notify recovery of contacts to others binders
+                MvbMessenger.Send(this, BindersMessages.ContactsLoaded.ToString(), contacts.Result.Count());
                 }
-            });
+                this.IsBusy = false;
+            }).ConfigureAwait(false);
+            
         }
 
         #region PROPERTIES

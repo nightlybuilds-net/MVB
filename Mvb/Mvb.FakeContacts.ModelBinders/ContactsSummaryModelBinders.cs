@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mvb.Core.Components;
-using Mvb.FakeContacts.Domain;
+﻿using Mvb.Core.Components;
 
 namespace Mvb.FakeContacts.ModelBinders
 {
@@ -16,6 +10,10 @@ namespace Mvb.FakeContacts.ModelBinders
             {
                 this.Summary = msg == 0 ? "No contacts found!" : $"There are {msg} contacts!!";
             });
+
+            this.Summary = "Hi there.. i'm summary from 'ContactsSummaryModelBinders'";
+
+            this.InitBinder();
         }
 
 
