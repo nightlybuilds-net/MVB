@@ -39,9 +39,21 @@
       <Project>{e89bcc1c-ce0b-491d-b221-3c6ab26eeed0}</Project>
       <Name>Mvb.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mvb.FakeContacts.Abstract\Mvb.FakeContacts.Abstract.csproj">
+      <Project>{817B4026-9CEC-41C3-B700-A969F724864C}</Project>
+      <Name>Mvb.FakeContacts.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mvb.FakeContacts.Domain\Mvb.FakeContacts.Domain.csproj">
+      <Project>{e6b91186-198b-4711-ad16-683d8782b044}</Project>
+      <Name>Mvb.FakeContacts.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindersMessages.cs" />
+    <Compile Include="ContactsSummaryModelBinders.cs" />
+    <Compile Include="FakeContactsBinderbase.cs" />
     <Compile Include="ContactsModelBinders.cs" />
+    <Compile Include="Errors\ModelBindersErrorArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

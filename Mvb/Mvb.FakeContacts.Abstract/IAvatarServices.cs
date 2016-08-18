@@ -3,7 +3,7 @@ using Mvb.FakeContacts.Domain;
 
 namespace Mvb.FakeContacts.Abstract
 {
-    public interface IContactService
+    public interface IAvatarServices
     {
         /// <summary>
         /// Get AvatarUrl for contact

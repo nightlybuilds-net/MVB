@@ -45,8 +45,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IContactResource.cs" />
-    <Compile Include="IContactService.cs" />
+    <Compile Include="IContactServices.cs" />
+    <Compile Include="IAvatarServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

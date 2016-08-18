@@ -26,6 +26,8 @@ namespace Mvb.FakeContacts.Droid.App
 		
 		public static void UpdateIdValues()
 		{
+			global::Mvb.FakeContacts.Droid.Services.Resource.String.ApplicationName = global::Mvb.FakeContacts.Droid.App.Resource.String.ApplicationName;
+			global::Mvb.FakeContacts.Droid.Services.Resource.String.Hello = global::Mvb.FakeContacts.Droid.App.Resource.String.Hello;
 		}
 		
 		public partial class Attribute

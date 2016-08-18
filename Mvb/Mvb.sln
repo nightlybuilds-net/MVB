@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.FakeContacts.Domain", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.FakeContacts.Droid.Services", "Mvb.FakeContacts.Droid.Services\Mvb.FakeContacts.Droid.Services.csproj", "{789CE0F7-1EAA-47EA-9071-740CE5D35336}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.FakeContacts.Concrete.Pcl", "Mvb.FakeContacts.Concrete.Pcl\Mvb.FakeContacts.Concrete.Pcl.csproj", "{B010240E-A655-486C-A63B-A7180E810AE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvb.FakeContacts.Concrete", "Mvb.FakeContacts.Concrete\Mvb.FakeContacts.Concrete.csproj", "{B010240E-A655-486C-A63B-A7180E810AE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

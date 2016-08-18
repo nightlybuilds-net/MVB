@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DryIoc\Container.cs" />
+    <Compile Include="DryIoc\ImTools.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -90,6 +92,14 @@
     <ProjectReference Include="..\Mvb.FakeContacts.Abstract\Mvb.FakeContacts.Abstract.csproj">
       <Project>{817b4026-9cec-41c3-b700-a969f724864c}</Project>
       <Name>Mvb.FakeContacts.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mvb.FakeContacts.Concrete\Mvb.FakeContacts.Concrete.csproj">
+      <Project>{B010240E-A655-486C-A63B-A7180E810AE8}</Project>
+      <Name>Mvb.FakeContacts.Concrete</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mvb.FakeContacts.Droid.Services\Mvb.FakeContacts.Droid.Services.csproj">
+      <Project>{789CE0F7-1EAA-47EA-9071-740CE5D35336}</Project>
+      <Name>Mvb.FakeContacts.Droid.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mvb.FakeContacts.ModelBinders\Mvb.FakeContacts.ModelBinders.csproj">
       <Project>{8143fad9-64b1-4af3-85f7-ea04c1aa224b}</Project>

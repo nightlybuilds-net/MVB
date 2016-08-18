@@ -9,7 +9,7 @@ using Plugin.CurrentActivity;
 
 namespace Mvb.FakeContacts.Droid.Services
 {
-    public class DroidResource : IContactResource
+    public class DroidContactsServices : IContactServices
     {
         public async Task<IEnumerable<Contact>> GetContacts()
         {

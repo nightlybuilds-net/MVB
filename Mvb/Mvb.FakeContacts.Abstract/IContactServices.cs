@@ -4,7 +4,7 @@ using Mvb.FakeContacts.Domain;
 
 namespace Mvb.FakeContacts.Abstract
 {
-    public interface IContactResource
+    public interface IContactServices
     {
         /// <summary>
         /// Get all contacts

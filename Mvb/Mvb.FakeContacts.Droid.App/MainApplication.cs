@@ -3,6 +3,10 @@ using System;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
+using DryIoc;
+using Mvb.FakeContacts.Abstract;
+using Mvb.FakeContacts.Concrete;
+using Mvb.FakeContacts.Droid.Services;
 using Plugin.CurrentActivity;
 
 namespace Mvb.FakeContacts.Droid.App
@@ -11,6 +15,8 @@ namespace Mvb.FakeContacts.Droid.App
     [Application]
     public class MainApplication : Application, Application.IActivityLifecycleCallbacks
     {
+        public static IContainer Ioc;
+
         public MainApplication(IntPtr handle, JniHandleOwnership transer)
           :base(handle, transer)
         {
@@ -19,14 +25,24 @@ namespace Mvb.FakeContacts.Droid.App
         public override void OnCreate()
         {
             base.OnCreate();
-            RegisterActivityLifecycleCallbacks(this);
-            //A great place to initialize Xamarin.Insights and Dependency Services!
+            this.RegisterActivityLifecycleCallbacks(this);
+
+            //Init IOC
+            Ioc = new Container();
+
+            //Services
+            Ioc.Register<IContactServices, DroidContactsServices>();
+            Ioc.Register<IAvatarServices, CommonAvatarServices>();
+
+            //ModelBinders
+
+
         }
 
         public override void OnTerminate()
         {
             base.OnTerminate();
-            UnregisterActivityLifecycleCallbacks(this);
+            this.UnregisterActivityLifecycleCallbacks(this);
         }
 
         public void OnActivityCreated(Activity activity, Bundle savedInstanceState)
