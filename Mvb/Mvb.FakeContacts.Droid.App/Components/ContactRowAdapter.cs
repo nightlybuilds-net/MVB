@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -5,6 +6,8 @@ using Android.Content;
 using Android.Graphics;
 using Android.Views;
 using Android.Widget;
+using FFImageLoading;
+using FFImageLoading.Views;
 using Mvb.FakeContacts.Domain;
 
 namespace Mvb.FakeContacts.Droid.App.Components
@@ -28,9 +31,11 @@ namespace Mvb.FakeContacts.Droid.App.Components
             {
                 convertView = LayoutInflater.From(parent.Context).Inflate(
                     Resource.Layout.ListRow, parent, false);
-                holder = new ContactViewHolder();
-                holder.Name = convertView.FindViewById<TextView>(Resource.Id.ContactName);
-                holder.Avatar = convertView.FindViewById<ImageView>(Resource.Id.ContactImage);
+                holder = new ContactViewHolder
+                {
+                    Name = convertView.FindViewById<TextView>(Resource.Id.ContactName),
+                    Avatar = convertView.FindViewById<ImageViewAsync>(Resource.Id.ContactImage)
+                };
 
                 convertView.Tag = holder;
             }
@@ -40,31 +45,26 @@ namespace Mvb.FakeContacts.Droid.App.Components
             var item = this.GetItem(position);
 
             holder.Name.Text = item.Name;
-            if (!string.IsNullOrEmpty(item.AvatarUrl) && holder.Avatar.Drawable == null)
+
+            if(string.IsNullOrEmpty(item.AvatarUrl))
+                ImageService
+                   .Instance
+                   .LoadFile("spy.png")
+                   .IntoAsync(holder.Avatar);
+            else
             {
-                var btm = this.GetImageBitmapFromUrl(item.AvatarUrl);
-                holder.Avatar.SetImageBitmap(btm); 
+                ImageService
+                   .Instance
+                   .LoadUrl(item.AvatarUrl, TimeSpan.FromHours(1))
+                   .IntoAsync(holder.Avatar);
             }
+            
             
             return convertView;
         }
 
 
-        private Bitmap GetImageBitmapFromUrl(string url)
-        {
-            Bitmap imageBitmap = null;
-
-            using (var webClient = new WebClient())
-            {
-                var imageBytes = webClient.DownloadData(url);
-                if (imageBytes != null && imageBytes.Length > 0)
-                {
-                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                }
-            }
-
-            return imageBitmap;
-        }
+       
 
         
     }
