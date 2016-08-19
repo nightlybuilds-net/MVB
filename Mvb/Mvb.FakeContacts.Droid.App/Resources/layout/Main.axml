@@ -7,11 +7,14 @@
         android:id="@+id/SummaryTw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:gravity="center" />
     <Button
         android:id="@+id/ReloadBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/holo_green_light"
         android:text="@string/Reload" />
     <Button
         android:id="@+id/ChangeNameBtn"

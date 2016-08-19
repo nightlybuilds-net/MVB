@@ -36,19 +36,20 @@ namespace Mvb.FakeContacts.Droid.App
 			//Get used binders for this view
 			this._contactSummaryMb = MainApplication.Ioc.Resolve<ContactsSummaryModelBinders>();
 			this._contactsMb = MainApplication.Ioc.Resolve<ContactsModelBinders>();
+			//------------------------------
 
-
+			//Get views
 			this._summaryText = this.FindViewById<TextView>(Resource.Id.SummaryTw);
 			this._reloadButton = this.FindViewById<Button>(Resource.Id.ReloadBtn);
 			this._changeBtn = this.FindViewById<Button>(Resource.Id.ChangeNameBtn);
 
-
-			//init adapter
 			this._contactsAdapter = new ContactRowAdapter(this, Android.Resource.Layout.SimpleListItem1,
 				this._contactsMb.Contacts);
 			this._contactsListView = this.FindViewById<ListView>(Resource.Id.ContactsListView);
 			this._contactsListView.Adapter = this._contactsAdapter;
+			//------------------------------
 
+			//To Binders inputs
 			this._reloadButton.Click += (sender, args) =>
 			{
 				this._contactsMb.LoadContacts();
@@ -58,8 +59,11 @@ namespace Mvb.FakeContacts.Droid.App
 			{
 				this._contactsMb.ShakeNames();
 			};
+			//------------------------------
 
-			InitModelBinders(); //Init the binders
+			//Init the binders
+			InitModelBinders();
+			//------------------------------
 		}
 
 		/// <summary>
@@ -67,7 +71,7 @@ namespace Mvb.FakeContacts.Droid.App
 		/// </summary>
 		private void InitModelBinders()
 		{
-			#region ModelBinders
+			//Actions for 'IsBusy'
 			this._contactsMb.Binder.AddAction<ContactsModelBinders>(b => b.IsBusy, () =>
 				{
 					this._summaryText.SetBackgroundColor(this._contactsMb.IsBusy ? Color.Red : Color.Transparent);
@@ -81,6 +85,7 @@ namespace Mvb.FakeContacts.Droid.App
 					}
 				});
 
+			//Actions for 'Summary'
 			this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(b => b.Summary, () =>
 			  {
 				  this._summaryText.Text = this._contactSummaryMb.Summary;
@@ -88,7 +93,7 @@ namespace Mvb.FakeContacts.Droid.App
 			//MANUAL RUN FOR FIRST ASSIGNMENT
 			this._contactSummaryMb.Binder.Run<ContactsSummaryModelBinders>(b => b.Summary);
 
-			//BINDER FOR COLLECTION
+			//Actions for 'Contacts' collections
 			this._contactsMb.Binder.AddActionForCollection<ContactsModelBinders>(b => b.Contacts, args =>
 			  {
 				  if (args.MvbUpdateAction == MvbUpdateAction.CollectionChanged)
@@ -118,14 +123,12 @@ namespace Mvb.FakeContacts.Droid.App
 				  }
 				  else if (args.MvbUpdateAction == MvbUpdateAction.ItemChanged)
 				  {
-					  //here i have index, oldvalue and new value of changed item
 					  if (args.MvbCollectionItemChanged.Index >= this._contactsListView.FirstVisiblePosition &&
 						  args.MvbCollectionItemChanged.Index <= this._contactsListView.LastVisiblePosition)
 						  this._contactsAdapter.NotifyDataSetChanged();
 				  }
 			  });
 
-			#endregion
 		}
 	}
 }
