@@ -2,5 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="Mvb.FakeContacts.Droid.App.Mvb.FakeContacts.Droid.App" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="16" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
-	<application android:label="Mvb.FakeContacts.Droid.App"></application>
+	<application android:label="Mvb.FakeContacts.Droid.App" android:theme="@style/Theme.AppCompat">
+	</application>
 </manifest>

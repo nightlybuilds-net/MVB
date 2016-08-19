@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Reload">Reload Contacts</string>
-    <string name="ApplicationName">Mvb.FakeContacts.Droid.App</string>
+	<string name="Reload">Reload Contacts</string>
+	<string name="ChangeNames">Shake Names</string>
+	<string name="ApplicationName">Mvb.FakeContacts.Droid.App</string>
 </resources>
