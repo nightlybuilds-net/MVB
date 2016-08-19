@@ -16,11 +16,15 @@ using Mvb.FakeContacts.Droid.App.Components;
 namespace Mvb.FakeContacts.Droid.App
 {
     [Activity(Label = "Mvb.FakeContacts.Droid.App", MainLauncher = true, Icon = "@drawable/icon")]
-    public class MainActivity : Activity
+    public class MainActivity : Activity, AbsListView.IOnScrollListener
     {
         private ContactsSummaryModelBinders _contactSummaryMb;
         private ContactsModelBinders _contactsMb;
         private ContactRowAdapter _contactsAdapter;
+        private ListView _contactsListView;
+
+        private int _firstVisibleRow;
+        private int _lastVisibleRow;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -36,8 +40,9 @@ namespace Mvb.FakeContacts.Droid.App
             //init adapter
             this._contactsAdapter = new ContactRowAdapter(this, Android.Resource.Layout.SimpleListItem1,
                 this._contactsMb.Contacts);
-            var contactsListView = this.FindViewById<ListView>(Resource.Id.ContactsListView);
-            contactsListView.Adapter = this._contactsAdapter;
+            this._contactsListView = this.FindViewById<ListView>(Resource.Id.ContactsListView);
+            this._contactsListView.SetOnScrollListener(this);
+            this._contactsListView.Adapter = this._contactsAdapter;
 
             reloadButton.Click += (sender, args) =>
             {
@@ -87,13 +92,23 @@ namespace Mvb.FakeContacts.Droid.App
                 else if (args.MvbUpdateAction == MvbUpdateAction.ItemChanged)
                 {
                     //here i have index, oldvalue and new value of changed item
-                    this._contactsAdapter.NotifyDataSetChanged();
+                    if(args.MvbCollectionItemChanged.Index >= this._firstVisibleRow && args.MvbCollectionItemChanged.Index <= this._lastVisibleRow)
+                        this._contactsAdapter.NotifyDataSetChanged();
                 }
             });
 
             #endregion
 
         }
+
+        public void OnScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+        {
+            this._firstVisibleRow = this._contactsListView.FirstVisiblePosition;
+            this._lastVisibleRow = this._contactsListView.LastVisiblePosition;
+        }
+
+        public void OnScrollStateChanged(AbsListView view, ScrollState scrollState)
+        {}
     }
 }
 

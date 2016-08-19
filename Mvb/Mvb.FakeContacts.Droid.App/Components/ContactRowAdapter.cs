@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using FFImageLoading;
 using FFImageLoading.Views;
+using FFImageLoading.Work;
 using Mvb.FakeContacts.Domain;
 
 namespace Mvb.FakeContacts.Droid.App.Components
@@ -49,16 +50,19 @@ namespace Mvb.FakeContacts.Droid.App.Components
             if(string.IsNullOrEmpty(item.AvatarUrl))
                 ImageService
                    .Instance
-                   .LoadFile("spy.png")
+                   .LoadCompiledResource("spy")
                    .IntoAsync(holder.Avatar);
             else
-            {
                 ImageService
                    .Instance
                    .LoadUrl(item.AvatarUrl, TimeSpan.FromHours(1))
+                   .LoadingPlaceholder("glass",ImageSource.CompiledResource)
+                   .ErrorPlaceholder("error",ImageSource.CompiledResource)
+                   .Error(exception =>
+                   {
+                       item.AvatarUrl = string.Empty;
+                   })
                    .IntoAsync(holder.Avatar);
-            }
-            
             
             return convertView;
         }

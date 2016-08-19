@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Android.App;
 using Android.Provider;
 using Mvb.FakeContacts.Abstract;
 using Mvb.FakeContacts.Domain;
@@ -29,10 +28,10 @@ namespace Mvb.FakeContacts.Droid.Services
                     {
                         contactList.Add(new Contact() {Name = cursor.GetString(
                                 cursor.GetColumnIndex(projection[1]))});
-                    } while (cursor.MoveToNext() && contactList.Count <20);
+                    } while (cursor.MoveToNext() );
                 }
 
-                return contactList;
+                return contactList.OrderBy(o=>o.Name);
             });
            
         }
