@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Android.Content;
@@ -47,7 +48,7 @@ namespace Mvb.FakeContacts.Droid.App.Components
 
 			holder.Name.Text = item.Name;
 
-			if (string.IsNullOrEmpty(item.AvatarUrl))
+			if (item.AvatarBytes == null)
 				ImageService
 				   .Instance
 				   .LoadCompiledResource("spy")
@@ -55,14 +56,13 @@ namespace Mvb.FakeContacts.Droid.App.Components
 			else
 				ImageService
 				   .Instance
-				   .LoadUrl(item.AvatarUrl, TimeSpan.FromHours(1))
-				   .LoadingPlaceholder("glass", ImageSource.CompiledResource)
+                   .LoadStream(ct => Task.FromResult<Stream>(new MemoryStream(item.AvatarBytes)))
 				   .ErrorPlaceholder("error", ImageSource.CompiledResource)
-				   .Error(exception =>
-				   {
-					   item.AvatarUrl = string.Empty;
-				   })
-				   .Into(holder.Avatar);
+                   .Error(exception =>
+                   {
+                       item.AvatarBytes = null;
+                   })
+                   .Into(holder.Avatar);
 
 			return convertView;
 		}

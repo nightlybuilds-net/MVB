@@ -61,13 +61,6 @@ namespace Mvb.FakeContacts.Wpf.App
             {
                 this.SummaryLbl.Background = this._contactsMb.IsBusy ? Brushes.Red : Brushes.Transparent;
                 this.LoadBtn.IsEnabled = !this._contactsMb.IsBusy;
-
-                //if (this._contactsMb.IsBusy)
-                //{
-                //    var snack = Snackbar.Make(this.FindViewById<TextView>(Resource.Id.SignatureTw), "Loading contacts..", Snackbar.LengthShort);
-                //    snack.View.SetBackgroundColor(Color.Red);
-                //    snack.Show();
-                //}
             });
 
             //Actions for 'Summary'
@@ -110,12 +103,10 @@ namespace Mvb.FakeContacts.Wpf.App
                         contact.ContactName.Content = args.MvbCollectionItemChanged.NewValue;
                     else
                     {
-                        var bytes = new WebClient().DownloadData(args.MvbCollectionItemChanged.NewValue.ToString());
-
                         var image = new BitmapImage();
                         image.BeginInit();
                         image.CacheOption = BitmapCacheOption.OnLoad;
-                        image.StreamSource = new MemoryStream(bytes);
+                        image.StreamSource = new MemoryStream((byte[])args.MvbCollectionItemChanged.NewValue);
                         image.EndInit();
                         contact.ContactImage.Source = image;
                     }

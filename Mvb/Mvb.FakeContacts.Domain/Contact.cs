@@ -13,12 +13,12 @@ namespace Mvb.FakeContacts.Domain
 			set { this.SetProperty(ref this._name, value); }
 		}
 
-		private string _avatarUrl;
+		private byte[] _avatarBytes;
 
-		public string AvatarUrl
+		public byte[] AvatarBytes
 		{
-			get { return this._avatarUrl; }
-			set { this.SetProperty(ref this._avatarUrl, value); }
+			get { return this._avatarBytes; }
+			set { this.SetProperty(ref this._avatarBytes, value); }
 		}
 
 		/// <summary>

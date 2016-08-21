@@ -23,12 +23,13 @@ namespace Mvb.FakeContacts.Concrete
                 using (
                     var response = await client.GetAsync("http://uifaces.com/api/v1/random"))
                 {
-                    var readStream = new StreamReader(await response.Content.ReadAsStreamAsync(), Encoding.UTF8);
-                    var stringContent = readStream.ReadToEnd();
+                    using (var readStream = new StreamReader(await response.Content.ReadAsStreamAsync(), Encoding.UTF8))
+                    {
+                        var stringContent = readStream.ReadToEnd();
+                        var uiResponse = JsonConvert.DeserializeObject<UiFaceResponse>(stringContent);
 
-                    var uiResponse = JsonConvert.DeserializeObject<UiFaceResponse>(stringContent);
-
-                    contact.AvatarUrl = uiResponse.image_urls.normal;
+                        contact.AvatarBytes = await client.GetByteArrayAsync(uiResponse.image_urls.mini);
+                    }
                 }
             }
         }
