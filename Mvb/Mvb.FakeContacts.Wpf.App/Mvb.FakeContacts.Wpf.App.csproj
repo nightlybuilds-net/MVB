@@ -67,7 +67,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WpfUiRunner.cs" />
     <Compile Include="ContactRow.xaml.cs">
       <DependentUpon>ContactRow.xaml</DependentUpon>
     </Compile>
@@ -132,6 +131,10 @@
     <ProjectReference Include="..\Mvb.FakeContacts.Win.Services\Mvb.FakeContacts.Win.Services.csproj">
       <Project>{8C13581E-167C-4DCC-87D5-8EC318CFAD68}</Project>
       <Name>Mvb.FakeContacts.Win.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mvb.Platform.Win.Wpf\Mvb.Platform.Win.Wpf.csproj">
+      <Project>{6e2acc59-90b3-4b63-8623-aa7da2511150}</Project>
+      <Name>Mvb.Platform.Win.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

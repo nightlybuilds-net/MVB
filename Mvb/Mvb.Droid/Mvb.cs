@@ -1,8 +1,8 @@
 using Mvb.Core;
 
-namespace Mvb.Droid
+namespace Mvb.Platform.Droid
 {
-    public class Mvb
+    public class MvbPlatform
     {
         public static void Init()
         {

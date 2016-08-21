@@ -3,7 +3,7 @@ using System.Windows;
 using Mvb.Core.Abstract;
 using Mvb.Core.Args;
 
-namespace Mvb.FakeContacts.Wpf.App
+namespace Mvb.Platform.Win.Wpf
 {
     public class WpfUiRunner : IUiRunner
     {

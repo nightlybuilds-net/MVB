@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using DryIoc;
-using Mvb.Core;
 using Mvb.FakeContacts.Abstract;
 using Mvb.FakeContacts.Concrete;
 using Mvb.FakeContacts.ModelBinders;
 using Mvb.FakeContacts.Win.Services;
+using Mvb.Platform.Win.Wpf;
 using Mvb = Mvb.Core.Mvb;
 
 namespace Mvb.FakeContacts.Wpf.App
@@ -27,9 +21,7 @@ namespace Mvb.FakeContacts.Wpf.App
         {
             base.OnStartup(e);
 
-            //Core.Mvb.NullInit();
-
-            UiRunnerDispenser.RegisterRunner(() => new WpfUiRunner());
+            MvbPlatform.Init();
 
             //Init IOC
             Ioc = new Container();

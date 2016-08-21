@@ -8,6 +8,7 @@ using Mvb.FakeContacts.Abstract;
 using Mvb.FakeContacts.Concrete;
 using Mvb.FakeContacts.Droid.Services;
 using Mvb.FakeContacts.ModelBinders;
+using Mvb.Platform.Droid;
 using Plugin.CurrentActivity;
 
 namespace Mvb.FakeContacts.Droid.App
@@ -27,7 +28,7 @@ namespace Mvb.FakeContacts.Droid.App
             base.OnCreate();
             this.RegisterActivityLifecycleCallbacks(this);
 
-            Mvb.Droid.Mvb.Init();
+            MvbPlatform.Init();
 
             //Init IOC
             Ioc = new Container();

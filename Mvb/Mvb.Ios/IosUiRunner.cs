@@ -3,7 +3,7 @@ using Mvb.Core.Abstract;
 using Mvb.Core.Args;
 using UIKit;
 
-namespace Mvb.Ios
+namespace Mvb.Platform.Ios
 {
     public class IosUiRunner : IUiRunner
     {

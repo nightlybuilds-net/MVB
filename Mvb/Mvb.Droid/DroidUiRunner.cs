@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Specialized;
 using Mvb.Core.Abstract;
 using Mvb.Core.Args;
 using Plugin.CurrentActivity;
 
-namespace Mvb.Droid
+namespace Mvb.Platform.Droid
 {
     public class DroidUiRunner : IUiRunner
     {

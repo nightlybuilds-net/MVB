@@ -28,7 +28,7 @@ namespace Mvb.FakeContacts.Concrete
                         var stringContent = readStream.ReadToEnd();
                         var uiResponse = JsonConvert.DeserializeObject<UiFaceResponse>(stringContent);
 
-                        contact.AvatarBytes = await client.GetByteArrayAsync(uiResponse.image_urls.mini);
+                        contact.AvatarBytes = await client.GetByteArrayAsync(uiResponse.image_urls.normal);
                     }
                 }
             }
