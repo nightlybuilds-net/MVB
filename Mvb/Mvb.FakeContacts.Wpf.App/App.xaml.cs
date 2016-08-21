@@ -5,7 +5,6 @@ using Mvb.FakeContacts.Concrete;
 using Mvb.FakeContacts.ModelBinders;
 using Mvb.FakeContacts.Win.Services;
 using Mvb.Platform.Win.Wpf;
-using Mvb = Mvb.Core.Mvb;
 
 namespace Mvb.FakeContacts.Wpf.App
 {

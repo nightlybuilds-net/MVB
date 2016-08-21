@@ -1,25 +1,32 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.IO;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using Windows.ApplicationModel.Contacts;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
+using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+using Mvb.FakeContacts.ModelBinders;
 using DryIoc;
 using Mvb.Core.Args;
-using Mvb.FakeContacts.Domain;
-using Mvb.FakeContacts.ModelBinders;
+using Contact = Mvb.FakeContacts.Domain.Contact;
 
-namespace Mvb.FakeContacts.Wpf.App
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+
+namespace Mvb.FakeContacts.Uwp.App
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public partial class MainWindow : Window
+    public sealed partial class MainPage : Page
     {
-        private readonly ContactsModelBinders _contactsMb;
-        private readonly ContactsSummaryModelBinders _contactSummaryMb;
+        private ContactsModelBinders _contactsMb;
+        private ContactsSummaryModelBinders _contactSummaryMb;
 
-        public MainWindow()
+        public MainPage()
         {
             this.InitializeComponent();
 
@@ -28,34 +35,35 @@ namespace Mvb.FakeContacts.Wpf.App
 
             this.InitModelBinders();
         }
+        
 
         private void LoadBtn_OnClick(object sender, RoutedEventArgs e)
         {
             this._contactsMb.LoadContacts();
+
         }
 
         private void ShakeBtn_OnClick(object sender, RoutedEventArgs e)
         {
             this._contactsMb.ShakeNames();
+
         }
 
-
-        /// <summary>
-		/// Inits the model binders.
-		/// </summary>
-		private void InitModelBinders()
+        private void InitModelBinders()
         {
             //Actions for 'IsBusy'
             this._contactsMb.Binder.AddAction<ContactsModelBinders>(b => b.IsBusy, () =>
             {
-                this.SummaryLbl.Background = this._contactsMb.IsBusy ? Brushes.Red : Brushes.Transparent;
+                this.SummaryBorder.Background = this._contactsMb.IsBusy
+                    ? new SolidColorBrush(Colors.Red)
+                    : new SolidColorBrush(Colors.Transparent);
                 this.LoadBtn.IsEnabled = !this._contactsMb.IsBusy;
             });
 
             //Actions for 'Summary'
             this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(b => b.Summary, () =>
             {
-                this.SummaryLbl.Content = this._contactSummaryMb.Summary;
+                this.SummaryLbl.Text = this._contactSummaryMb.Summary;
             });
             //MANUAL RUN FOR FIRST ASSIGNMENT
             this._contactSummaryMb.Binder.Run<ContactsSummaryModelBinders>(b => b.Summary);
@@ -69,7 +77,7 @@ namespace Mvb.FakeContacts.Wpf.App
                     {
                         case NotifyCollectionChangedAction.Add:
                             foreach (var newItem in args.NotifyCollectionChangedEventArgs.NewItems)
-                                this.ContactsListView.Items.Add(new ContactRow(((Contact)newItem).Name));
+                                this.ContactsListView.Items.Add(new ContactRow((( Contact)newItem).Name));
                             this.LoadBtn.Visibility = Visibility.Collapsed;
                             this.ShakeBtn.Visibility = Visibility.Visible;
                             break;
@@ -89,20 +97,14 @@ namespace Mvb.FakeContacts.Wpf.App
                     var contact = (ContactRow)this.ContactsListView.Items[args.MvbCollectionItemChanged.Index];
 
                     if (args.MvbCollectionItemChanged.PropertyName == "Name")
-                        contact.ContactName.Content = args.MvbCollectionItemChanged.NewValue;
+                        contact.SetName(args.MvbCollectionItemChanged.NewValue.ToString());
                     else
                     {
-                        var image = new BitmapImage();
-                        image.BeginInit();
-                        image.CacheOption = BitmapCacheOption.OnLoad;
-                        image.StreamSource = new MemoryStream((byte[])args.MvbCollectionItemChanged.NewValue);
-                        image.EndInit();
-                        contact.ContactImage.Source = image;
+                        contact.SetImage((byte[])args.MvbCollectionItemChanged.NewValue);
                     }
-                    
+
                 }
             });
-
         }
     }
 }
