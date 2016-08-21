@@ -124,10 +124,6 @@
       <Project>{e89bcc1c-ce0b-491d-b221-3c6ab26eeed0}</Project>
       <Name>Mvb.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mvb.Droid\Mvb.Platfom.Droid.csproj">
-      <Project>{67c8ebfb-95b5-471f-bd80-523b5184e9dd}</Project>
-      <Name>Mvb.Platfom.Droid</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Mvb.FakeContacts.Abstract\Mvb.FakeContacts.Abstract.csproj">
       <Project>{817b4026-9cec-41c3-b700-a969f724864c}</Project>
       <Name>Mvb.FakeContacts.Abstract</Name>
