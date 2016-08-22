@@ -144,6 +144,10 @@
       <Project>{8143fad9-64b1-4af3-85f7-ea04c1aa224b}</Project>
       <Name>Mvb.FakeContacts.ModelBinders</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mvb.Platform.Droid\Mvb.Platfom.Droid.csproj">
+      <Project>{67c8ebfb-95b5-471f-bd80-523b5184e9dd}</Project>
+      <Name>Mvb.Platfom.Droid</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\spy.png" />
