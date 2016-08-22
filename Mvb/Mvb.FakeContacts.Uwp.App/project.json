@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "DryIoc": "2.7.0",
+    "DryIoc": "2.6.4",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0"
   },
   "frameworks": {
