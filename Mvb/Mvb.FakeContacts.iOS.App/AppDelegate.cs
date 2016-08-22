@@ -1,4 +1,10 @@
-﻿using Foundation;
+﻿using DryIoc;
+using Foundation;
+using Mvb.FakeContacts.Abstract;
+using Mvb.FakeContacts.Concrete;
+using Mvb.FakeContacts.iOS.Services;
+using Mvb.FakeContacts.ModelBinders;
+using Mvb.Platform.Ios;
 using UIKit;
 
 namespace Mvb.FakeContacts.iOS.App
@@ -8,6 +14,8 @@ namespace Mvb.FakeContacts.iOS.App
 	[Register("AppDelegate")]
 	public class AppDelegate : UIApplicationDelegate
 	{
+		public static IContainer Ioc;
+
 		// class-level declarations
 
 		public override UIWindow Window
@@ -20,6 +28,19 @@ namespace Mvb.FakeContacts.iOS.App
 		{
 			// Override point for customization after application launch.
 			// If not required for your application you can safely delete this method
+
+			MvbPlatform.Init();
+
+			//Init IOC
+			Ioc = new Container();
+
+			//Services
+			Ioc.Register<IContactServices, IosContactsServices>();
+			Ioc.Register<IAvatarServices, CommonAvatarServices>();
+
+			//ModelBinders
+			Ioc.Register<ContactsSummaryModelBinders>(Reuse.Singleton);
+			Ioc.Register<ContactsModelBinders>(Reuse.Singleton);
 
 			return true;
 		}
