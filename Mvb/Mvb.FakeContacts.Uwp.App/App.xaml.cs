@@ -20,6 +20,7 @@ using Mvb.FakeContacts.Abstract;
 using Mvb.FakeContacts.Concrete;
 using Mvb.FakeContacts.ModelBinders;
 using Mvb.FakeContacts.Uwp.Services;
+using Mvb.Platform.Win.Uwp;
 
 namespace Mvb.FakeContacts.Uwp.App
 {
@@ -40,7 +41,7 @@ namespace Mvb.FakeContacts.Uwp.App
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
 
-            UiRunnerDispenser.RegisterRunner(()=> new UwpUiRunner());
+            MvbPlatform.Init();
 
             //Init IOC
             Ioc = new Container();

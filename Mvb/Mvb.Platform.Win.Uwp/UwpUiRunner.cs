@@ -4,7 +4,7 @@ using Windows.UI.Core;
 using Mvb.Core.Abstract;
 using Mvb.Core.Args;
 
-namespace Mvb.FakeContacts.Uwp.App
+namespace Mvb.Platform.Win.Uwp
 {
     public class UwpUiRunner : IUiRunner
     {
