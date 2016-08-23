@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mvb.FakeContacts.Wpf.App"
+        xmlns:toastNotifications="clr-namespace:ToastNotifications;assembly=ToastNotifications"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
@@ -13,6 +14,10 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <toastNotifications:NotificationTray Grid.ColumnSpan="5" PopupFlowDirection="RightUp" Name="NotificationTray"
+                                             VerticalAlignment="Top" HorizontalAlignment="Right" />
+
         <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Name="SummaryLbl"/>
         <Button Grid.Row="1" Content="Load Contacts" Name="LoadBtn" Click="LoadBtn_OnClick"/>
         <Button Grid.Row="1" Content="Shake Names" Name="ShakeBtn" Visibility="Collapsed" Click="ShakeBtn_OnClick"/>

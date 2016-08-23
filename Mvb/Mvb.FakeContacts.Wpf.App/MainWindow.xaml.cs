@@ -10,6 +10,7 @@ using DryIoc;
 using Mvb.Core.Args;
 using Mvb.FakeContacts.Domain;
 using Mvb.FakeContacts.ModelBinders;
+using ToastNotifications;
 
 namespace Mvb.FakeContacts.Wpf.App
 {
@@ -27,6 +28,9 @@ namespace Mvb.FakeContacts.Wpf.App
 
             this._contactsMb = App.Ioc.Resolve<ContactsModelBinders>();
             this._contactSummaryMb = App.Ioc.Resolve<ContactsSummaryModelBinders>();
+
+            //INit Notification
+            this.NotificationTray.NotificationsSource = new NotificationsSource();
 
             this.InitModelBinders();
         }
@@ -52,6 +56,10 @@ namespace Mvb.FakeContacts.Wpf.App
             {
                 this.SummaryLbl.Background = this._contactsMb.IsBusy ? Brushes.Red : Brushes.Transparent;
                 this.LoadBtn.IsEnabled = !this._contactsMb.IsBusy;
+
+                if (this._contactsMb.IsBusy)
+                    this.NotificationTray.NotificationsSource.Show("I'm loading your contacts..",NotificationType.Information);
+                
             });
 
             //Actions for 'Summary'
