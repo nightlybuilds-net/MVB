@@ -13,6 +13,9 @@ namespace Mvb.FakeContacts.Cocoa.App
 	partial class ViewController
 	{
 		[Outlet]
+		AppKit.NSTableView ContactsList { get; set; }
+
+		[Outlet]
 		AppKit.NSButton LoadContactsBtn { get; set; }
 
 		[Outlet]
@@ -23,14 +26,19 @@ namespace Mvb.FakeContacts.Cocoa.App
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (SummaryLbl != null) {
-				SummaryLbl.Dispose ();
-				SummaryLbl = null;
+			if (ContactsList != null) {
+				ContactsList.Dispose ();
+				ContactsList = null;
 			}
 
 			if (LoadContactsBtn != null) {
 				LoadContactsBtn.Dispose ();
 				LoadContactsBtn = null;
+			}
+
+			if (SummaryLbl != null) {
+				SummaryLbl.Dispose ();
+				SummaryLbl = null;
 			}
 		}
 	}

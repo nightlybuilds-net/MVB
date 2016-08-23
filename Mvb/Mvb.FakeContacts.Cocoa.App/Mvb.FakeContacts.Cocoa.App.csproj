@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="DryIoc\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -87,9 +88,15 @@
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="MacOsUiRunner.cs" />
+    <Compile Include="DryIoc\AsyncExecutionFlowScopeContext.cs" />
+    <Compile Include="DryIoc\Container.cs" />
+    <Compile Include="DryIoc\FactoryCompiler.cs" />
+    <Compile Include="DryIoc\ImTools.cs" />
+    <Compile Include="EmptyClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
+    <InterfaceDefinition Include="View.xib" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mvb.Cross\Mvb.Core.csproj">
@@ -111,6 +118,10 @@
     <ProjectReference Include="..\Mvb.FakeContacts.ModelBinders\Mvb.FakeContacts.ModelBinders.csproj">
       <Project>{8143FAD9-64B1-4AF3-85F7-EA04C1AA224B}</Project>
       <Name>Mvb.FakeContacts.ModelBinders</Name>
+    </ProjectReference>
+    <ProjectReference Include="Mvb.FakeContacts.Cocoa.Services\Mvb.FakeContacts.Cocoa.Services.csproj">
+      <Project>{F6A48D90-793F-430D-8A90-0C73B64FD01D}</Project>
+      <Name>Mvb.FakeContacts.Cocoa.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
