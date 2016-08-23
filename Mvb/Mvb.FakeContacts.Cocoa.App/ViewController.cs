@@ -117,10 +117,10 @@ namespace Mvb.FakeContacts.Cocoa.App
 							  throw new ArgumentOutOfRangeException();
 					  }
 				  }
-				  //else if (args.MvbUpdateAction == MvbUpdateAction.ItemChanged)
-				  //{
-					 // this.ContactList.ReloadData();
-				  //}
+				  else if (args.MvbUpdateAction == MvbUpdateAction.ItemChanged)
+				  {
+					  this.ContactsList.ReloadData();
+				  }
 			  });
 
 

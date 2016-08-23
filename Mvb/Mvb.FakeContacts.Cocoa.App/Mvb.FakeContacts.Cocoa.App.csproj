@@ -92,7 +92,8 @@
     <Compile Include="DryIoc\Container.cs" />
     <Compile Include="DryIoc\FactoryCompiler.cs" />
     <Compile Include="DryIoc\ImTools.cs" />
-    <Compile Include="EmptyClass.cs" />
+    <Compile Include="ContactTableDelegate.cs" />
+    <Compile Include="ContactTableDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
