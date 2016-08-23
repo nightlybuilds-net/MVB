@@ -26,9 +26,10 @@ namespace Mvb.FakeContacts.Droid.App
 		private Button _changeBtn;
 		private Button _reloadButton;
 		private TextView _summaryText;
+	    private TextView _signatureText;
 
 
-		protected override void OnCreate(Bundle bundle)
+	    protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
 			this.SetContentView(Resource.Layout.Main);
@@ -40,6 +41,7 @@ namespace Mvb.FakeContacts.Droid.App
 
 			//Get views
 			this._summaryText = this.FindViewById<TextView>(Resource.Id.SummaryTw);
+			this._signatureText = this.FindViewById<TextView>(Resource.Id.SignatureTw);
 			this._reloadButton = this.FindViewById<Button>(Resource.Id.ReloadBtn);
 			this._changeBtn = this.FindViewById<Button>(Resource.Id.ChangeNameBtn);
 
@@ -59,7 +61,16 @@ namespace Mvb.FakeContacts.Droid.App
 			{
 				this._contactsMb.ShakeNames();
 			};
-			//------------------------------
+            //------------------------------
+
+            //SOMETHING COULD BE TOTALLY NOT ON MVB
+            this._signatureText.Click += (sender, args) =>
+	        {
+                var uri = Android.Net.Uri.Parse("http://www.markjackmilian.net");
+                var intent = new Intent(Intent.ActionView, uri);
+	            this.StartActivity(intent);
+            };
+            //-----------------------------
 
 			//Init the binders
 			InitModelBinders();
