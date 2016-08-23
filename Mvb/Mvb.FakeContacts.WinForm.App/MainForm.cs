@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -58,6 +59,19 @@ namespace Mvb.FakeContacts.WinForm.App
                 {
                     button.Enabled = !this._contactsMb.IsBusy;
                 });
+
+                //NOTE: notify icon not implement ISynchronizeInvoke => no mvbinvoke
+                if (this._contactsMb.IsBusy)
+                {
+                    this.NotifyIcon.Icon = SystemIcons.Information;
+                    this.NotifyIcon.BalloonTipTitle = "Mvb Info";
+                    this.NotifyIcon.BalloonTipText = "I'm loading your contacts..";
+                    this.NotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+
+                    this.NotifyIcon.Visible = true;
+                    this.NotifyIcon.ShowBalloonTip(3000);
+                }
+                
             });
 
             //Actions for 'Summary'
@@ -121,6 +135,9 @@ namespace Mvb.FakeContacts.WinForm.App
 
         }
 
-       
+        private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://www.markjackmilian.net");
+        }
     }
 }
