@@ -24,9 +24,7 @@ namespace Mvb.FakeContacts.WinForm.App
         [STAThread]
         static void Main()
         {
-
-            //UiRunnerDispenser.RegisterRunner(()=>new WinFormUiRunner());
-
+            //Mvb Init
             Core.Mvb.NullInit();
            
             //Init IOC
