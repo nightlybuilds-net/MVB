@@ -25,7 +25,7 @@ namespace Mvb.FakeContacts.ModelBinders
 		/// Load Contacts
 		/// </summary>
 		/// <returns></returns>
-		public async void LoadContacts()
+		public async void LoadContacts(bool loadAvatarAsync = true)
 		{
 			this.IsBusy = true;
 			await Task.Delay(1000);
@@ -40,7 +40,8 @@ namespace Mvb.FakeContacts.ModelBinders
 					MvbMessenger.Send(this, BindersMessages.ContactsLoaded.ToString(), contacts.Result.Count());
 
 					//now we can load the avatars.. in async mode
-					this.LoadAvatars();
+                    if(loadAvatarAsync)
+					    this.LoadAvatars().ConfigureAwait(false);
 				}
 				this.IsBusy = false;
 			}).ConfigureAwait(false);
