@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DryIoc;
@@ -104,5 +106,22 @@ namespace Mvb.FakeContacts.Wpf.App
             });
 
         }
+
+        //SOMETHING COULD BE TOTALLY NOT ON MVB
+        private void LinkLabel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start("http://www.markjackmilian.net");
+        }
+
+        private void LinkLabel_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Hand;
+        }
+
+        private void LinkLabel_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+        //SOMETHING COULD BE TOTALLY NOT ON MVB
     }
 }

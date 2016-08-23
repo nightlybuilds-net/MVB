@@ -11,11 +11,13 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Name="SummaryLbl"/>
         <Button Grid.Row="1" Content="Load Contacts" Name="LoadBtn" Click="LoadBtn_OnClick"/>
         <Button Grid.Row="1" Content="Shake Names" Name="ShakeBtn" Visibility="Collapsed" Click="ShakeBtn_OnClick"/>
         <ListView Grid.Row="2" Name="ContactsListView"></ListView>
-
+        <Label Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Name="LinkLabel" MouseLeftButtonUp="LinkLabel_OnMouseLeftButtonUp"
+               Content="http://www.markjackmilian.net" Foreground="Blue" MouseEnter="LinkLabel_OnMouseEnter" MouseLeave="LinkLabel_OnMouseLeave"/>
     </Grid>
 </Window>
