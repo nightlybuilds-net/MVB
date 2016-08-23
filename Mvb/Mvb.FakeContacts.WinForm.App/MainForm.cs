@@ -9,6 +9,7 @@ using Mvb.Core.Args;
 using Mvb.FakeContacts.Domain;
 using Mvb.FakeContacts.ModelBinders;
 using DryIoc;
+using Mvb.Platform.Win.WinForms;
 
 namespace Mvb.FakeContacts.WinForm.App
 {
