@@ -1,6 +1,6 @@
 using System;
+using System.Threading.Tasks;
 using Mvb.Core.Abstract;
-using Mvb.Core.Args;
 using Plugin.CurrentActivity;
 
 namespace Mvb.Platform.Droid
@@ -12,10 +12,9 @@ namespace Mvb.Platform.Droid
             CrossCurrentActivity.Current.Activity.RunOnUiThread(action.Invoke);
         }
 
-        public void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args)
+        public void Run<T>(Action<T> action, T args)
         {
             CrossCurrentActivity.Current.Activity.RunOnUiThread(() => { action.Invoke(args); });
         }
-
     }
 }

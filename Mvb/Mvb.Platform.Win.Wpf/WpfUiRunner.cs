@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using Mvb.Core.Abstract;
-using Mvb.Core.Args;
 
 namespace Mvb.Platform.Win.Wpf
 {
@@ -12,10 +12,9 @@ namespace Mvb.Platform.Win.Wpf
             Application.Current.Dispatcher.Invoke(action.Invoke);
         }
 
-        public void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args)
+        public void Run<T>(Action<T> action, T args)
         {
             Application.Current.Dispatcher.Invoke(action,args);
         }
-
     }
 }

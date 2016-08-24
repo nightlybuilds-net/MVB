@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Mvb.Core.Args;
 
 namespace Mvb.Core.Abstract
@@ -16,6 +17,6 @@ namespace Mvb.Core.Abstract
         /// </summary>
         /// <param name="action"></param>
         /// <param name="args"></param>
-        void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args);
+        void Run<T>(Action<T> action, T args);
     }
 }
