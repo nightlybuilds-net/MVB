@@ -1,0 +1,28 @@
+﻿<Window x:Class="Mvb.FakeContacts.Wpf.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mvb.FakeContacts.Wpf.App"
+        xmlns:toastNotifications="clr-namespace:ToastNotifications;assembly=ToastNotifications"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <toastNotifications:NotificationTray Grid.ColumnSpan="5" PopupFlowDirection="RightUp" Name="NotificationTray"
+                                             VerticalAlignment="Top" HorizontalAlignment="Right" />
+
+        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Name="SummaryLbl"/>
+        <Button Grid.Row="1" Content="Load Contacts" Name="LoadBtn" Click="LoadBtn_OnClick"/>
+        <Button Grid.Row="1" Content="Shake Names" Name="ShakeBtn" Visibility="Collapsed" Click="ShakeBtn_OnClick"/>
+        <ListView Grid.Row="2" Name="ContactsListView"></ListView>
+        <Label Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Name="LinkLabel" MouseLeftButtonUp="LinkLabel_OnMouseLeftButtonUp"
+               Content="http://www.markjackmilian.net" Foreground="Blue" MouseEnter="LinkLabel_OnMouseEnter" MouseLeave="LinkLabel_OnMouseLeave"/>
+    </Grid>
+</Window>
