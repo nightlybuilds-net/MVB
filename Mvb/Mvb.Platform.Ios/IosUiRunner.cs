@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Mvb.Core.Abstract;
 using Mvb.Core.Args;
 using UIKit;
@@ -12,7 +13,7 @@ namespace Mvb.Platform.Ios
             UIApplication.SharedApplication.InvokeOnMainThread(action);
         }
 
-        public void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args)
+        public void Run<T>(Action<T> action, T args)
         {
             UIApplication.SharedApplication.InvokeOnMainThread(()=> {action.Invoke(args);});
         }

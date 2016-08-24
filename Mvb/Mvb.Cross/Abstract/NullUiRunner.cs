@@ -1,5 +1,5 @@
 ﻿using System;
-using Mvb.Core.Args;
+using System.Threading.Tasks;
 
 namespace Mvb.Core.Abstract
 {
@@ -10,7 +10,7 @@ namespace Mvb.Core.Abstract
             action.Invoke();
         }
 
-        public void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args)
+        public void Run<T>(Action<T> action, T args)
         {
             action.Invoke(args);
         }
