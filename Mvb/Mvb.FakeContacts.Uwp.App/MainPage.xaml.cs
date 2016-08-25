@@ -5,6 +5,8 @@ using Windows.ApplicationModel.Contacts;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 using Windows.UI;
+using Windows.UI.Notifications;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -23,8 +25,8 @@ namespace Mvb.FakeContacts.Uwp.App
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private ContactsModelBinders _contactsMb;
-        private ContactsSummaryModelBinders _contactSummaryMb;
+        private readonly ContactsModelBinders _contactsMb;
+        private readonly ContactsSummaryModelBinders _contactSummaryMb;
 
         public MainPage()
         {
@@ -104,6 +106,13 @@ namespace Mvb.FakeContacts.Uwp.App
                     }
 
                 }
+            });
+
+            //MvbAction
+            this._contactsMb.OnContactReceived.Add(async i =>
+            {
+                var dialog = new MessageDialog($"MvbActions are Awesome! There are {i} contacts!");
+                await dialog.ShowAsync();
             });
         }
     }
