@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Mvb.Core.Abstract;
@@ -13,7 +14,7 @@ namespace Mvb.Platform.Win.Uwp
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, action.Invoke);
         }
 
-        public async void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args)
+        public async void Run<T>(Action<T> action, T args)
         {
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {

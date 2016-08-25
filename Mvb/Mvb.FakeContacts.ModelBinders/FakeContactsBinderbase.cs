@@ -1,12 +1,17 @@
 ﻿using System;
 using Mvb.Core.Base;
-using Mvb.FakeContacts.ModelBinders.Errors;
+using Mvb.Core.Components.BinderActions;
 
 namespace Mvb.FakeContacts.ModelBinders
 {
     public class FakeContactsBinderbase : MvbBase
     {
-        public event EventHandler<ModelBindersErrorArgs> ErrorRaised;
+        public MvbActions<Exception> OnError;
+
+        public FakeContactsBinderbase()
+        {
+            this.OnError = new MvbActions<Exception>();
+        }
 
         private bool _isBusy;
 
@@ -14,13 +19,6 @@ namespace Mvb.FakeContacts.ModelBinders
         {
             get { return this._isBusy; }
             set { this.SetProperty(ref this._isBusy, value); }
-        }
-
-
-        protected virtual void OnErroraised(ModelBindersErrorArgs e)
-        {
-            var handler = this.ErrorRaised;
-            handler?.Invoke(this, e);
         }
     }
 }

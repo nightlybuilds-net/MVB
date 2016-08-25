@@ -105,6 +105,11 @@ namespace Mvb.FakeContacts.WinConsole.App
                 }
             });
 
+            _contactMb.OnContactReceived.Add(i =>
+            {
+                Console.WriteLine($"MvbActions are Awesome! There are {i} contacts!");
+            });
+
         }
     }
 }

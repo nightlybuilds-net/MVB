@@ -113,6 +113,12 @@ namespace Mvb.FakeContacts.Wpf.App
                 }
             });
 
+            //MvbAction
+            this._contactsMb.OnContactReceived.Add(i =>
+            {
+                this.NotificationTray.NotificationsSource.Show($"MvbActions are Awesome! There are {i} contacts!",NotificationType.Success);
+            });
+
         }
 
         //SOMETHING COULD BE TOTALLY NOT ON MVB

@@ -1,15 +1,21 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using Mvb.Core.Base;
 using Mvb.Core.Components;
+using Mvb.Core.Components.BinderActions;
 using Mvb.FakeContacts.Abstract;
 using Mvb.FakeContacts.Domain;
-using Mvb.FakeContacts.ModelBinders.Errors;
 
 namespace Mvb.FakeContacts.ModelBinders
 {
+    /// <summary>
+    /// This Binder manage contacts.
+    /// MvbMessenger: Notify BindersMessages.ContactsLoaded
+    /// </summary>
 	public class ContactsModelBinders : FakeContactsBinderbase
 	{
+	    public MvbActions<int> OnContactReceived;
+
 		private readonly IContactServices _contactServices;
 		private readonly IAvatarServices _avatarServices;
 
@@ -17,9 +23,11 @@ namespace Mvb.FakeContacts.ModelBinders
 		{
 			this._contactServices = contactServices;
 			this._avatarServices = avatarServices;
+
 			this.Contacts = new MvbCollection<Contact>();
+            this.OnContactReceived = new MvbActions<int>();
 			base.InitBinder();
-		}
+        }
 
 		/// <summary>
 		/// Load Contacts
@@ -32,15 +40,19 @@ namespace Mvb.FakeContacts.ModelBinders
 			await this._contactServices.GetContacts().ContinueWith(contacts =>
 			{
 				if (contacts.IsFaulted)
-					base.OnErroraised(new ModelBindersErrorArgs("error during recovery of the contacts"));
+                    base.OnError.Invoke(new Exception("error during recovery of the contacts"));
 				else
 				{
 					this.Contacts.Reset(contacts.Result);
+
 					//Notify recovery of contacts to others binders
 					MvbMessenger.Send(this, BindersMessages.ContactsLoaded.ToString(), contacts.Result.Count());
 
-					//now we can load the avatars.. in async mode
-                    if(loadAvatarAsync)
+                    //Run OnContactReceived UIActions
+                    this.OnContactReceived.Invoke(contacts.Result.Count());
+
+                    //now we can load the avatars.. in async mode
+                    if (loadAvatarAsync)
 					    this.LoadAvatars().ConfigureAwait(false);
 				}
 				this.IsBusy = false;
