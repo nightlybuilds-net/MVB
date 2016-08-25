@@ -70,7 +70,10 @@ namespace Mvb.Core.Components
             InnerUnsubscribe(message, typeof(TSender), null, subscriber);
         }
 
-        internal static void ClearSubscribers()
+        /// <summary>
+        /// Remove all callbacks
+        /// </summary>
+        public static void Reset()
         {
             Callbacks.Clear();
         }
@@ -84,7 +87,7 @@ namespace Mvb.Core.Components
                 return;
             var actions = Callbacks[key];
             if (actions == null || !actions.Any())
-                return; // should not be reachable
+                return; 
 
             var actionsCopy = actions.ToList();
             foreach (var action in actionsCopy)

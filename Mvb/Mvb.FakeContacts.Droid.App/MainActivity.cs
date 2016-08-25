@@ -143,7 +143,7 @@ namespace Mvb.FakeContacts.Droid.App
             //Actions for "OncontactReceived"
             this._contactsMb.OnContactReceived.Add(i =>
             {
-                Toast.MakeText(this.ApplicationContext,"That's awesome! Binder says that there are " + i + " contacts!" , ToastLength.Long).Show();
+                Toast.MakeText(this.ApplicationContext, $"That\'s awesome! Binder says that there are {i} contacts!", ToastLength.Long).Show();
             });
 		}
 	}

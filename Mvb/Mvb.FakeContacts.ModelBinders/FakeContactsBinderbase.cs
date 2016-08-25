@@ -6,11 +6,11 @@ namespace Mvb.FakeContacts.ModelBinders
 {
     public class FakeContactsBinderbase : MvbBase
     {
-        public BinderActions<Exception> OnError;
+        public MvbActions<Exception> OnError;
 
         public FakeContactsBinderbase()
         {
-            this.OnError = new BinderActions<Exception>();
+            this.OnError = new MvbActions<Exception>();
         }
 
         private bool _isBusy;
