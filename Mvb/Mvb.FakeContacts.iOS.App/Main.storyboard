@@ -17,76 +17,67 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="CIAO!" lineBreakMode="tailTruncation" minimumFontSize="10" id="3" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES" textAlignment="center">
-                                <rect key="frame" x="20" y="48" width="560" height="34"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="20" y="48" width="374" height="34"/>
-                                </variation>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="4" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
-                                <rect key="frame" x="20" y="90" width="560" height="30"/>
-                                <state key="normal" title="Load Contacts">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="LoadBtnTouchDown:" destination="BYZ-38-t0r" id="5" eventType="touchDown"/>
-                                </connections>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="20" y="90" width="374" height="30"/>
-                                </variation>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="45" translatesAutoresizingMaskIntoConstraints="NO">
-                                <rect key="frame" x="20" y="128" width="240" height="240"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="135" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="0.0" y="116" width="600" height="484"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="74" rowHeight="44" customClass="ContactRowCell" reuseIdentifier="contactRow">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="136" rowHeight="44" customClass="ContactRowCell" reuseIdentifier="contactRow">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="74" id="75">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="136" id="137">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="6" y="128" width="402" height="600"/>
-                                </variation>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="110" translatesAutoresizingMaskIntoConstraints="NO" hidden="YES">
-                                <rect key="frame" x="55" y="90" width="46" height="30"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="166" translatesAutoresizingMaskIntoConstraints="NO" textAlignment="center" misplaced="YES">
+                                <rect key="frame" x="20" y="49" width="560" height="21"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="158" translatesAutoresizingMaskIntoConstraints="NO" misplaced="YES">
+                                <rect key="frame" x="20" y="78" width="560" height="30"/>
+                                <state key="normal" title="Load Contact">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="LoadBtnTouchDown:" destination="BYZ-38-t0r" id="163" eventType="touchDown"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="173" key="tableHeaderView" hidden="YES">
+                                <rect key="frame" x="24" y="78" width="552" height="37"/>
                                 <state key="normal" title="Shake Names">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="20" y="90" width="374" height="30"/>
-                                </variation>
                                 <connections>
-                                    <action selector="ShakeNamesBtnTouchDown:" destination="BYZ-38-t0r" id="125" eventType="touchDown"/>
+                                    <action selector="ShakeBtnTouchDown:" destination="BYZ-38-t0r" id="174" eventType="touchDown"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="45"/>
-                                <exclude reference="110"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="45"/>
-                                <include reference="110"/>
-                            </mask>
-                        </variation>
+                        <constraints>
+                            <constraint id="144" firstItem="135" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing"/>
+                            <constraint id="146" firstItem="135" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading"/>
+                            <constraint id="147" firstItem="135" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom"/>
+                            <constraint id="159" firstItem="158" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20"/>
+                            <constraint id="160" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="158" secondAttribute="trailing" constant="20"/>
+                            <constraint id="162" firstItem="135" firstAttribute="top" secondItem="158" secondAttribute="bottom" constant="8"/>
+                            <constraint id="169" firstItem="166" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20"/>
+                            <constraint id="172" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="166" secondAttribute="trailing" constant="20"/>
+                            <constraint id="175" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="173" secondAttribute="trailing" constant="24"/>
+                            <constraint id="176" firstItem="173" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="24"/>
+                            <constraint id="179" firstItem="166" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="29"/>
+                            <constraint id="182" firstItem="173" firstAttribute="top" secondItem="166" secondAttribute="bottom" constant="1"/>
+                            <constraint id="183" firstItem="158" firstAttribute="top" secondItem="166" secondAttribute="bottom" constant="8"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="SummaryLbl" destination="3" id="name-outlet-3"/>
-                        <outlet property="LoadBtn" destination="4" id="name-outlet-4"/>
-                        <outlet property="ContactList" destination="45" id="name-outlet-45"/>
-                        <outlet property="ShakeBtn" destination="110" id="name-outlet-110"/>
+                        <outlet property="ContactList" destination="135" id="name-outlet-135"/>
+                        <outlet property="LoadBtn" destination="158" id="name-outlet-158"/>
+                        <outlet property="SummaryLbl" destination="166" id="name-outlet-166"/>
+                        <outlet property="ShakeBtn" destination="173" id="name-outlet-173"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -94,7 +85,7 @@
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedScreenMetrics key="destination" type="retina55"/>
-    </simulatedMetricsContainer>
+    <resources>
+        <image name="glass.png" width="64" height="64"/>
+    </resources>
 </document>

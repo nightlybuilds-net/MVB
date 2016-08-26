@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Mvb.Core.Base;
 using Mvb.Core.Components;
 using Mvb.Core.Components.BinderActions;
 using Mvb.FakeContacts.Abstract;
 using Mvb.FakeContacts.Domain;
-using Mvb.FakeContacts.ModelBinders.Errors;
 
 namespace Mvb.FakeContacts.ModelBinders
 {
+    /// <summary>
+    /// This Binder manage contacts.
+    /// MvbMessenger: Notify BindersMessages.ContactsLoaded
+    /// </summary>
 	public class ContactsModelBinders : FakeContactsBinderbase
 	{
-	    public BinderActions<int> OnContactReceived;
+	    public MvbActions<int> OnContactReceived;
 
 		private readonly IContactServices _contactServices;
 		private readonly IAvatarServices _avatarServices;
@@ -21,10 +23,11 @@ namespace Mvb.FakeContacts.ModelBinders
 		{
 			this._contactServices = contactServices;
 			this._avatarServices = avatarServices;
+
 			this.Contacts = new MvbCollection<Contact>();
-            this.OnContactReceived = new BinderActions<int>();
+            this.OnContactReceived = new MvbActions<int>();
 			base.InitBinder();
-		}
+        }
 
 		/// <summary>
 		/// Load Contacts

@@ -134,6 +134,11 @@ namespace Mvb.FakeContacts.WinForm.App
                 }
             });
 
+            //MvbAction
+            this._contactsMb.OnContactReceived.Add(i =>
+            {
+                this.MvbInvoke(form => MessageBox.Show(form, $"MvbActions are Awesome! There are {i} contacts!")) ;
+            });
         }
 
         private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

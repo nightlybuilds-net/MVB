@@ -1,9 +1,8 @@
 ﻿using System;
 using Foundation;
 using Mvb.Core.Abstract;
-using Mvb.Core.Args;
 
-namespace Mvb.FakeContacts.Cocoa.App
+namespace Mvb.Platform.MacOs
 {
 	public class MacOsUiRunner : NSObject, IUiRunner
 	{
@@ -12,7 +11,8 @@ namespace Mvb.FakeContacts.Cocoa.App
 			base.InvokeOnMainThread(action);
 		}
 
-		public void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args)
+
+		public void Run<T>(Action<T> action, T args)
 		{
 			base.InvokeOnMainThread(() => { action.Invoke(args); });
 		}

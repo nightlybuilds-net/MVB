@@ -4,6 +4,8 @@ using DryIoc;
 using Mvb.Core.Args;
 using Mvb.FakeContacts.ModelBinders;
 using UIKit;
+using Foundation;
+using ToastIOS;
 
 namespace Mvb.FakeContacts.iOS.App
 {
@@ -40,7 +42,7 @@ namespace Mvb.FakeContacts.iOS.App
 			this.InitModelBinders();
 		}
 
-		partial void ShakeNamesBtnTouchDown(UIButton sender)
+		partial void ShakeBtnTouchDown(UIButton sender)
 		{
 			this._contactsMb.ShakeNames();
 		}
@@ -50,12 +52,14 @@ namespace Mvb.FakeContacts.iOS.App
 			this._contactsMb.LoadContacts();
 		}
 
+
+
 		void InitModelBinders()
 		{
 			//Actions for 'IsBusy'
 			this._contactsMb.Binder.AddAction<ContactsModelBinders>(b => b.IsBusy, () =>
 				{
-				this.SummaryLbl.BackgroundColor = this._contactsMb.IsBusy ? UIColor.Red : UIColor.White;
+					this.SummaryLbl.BackgroundColor = this._contactsMb.IsBusy ? UIColor.Red : UIColor.White;
 					this.LoadBtn.Enabled = !this._contactsMb.IsBusy;
 				});
 
@@ -77,7 +81,7 @@ namespace Mvb.FakeContacts.iOS.App
 						  case NotifyCollectionChangedAction.Add:
 								ContactList.ReloadData();
 
-							  this.LoadBtn.Hidden = true;
+							this.LoadBtn.Hidden = true;
 							this.ShakeBtn.Hidden = false;
 							  break;
 						  case NotifyCollectionChangedAction.Remove:
@@ -94,11 +98,19 @@ namespace Mvb.FakeContacts.iOS.App
 				  }
 				  else if (args.MvbUpdateAction == MvbUpdateAction.ItemChanged)
 				  {
-					this.ContactList.ReloadData();
+					  var rowToReload = new NSIndexPath[]
+					  {
+						NSIndexPath.FromRowSection(args.MvbCollectionItemChanged.Index,0)
+					};
+					 this.ContactList.ReloadRows(rowToReload, UITableViewRowAnimation.Left);
 				  }
 			  });
 
-
+			//On ContactLoaded Actions
+			this._contactsMb.OnContactReceived.Add((obj) =>
+			{
+				Toast.MakeText($"MvbAction are awesome.. there are {obj} contacts!").SetDuration(3000).Show(ToastType.Info);
+			});
 		}
 
 

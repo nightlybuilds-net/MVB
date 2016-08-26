@@ -21,31 +21,37 @@ namespace Mvb.FakeContacts.iOS.Services
 					return res;
 				else
 				{
-					var addressBook = new ABAddressBook();
-					var peoples = addressBook.GetPeople();
 
-					foreach (var item in peoples)
+					var addressBook = new ABAddressBook();
+
+
+					var valorizeRes = new Action(() => 
 					{
-						res.Add(new Contact
+						var peoples = addressBook.GetPeople();
+
+						foreach (var item in peoples)
 						{
-							Name = $"{item.FirstName} {item.LastName}"
-						});
-					}
+							res.Add(new Contact
+							{
+								Name = $"{item.FirstName} {item.LastName}"
+							});
+						}
+					});
+
 
 					if (status == ABAuthorizationStatus.NotDetermined)
 					{
-						addressBook.RequestAccess((s, e) =>
+						addressBook.RequestAccess((granted, e) =>
 					   {
-						   if (!s)
-						   {
-							   addressBook.Dispose();
-							   addressBook = null;
-						   }
+						   if (granted)
+								valorizeRes.Invoke();
+						   
 					   });
 					}
 					else
-						return res;
-
+					{
+						valorizeRes.Invoke();
+					}
 
 					return res;
 				}

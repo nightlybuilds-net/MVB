@@ -4,12 +4,12 @@ using Mvb.Core.Abstract;
 
 namespace Mvb.Core.Components.BinderActions
 {
-    public class BinderActions : IBinderActions
+    public class MvbActions : IBinderActions
     {
         private readonly IUiRunner _uiRunner;
         private readonly IList<Action> _bindersAction;
 
-        public BinderActions()
+        public MvbActions()
         {
             //On UiThread Runner
             this._uiRunner = UiRunnerDispenser.GetRunner();
@@ -28,12 +28,12 @@ namespace Mvb.Core.Components.BinderActions
         }
     }
 
-    public class BinderActions<T>
+    public class MvbActions<T>
     {
         private readonly IUiRunner _uiRunner;
         private readonly IList<Action<T>> _bindersAction;
 
-        public BinderActions()
+        public MvbActions()
         {
             //On UiThread Runner
             this._uiRunner = UiRunnerDispenser.GetRunner();

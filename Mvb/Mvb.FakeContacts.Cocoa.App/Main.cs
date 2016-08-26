@@ -8,6 +8,7 @@ namespace Mvb.FakeContacts.Cocoa.App
 		{
 			NSApplication.Init();
 			NSApplication.Main(args);
+
 		}
 	}
 }
