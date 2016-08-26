@@ -2,7 +2,7 @@
 
 namespace Mvb.Core.Base
 {
-    public abstract class MvbBase : Bindable
+    public abstract class MvbBase : MvbBindable
     {
         public MvBinder Binder { get; private set; }
 

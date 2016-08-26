@@ -3,7 +3,7 @@ using Mvb.Core.Base;
 
 namespace Mvb.FakeContacts.Domain
 {
-	public class Contact : Bindable
+	public class Contact : MvbBindable
 	{
 		private string _name;
 
