@@ -7,7 +7,7 @@ namespace Mvb.Core.Components
     public static class MvbMessenger
     {
         private static readonly
-            Dictionary<Tuple<string, Type, Type>, List<Tuple<WeakReference, Action<object, object>>>> Callbacks =
+            Dictionary<Tuple<string, Type, Type>, List<Tuple<WeakReference, Action<object, object>>>> Calls =
                 new Dictionary<Tuple<string, Type, Type>, List<Tuple<WeakReference, Action<object, object>>>>();
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Mvb.Core.Components
         /// </summary>
         public static void Reset()
         {
-            Callbacks.Clear();
+            Calls.Clear();
         }
 
         #region PRIVATE
@@ -128,9 +128,9 @@ namespace Mvb.Core.Components
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
             var key = new Tuple<string, Type, Type>(message, senderType, argType);
-            if (!Callbacks.ContainsKey(key))
+            if (!Calls.ContainsKey(key))
                 return;
-            var actions = Callbacks[key];
+            var actions = Calls[key];
             if (actions == null || !actions.Any())
                 return;
 
@@ -149,14 +149,14 @@ namespace Mvb.Core.Components
                 throw new ArgumentNullException(nameof(message));
             var key = new Tuple<string, Type, Type>(message, senderType, argType);
             var value = new Tuple<WeakReference, Action<object, object>>(new WeakReference(subscriber), callback);
-            if (Callbacks.ContainsKey(key))
+            if (Calls.ContainsKey(key))
             {
-                Callbacks[key].Add(value);
+                Calls[key].Add(value);
             }
             else
             {
                 var list = new List<Tuple<WeakReference, Action<object, object>>> { value };
-                Callbacks[key] = list;
+                Calls[key] = list;
             }
         }
 
@@ -168,11 +168,11 @@ namespace Mvb.Core.Components
                 throw new ArgumentNullException(nameof(message));
 
             var key = new Tuple<string, Type, Type>(message, senderType, argType);
-            if (!Callbacks.ContainsKey(key))
+            if (!Calls.ContainsKey(key))
                 return;
-            Callbacks[key].RemoveAll(tuple => !tuple.Item1.IsAlive || tuple.Item1.Target == subscriber);
-            if (!Callbacks[key].Any())
-                Callbacks.Remove(key);
+            Calls[key].RemoveAll(tuple => !tuple.Item1.IsAlive || tuple.Item1.Target == subscriber);
+            if (!Calls[key].Any())
+                Calls.Remove(key);
         } 
         #endregion
     }

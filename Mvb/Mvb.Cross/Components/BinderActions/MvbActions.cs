@@ -16,7 +16,7 @@ namespace Mvb.Core.Components.BinderActions
             this._bindersAction = new List<Action>();
         }
 
-        public void Add(Action action)
+        public void AddAction(Action action)
         {
             this._bindersAction.Add(action);
         }

@@ -8,7 +8,7 @@ namespace Mvb.Core.Components.BinderActions
         /// Add Action 
         /// </summary>
         /// <param name="action"></param>
-        void Add(Action action);
+        void AddAction(Action action);
 
         /// <summary>
         /// Invoke all actions
