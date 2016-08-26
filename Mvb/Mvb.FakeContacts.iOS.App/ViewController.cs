@@ -4,6 +4,7 @@ using DryIoc;
 using Mvb.Core.Args;
 using Mvb.FakeContacts.ModelBinders;
 using UIKit;
+using Foundation;
 
 namespace Mvb.FakeContacts.iOS.App
 {
@@ -96,7 +97,11 @@ namespace Mvb.FakeContacts.iOS.App
 				  }
 				  else if (args.MvbUpdateAction == MvbUpdateAction.ItemChanged)
 				  {
-					this.ContactList.ReloadData();
+					  var rowToReload = new NSIndexPath[]
+					  {
+						NSIndexPath.FromRowSection(args.MvbCollectionItemChanged.Index,0)
+					};
+					 this.ContactList.ReloadRows(rowToReload, UITableViewRowAnimation.Left);
 				  }
 			  });
 

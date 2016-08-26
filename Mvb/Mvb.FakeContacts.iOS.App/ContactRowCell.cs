@@ -20,7 +20,7 @@ namespace Mvb.FakeContacts.iOS.App
 
 		private UIImage ByteArrayToImage(byte[] data)
 		{
-			if (data == null) return null;
+			if (data == null) return UIImage.FromBundle("glass");
 			UIImage image = null;
 			try
 			{
