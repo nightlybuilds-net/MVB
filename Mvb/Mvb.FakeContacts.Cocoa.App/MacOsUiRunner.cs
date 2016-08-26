@@ -12,7 +12,8 @@ namespace Mvb.FakeContacts.Cocoa.App
 			base.InvokeOnMainThread(action);
 		}
 
-		public void Run(Action<MvbCollectionUpdateArgs> action, MvbCollectionUpdateArgs args)
+
+		public void Run<T>(Action<T> action, T args)
 		{
 			base.InvokeOnMainThread(() => { action.Invoke(args); });
 		}

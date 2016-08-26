@@ -73,6 +73,10 @@ namespace Mvb.FakeContacts.Cocoa.App
 			this._contactsMb.LoadContacts();
 		}
 
+		partial void ShakeNamesClicked(NSObject sender)
+		{
+			this._contactsMb.ShakeNames();
+		}
 
 
 		void InitModelBinders()
@@ -102,8 +106,8 @@ namespace Mvb.FakeContacts.Cocoa.App
 						  case NotifyCollectionChangedAction.Add:
 								this.ContactsList.ReloadData();
 
-							  //this.LoadContactsBtn.Hidden = true;
-							  //this.ShakeBtn.Hidden = false;
+							  	this.LoadContactsBtn.Hidden = true;
+							  	this.ShakeBtn.Hidden = false;
 							  break;
 						  case NotifyCollectionChangedAction.Remove:
 							  break;
@@ -123,6 +127,18 @@ namespace Mvb.FakeContacts.Cocoa.App
 				  }
 			  });
 
+			//MvbActions
+			this._contactsMb.OnContactReceived.Add((i) => 
+			{
+				var alert = new NSAlert()
+				{
+					AlertStyle = NSAlertStyle.Informational,
+					InformativeText = $"MvbActions are awesome.. there are {i} contacts!",
+					MessageText = "Awesome!"
+				};
+
+				alert.RunModal();
+			});
 
 		}
 

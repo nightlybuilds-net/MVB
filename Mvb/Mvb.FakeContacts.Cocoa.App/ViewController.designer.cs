@@ -19,10 +19,16 @@ namespace Mvb.FakeContacts.Cocoa.App
 		AppKit.NSButton LoadContactsBtn { get; set; }
 
 		[Outlet]
+		AppKit.NSButton ShakeBtn { get; set; }
+
+		[Outlet]
 		AppKit.NSTextField SummaryLbl { get; set; }
 
 		[Action ("LoadContactsClicked:")]
 		partial void LoadContactsClicked (Foundation.NSObject sender);
+
+		[Action ("ShakeNamesClicked:")]
+		partial void ShakeNamesClicked (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -39,6 +45,11 @@ namespace Mvb.FakeContacts.Cocoa.App
 			if (SummaryLbl != null) {
 				SummaryLbl.Dispose ();
 				SummaryLbl = null;
+			}
+
+			if (ShakeBtn != null) {
+				ShakeBtn.Dispose ();
+				ShakeBtn = null;
 			}
 		}
 	}

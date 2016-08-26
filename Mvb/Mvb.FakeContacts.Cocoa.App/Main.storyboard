@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
@@ -221,6 +222,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qwz-dd-nlk">
+                                <rect key="frame" x="14" y="197" width="352" height="32"/>
+                                <buttonCell key="cell" type="push" title="Shake Names" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IeS-vR-gBm">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="ShakeNamesClicked:" target="XfG-lQ-9wD" id="gaX-Jl-bqb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="GKq-41-DkB" secondAttribute="trailing" constant="20" id="Aal-ax-b5I"/>
@@ -240,6 +251,7 @@
                     <connections>
                         <outlet property="ContactsList" destination="Uyo-Tw-Kvm" id="koA-BC-9nf"/>
                         <outlet property="LoadContactsBtn" destination="GKq-41-DkB" id="h2S-pb-DaW"/>
+                        <outlet property="ShakeBtn" destination="Qwz-dd-nlk" id="4mo-pe-nz4"/>
                         <outlet property="SummaryLbl" destination="j9g-y0-nhj" id="0WG-Fe-jew"/>
                     </connections>
                 </viewController>
