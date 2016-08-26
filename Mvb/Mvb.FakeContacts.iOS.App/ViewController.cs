@@ -5,6 +5,7 @@ using Mvb.Core.Args;
 using Mvb.FakeContacts.ModelBinders;
 using UIKit;
 using Foundation;
+using ToastIOS;
 
 namespace Mvb.FakeContacts.iOS.App
 {
@@ -105,7 +106,11 @@ namespace Mvb.FakeContacts.iOS.App
 				  }
 			  });
 
-
+			//On ContactLoaded Actions
+			this._contactsMb.OnContactReceived.Add((obj) =>
+			{
+				Toast.MakeText($"MvbAction are awesome.. there are {obj} contacts!").SetDuration(3000).Show(ToastType.Info);
+			});
 		}
 
 
