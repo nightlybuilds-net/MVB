@@ -32,7 +32,6 @@ namespace Mvb.Core.Components
 		/// <summary>
 		/// Adds the range.
 		/// </summary>
-		/// <returns>The range.</returns>
 		/// <param name="range">Range.</param>
         public void AddRange(IEnumerable<T> range)
         {
