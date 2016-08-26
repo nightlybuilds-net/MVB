@@ -34,9 +34,9 @@ namespace Mvb.FakeContacts.iOS.App
         [GeneratedCode ("iOS Designer", "1.0")]
         partial void LoadBtnTouchDown (UIKit.UIButton sender);
 
-        [Action ("ShakeNamesBtnTouchDown:")]
+        [Action ("ShakeBtnTouchDown:")]
         [GeneratedCode ("iOS Designer", "1.0")]
-        partial void ShakeNamesBtnTouchDown (UIKit.UIButton sender);
+        partial void ShakeBtnTouchDown (UIKit.UIButton sender);
 
         void ReleaseDesignerOutlets ()
         {
