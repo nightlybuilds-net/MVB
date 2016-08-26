@@ -1,9 +1,8 @@
 ﻿using System;
 using Foundation;
 using Mvb.Core.Abstract;
-using Mvb.Core.Args;
 
-namespace Mvb.FakeContacts.Cocoa.App
+namespace Mvb.Platform.MacOs
 {
 	public class MacOsUiRunner : NSObject, IUiRunner
 	{

@@ -10,6 +10,7 @@ using Mvb.FakeContacts.Concrete;
 using Mvb.FakeContacts.Cocoa.Services;
 using Mvb.Core.Args;
 using System.Collections.Specialized;
+using Mvb.Platform.MacOs;
 
 namespace Mvb.FakeContacts.Cocoa.App
 {

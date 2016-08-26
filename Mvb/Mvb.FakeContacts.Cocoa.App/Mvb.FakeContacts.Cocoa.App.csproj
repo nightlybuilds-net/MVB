@@ -87,7 +87,6 @@
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="MacOsUiRunner.cs" />
     <Compile Include="DryIoc\AsyncExecutionFlowScopeContext.cs" />
     <Compile Include="DryIoc\Container.cs" />
     <Compile Include="DryIoc\FactoryCompiler.cs" />
@@ -123,6 +122,10 @@
     <ProjectReference Include="Mvb.FakeContacts.Cocoa.Services\Mvb.FakeContacts.Cocoa.Services.csproj">
       <Project>{F6A48D90-793F-430D-8A90-0C73B64FD01D}</Project>
       <Name>Mvb.FakeContacts.Cocoa.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mvb.Platform.MacOs\Mvb.Platform.MacOs.csproj">
+      <Project>{50CA9760-9AEC-40CA-BF8E-181C8114EC92}</Project>
+      <Name>Mvb.Platform.MacOs</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
