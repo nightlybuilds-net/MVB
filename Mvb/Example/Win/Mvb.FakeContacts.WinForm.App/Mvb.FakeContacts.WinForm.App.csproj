@@ -85,14 +85,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Mvb.Cross\Mvb.Core.csproj">
-      <Project>{e89bcc1c-ce0b-491d-b221-3c6ab26eeed0}</Project>
-      <Name>Mvb.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Mvb.Platform.Win.WinForms\Mvb.Platform.Win.WinForms.csproj">
-      <Project>{98b839a7-132d-4b0a-b9a8-da4c44d2de29}</Project>
-      <Name>Mvb.Platform.Win.WinForms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Mvb.FakeContacts.Abstract\Mvb.FakeContacts.Abstract.csproj">
       <Project>{817b4026-9cec-41c3-b700-a969f724864c}</Project>
       <Name>Mvb.FakeContacts.Abstract</Name>

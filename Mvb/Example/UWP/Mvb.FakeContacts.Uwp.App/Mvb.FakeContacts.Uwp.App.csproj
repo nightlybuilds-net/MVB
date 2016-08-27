@@ -137,10 +137,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Mvb.Cross\Mvb.Core.csproj">
-      <Project>{e89bcc1c-ce0b-491d-b221-3c6ab26eeed0}</Project>
-      <Name>Mvb.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Mvb.FakeContacts.Abstract\Mvb.FakeContacts.Abstract.csproj">
       <Project>{817B4026-9CEC-41C3-B700-A969F724864C}</Project>
       <Name>Mvb.FakeContacts.Abstract</Name>
@@ -160,10 +156,6 @@
     <ProjectReference Include="..\Mvb.FakeContacts.Uwp.Services\Mvb.FakeContacts.Uwp.Services.csproj">
       <Project>{83771C84-8C8D-47ED-A298-352984BB4F0C}</Project>
       <Name>Mvb.FakeContacts.Uwp.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Mvb.Platform.Win.Uwp\Mvb.Platform.Win.Uwp.csproj">
-      <Project>{5731cbe5-7e8b-4f97-b45d-7bbde1067554}</Project>
-      <Name>Mvb.Platform.Win.Uwp</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
