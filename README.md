@@ -1,8 +1,30 @@
 # **M.V.B**.
 **Model View Binder** -  *A small and robust framework for awesome cross platform architectures*
 
-#*Nuget Packages*
-Nuget Package available HERE
+#*Quick Start*
+
+ - Install Mvb.Core package in all your projects (that use Mvb components).
+	 - [Mvb.Core Nuget](http://www.google.it)
+	
+ - Install platform specific package in your UI Projects.
+	 - *Xamarin Android:* Mvb.Platform.Droid
+	 - *Xamarin iOS:* Mvb.Platform.iOS
+	 - *Xamarin.Mac:*	Mvb.Platform.MacOs
+	 - *Universal Windows 10:* Mvb.Platform.Win.Uwp 
+	 - *Windows WPF* Mvb.Platform.Win.Wpf
+	 - *Windows Forms:* Mvb.Platform.Win.WinForms
+
+At the entry point of your platform specific project simply call:
+	
+	MvbPlatform.Init();
+
+For Windows Forms project call:
+
+	Mvb.Core.Mvb.NullInit();
+
+##Documentation
+[https://github.com/markjackmilian/MVB/wiki](https://github.com/markjackmilian/MVB/wiki)
+
 
 ##What is this (shortly)?
 Questo è un piccolo framework che ti guida nella creazione di applicazioni cross platform (grazie a Xamarin) permettendoti di creare uno strato di alto livello agnostico rispetto alla piattaforma di sviluppo.
@@ -27,8 +49,6 @@ The binders (*type MvbBase* ) expose simple APIs that allow you to connect the t
  - A more detailed explanation can be found HERE .
  - A simple demonstration application can be found HERE .
 
-##Documentation
-[https://github.com/markjackmilian/MVB/wiki](https://github.com/markjackmilian/MVB/wiki)
 
 ##Follow Me
 
