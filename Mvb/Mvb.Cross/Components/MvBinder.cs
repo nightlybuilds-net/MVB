@@ -30,6 +30,11 @@ namespace Mvb.Core.Components
             this.ActiveListener();
         }
 
+        /// <summary>
+        /// Add Action for property
+        /// </summary>
+        /// <param name="id">property name</param>
+        /// <param name="action">action</param>
         public void AddAction(string id, Action action)
         {
             //add to list
@@ -39,20 +44,37 @@ namespace Mvb.Core.Components
                 this._runDictionary.Add(id, new List<Action> {action});
         }
 
+        /// <summary>
+        /// Add action for property
+        /// </summary>
+        /// <typeparam name="TSource">TSource</typeparam>
+        /// <param name="property">property</param>
+        /// <param name="action">action</param>
         public void AddAction<TSource>(Expression<Func<TSource, object>> property, Action action)
         {
             var propName = this.GetPropertyName(property);
             this.AddAction(propName, action);
         }
 
+        /// <summary>
+        /// Add action for collection property
+        /// </summary>
+        /// <typeparam name="TSource">TSource IMvbCollection</typeparam>
+        /// <param name="property"></param>
+        /// <param name="action"></param>
         public void AddActionForCollection<TSource>(Expression<Func<TSource, object>> property,
-            Action<MvbCollectionUpdateArgs> action)
+            Action<MvbCollectionUpdateArgs> action) where TSource : IMvbCollection
         {
             var propName = this.GetPropertyName(property);
 
             this.AddActionForCollection(propName, action);
         }
 
+        /// <summary>
+        /// Add action for collection property
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="action"></param>
         public void AddActionForCollection(string propertyName, Action<MvbCollectionUpdateArgs> action)
         {
             //add to list
@@ -109,6 +131,14 @@ namespace Mvb.Core.Components
 
             foreach (var action in value)
                 this._uiRunner.Run(action, args);
+        }
+
+        /// <summary>
+        /// Remove All actions
+        /// </summary>
+        public void ClearActions()
+        {
+            this._runDictionary.Clear();
         }
 
         #region PRIVATE
