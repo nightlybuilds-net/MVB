@@ -131,14 +131,6 @@
     <Compile Include="ContactsTableDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Mvb.Cross\Mvb.Core.csproj">
-      <Project>{E89BCC1C-CE0B-491D-B221-3C6AB26EEED0}</Project>
-      <Name>Mvb.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Mvb.Platform.Ios\Mvb.Platform.Ios.csproj">
-      <Project>{FE0CA546-9123-41C4-8913-74F196AFB9BD}</Project>
-      <Name>Mvb.Platform.Ios</Name>
-    </ProjectReference>
     <ProjectReference Include="Mvb.FakeContacts.iOS.Services\Mvb.FakeContacts.iOS.Services.csproj">
       <Project>{7DDE0DAE-4EA3-405C-861F-CB195BD8EB61}</Project>
       <Name>Mvb.FakeContacts.iOS.Services</Name>

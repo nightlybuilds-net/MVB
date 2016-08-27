@@ -35,10 +35,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\Mvb.Cross\Mvb.Core.csproj">
-      <Project>{e89bcc1c-ce0b-491d-b221-3c6ab26eeed0}</Project>
-      <Name>Mvb.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Mvb.FakeContacts.Domain\Mvb.FakeContacts.Domain.csproj">
       <Project>{E6B91186-198B-4711-AD16-683D8782B044}</Project>
       <Name>Mvb.FakeContacts.Domain</Name>
