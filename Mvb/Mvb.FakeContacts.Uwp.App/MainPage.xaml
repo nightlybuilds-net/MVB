@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="Mvb.FakeContacts.Uwp.App.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mvb.FakeContacts.Uwp.App"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Name="SummaryBorder">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Name="SummaryLbl"/>
+        </Border>
+        <Button Grid.Row="1" Content="Load Contacts" Name="LoadBtn" Click="LoadBtn_OnClick"/>
+        <Button Grid.Row="1" Content="Shake Names" Name="ShakeBtn" Visibility="Collapsed" Click="ShakeBtn_OnClick"/>
+        <ListView Grid.Row="2" Name="ContactsListView"></ListView>
+
+    </Grid>
+</Page>
