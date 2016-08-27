@@ -1,6 +1,0 @@
-
-Every project must call Mvb.Init(); for register IUiRunner
-
-
-DROID PROJECT DEPENDENCIES:
- http://www.nuget.org/packages/Plugin.CurrentActivity
