@@ -50,7 +50,7 @@ namespace Mvb.Core.Components
         /// <typeparam name="TSource">TSource</typeparam>
         /// <param name="property">property</param>
         /// <param name="action">action</param>
-        public void AddAction<TSource>(Expression<Func<TSource, object>> property, Action action)
+        public void AddAction<TSource>(Expression<Func<TSource, object>> property, Action action) where TSource : MvbBase
         {
             var propName = this.GetPropertyName(property);
             this.AddAction(propName, action);
@@ -63,7 +63,7 @@ namespace Mvb.Core.Components
         /// <param name="property"></param>
         /// <param name="action"></param>
         public void AddActionForCollection<TSource>(Expression<Func<TSource, object>> property,
-            Action<MvbCollectionUpdateArgs> action) where TSource : IMvbCollection
+            Action<MvbCollectionUpdateArgs> action) where TSource : MvbBase
         {
             var propName = this.GetPropertyName(property);
 
@@ -89,7 +89,7 @@ namespace Mvb.Core.Components
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="property"></param>
-        public void Run<TSource>(Expression<Func<TSource, object>> property)
+        public void Run<TSource>(Expression<Func<TSource, object>> property) where TSource : MvbBase
         {
             var propName = this.GetPropertyName(property);
             this.Run(propName);
@@ -113,7 +113,7 @@ namespace Mvb.Core.Components
         /// </summary>
         /// <param name="property"></param>
         /// <param name="args"></param>
-        public void RunCollection<TSource>(Expression<Func<TSource, object>> property, MvbCollectionUpdateArgs args)
+        public void RunCollection<TSource>(Expression<Func<TSource, object>> property, MvbCollectionUpdateArgs args) where TSource : MvbBase
         {
             var propName = this.GetPropertyName(property);
             this.RunCollection(propName, args);
