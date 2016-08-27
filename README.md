@@ -4,7 +4,7 @@
 #*Quick Start*
 
  - Install Mvb.Core package in all your projects (that use Mvb components).
-	 - [Mvb.Core Nuget](http://www.google.it)
+	 - [Mvb.Core Nuget](https://www.nuget.org/packages/Mvb.Core/0.0.8)
 	
  - Install platform specific package in your UI Projects.
 	 - *Xamarin Android:* Mvb.Platform.Droid
