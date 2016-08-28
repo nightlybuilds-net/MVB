@@ -40,3 +40,6 @@ The binders (*type MvbBase* ) expose simple APIs that allow you to connect the t
  - Twitter: [@markjackmilian](https://twitter.com/markjackmilian)
  - MyBlog: [markjackmilian.net](http://markjackmilian.net/blog)
  - Linkedin: [linkedin](https://www.linkedin.com/in/marco-giacomo-milani)
+
+##License
+Licensed under Apache see license file.
