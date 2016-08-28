@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.IO;
-using Windows.ApplicationModel.Contacts;
-using Windows.Graphics.Imaging;
-using Windows.Storage.Streams;
 using Windows.UI;
-using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Mvb.FakeContacts.ModelBinders;
 using DryIoc;
 using Mvb.Core.Args;
+using Contact = Mvb.FakeContacts.Domain.Contact;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
