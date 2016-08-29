@@ -10,7 +10,7 @@
  - Install platform specific package in your UI Projects.
 	 - *Xamarin Android:* [Mvb.Platform.Droid](https://www.nuget.org/packages/Mvb.Platform.Droid/)
 	 - *Xamarin iOS:* [Mvb.Platform.iOS](https://www.nuget.org/packages/Mvb.Platform.iOS/)
-	 - *Xamarin.Mac:*	Mvb.Platform.MacOs
+	 - *Xamarin.Mac:*	[Mvb.Platform.MacOs](https://www.nuget.org/packages/Mvb.Platform.MacOs/)
 	 - *Universal Windows 10:* [Mvb.Platform.Win.Uwp](https://www.nuget.org/packages/Mvb.Platform.UWP/) 
 	 - *Windows WPF* [Mvb.Platform.Win.Wpf](https://www.nuget.org/packages/Mvb.Platform.WPF/)
 	 - *Windows Forms:* [Mvb.Platform.Win.WinForms](https://www.nuget.org/packages/Mvb.Platform.WinForms)
