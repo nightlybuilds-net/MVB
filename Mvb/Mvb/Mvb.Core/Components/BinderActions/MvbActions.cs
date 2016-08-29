@@ -40,7 +40,7 @@ namespace Mvb.Core.Components.BinderActions
             this._bindersAction = new List<Action<T>>();
         }
 
-        public void Add(Action<T> action)
+        public void AddAction(Action<T> action)
         {
             this._bindersAction.Add(action);
         }
