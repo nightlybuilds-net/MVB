@@ -94,7 +94,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="ToastIOS">
-      <HintPath>..\Components\ToastIOS-1.6\lib\ios-unified\ToastIOS.dll</HintPath>
+      <HintPath>..\..\..\Components\ToastIOS-1.6\lib\ios-unified\ToastIOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -131,7 +131,31 @@
     <Compile Include="ContactsTableDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Mvb.FakeContacts.iOS.Services\Mvb.FakeContacts.iOS.Services.csproj">
+    <ProjectReference Include="..\..\..\Mvb\Mvb.Core\Mvb.Core.csproj">
+      <Project>{E89BCC1C-CE0B-491D-B221-3C6AB26EEED0}</Project>
+      <Name>Mvb.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mvb.FakeContacts.Abstract\Mvb.FakeContacts.Abstract.csproj">
+      <Project>{817B4026-9CEC-41C3-B700-A969F724864C}</Project>
+      <Name>Mvb.FakeContacts.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mvb.FakeContacts.Concrete\Mvb.FakeContacts.Concrete.csproj">
+      <Project>{B010240E-A655-486C-A63B-A7180E810AE8}</Project>
+      <Name>Mvb.FakeContacts.Concrete</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mvb.FakeContacts.Domain\Mvb.FakeContacts.Domain.csproj">
+      <Project>{E6B91186-198B-4711-AD16-683D8782B044}</Project>
+      <Name>Mvb.FakeContacts.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mvb.FakeContacts.ModelBinders\Mvb.FakeContacts.ModelBinders.csproj">
+      <Project>{8143FAD9-64B1-4AF3-85F7-EA04C1AA224B}</Project>
+      <Name>Mvb.FakeContacts.ModelBinders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Mvb\Mvb.Platform.Ios\Mvb.Platform.Ios.csproj">
+      <Project>{FE0CA546-9123-41C4-8913-74F196AFB9BD}</Project>
+      <Name>Mvb.Platform.Ios</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mvb.FakeContacts.iOS.Services\Mvb.FakeContacts.iOS.Services.csproj">
       <Project>{7DDE0DAE-4EA3-405C-861F-CB195BD8EB61}</Project>
       <Name>Mvb.FakeContacts.iOS.Services</Name>
     </ProjectReference>
