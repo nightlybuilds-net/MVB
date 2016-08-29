@@ -23,7 +23,7 @@ namespace Mvb.FakeContacts.Cocoa.App
 		public ViewController(IntPtr handle) : base(handle)
 		{
 			//Mvb Init
-			UiRunnerDispenser.RegisterRunner(() => new MacOsUiRunner());
+			MvbPlatform.Init();
 
 			//Container
 			AppDelegate.Ioc = new Container();
