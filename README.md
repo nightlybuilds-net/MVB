@@ -2,6 +2,7 @@
 **Model View Binder** -  *A small and robust framework for awesome cross platform architectures*
 
 #*Quick Start*
+*For a complete example see *FakeContacts App* in this repo.*
 
  - Install Mvb.Core package in all your projects (that use Mvb components).
 	 - [Mvb.Core](https://www.nuget.org/packages/Mvb.Core/)
@@ -14,13 +15,14 @@
 	 - *Windows WPF* [Mvb.Platform.Win.Wpf](https://www.nuget.org/packages/Mvb.Platform.WPF/)
 	 - *Windows Forms:* [Mvb.Platform.Win.WinForms](https://www.nuget.org/packages/Mvb.Platform.WinForms)
 
-At the entry point of your platform specific project simply call:
+At the entry point of your platform specific project call:
 	
 	MvbPlatform.Init();
 
 For Windows Forms project call:
 
 	Mvb.Core.Mvb.NullInit();
+
 
 ##Documentation
 [https://github.com/markjackmilian/MVB/wiki](https://github.com/markjackmilian/MVB/wiki)
