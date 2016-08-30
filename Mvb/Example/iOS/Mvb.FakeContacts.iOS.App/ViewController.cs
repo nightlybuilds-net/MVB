@@ -107,7 +107,7 @@ namespace Mvb.FakeContacts.iOS.App
 			  });
 
 			//On ContactLoaded Actions
-			this._contactsMb.OnContactReceived.Add((obj) =>
+			this._contactsMb.OnContactReceived.AddAction((obj) =>
 			{
 				Toast.MakeText($"MvbAction are awesome.. there are {obj} contacts!").SetDuration(3000).Show(ToastType.Info);
 			});

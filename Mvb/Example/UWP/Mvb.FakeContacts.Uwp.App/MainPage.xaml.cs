@@ -103,7 +103,7 @@ namespace Mvb.FakeContacts.Uwp.App
             });
 
             //MvbAction
-            this._contactsMb.OnContactReceived.Add(async i =>
+            this._contactsMb.OnContactReceived.AddAction(async i =>
             {
                 var dialog = new MessageDialog($"MvbActions are Awesome! There are {i} contacts!");
                 await dialog.ShowAsync();
