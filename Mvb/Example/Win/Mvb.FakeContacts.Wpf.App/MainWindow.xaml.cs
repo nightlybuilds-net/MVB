@@ -114,7 +114,7 @@ namespace Mvb.FakeContacts.Wpf.App
             });
 
             //MvbAction
-            this._contactsMb.OnContactReceived.Add(i =>
+            this._contactsMb.OnContactReceived.AddAction(i =>
             {
                 this.NotificationTray.NotificationsSource.Show($"MvbActions are Awesome! There are {i} contacts!",NotificationType.Success);
             });
