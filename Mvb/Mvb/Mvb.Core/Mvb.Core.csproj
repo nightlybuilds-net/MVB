@@ -44,6 +44,7 @@
     <Compile Include="Abstract\IMvbCollection.cs" />
     <Compile Include="Components\BinderActions\MvbActions.cs" />
     <Compile Include="Components\BinderActions\IBinderActions.cs" />
+    <Compile Include="Components\MvbBindableHelper.cs" />
     <Compile Include="UiRunnerDispenser.cs" />
     <Compile Include="Components\MvbMessenger.cs" />
     <Compile Include="Components\MvbCollection.cs" />
