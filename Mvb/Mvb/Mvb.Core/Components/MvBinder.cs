@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -155,10 +157,16 @@ namespace Mvb.Core.Components
             }
             else
             {
-                memberExpression = (MemberExpression) lambda.Body;
+                memberExpression = (MemberExpression)lambda.Body;
             }
 
-            return ((PropertyInfo) memberExpression.Member).Name;
+            //Check composite ex binder.MyObject.MyProperty => MyObject.MyProperty
+            var body = lambda.Body.ToString();
+            var index = body.IndexOf('.') + 1;
+            body = body.Substring(index, body.Length - index);
+            var isComposite = body.Contains(".");
+
+            return !isComposite ? ((PropertyInfo)memberExpression.Member).Name : body;
         }
 
         private void ActiveListenerOnObservableCollection(object obj)
@@ -196,12 +204,38 @@ namespace Mvb.Core.Components
             }
         }
 
+        /// <summary>
+        /// Active listener for observable property
+        /// </summary>
+        /// <param name="obj"></param>
+        private void ActiveListenerForObservableProperties(object obj)
+        {
+            var typeInfo = obj.GetType().GetTypeInfo();
+
+            foreach (var info in typeInfo.DeclaredProperties)
+            {
+                var isObservable =
+                    info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IMvbNotifyPropertyChanged));
+
+                if (!isObservable) continue;
+
+                var obserableProp = (IMvbNotifyPropertyChanged)info.GetValue(obj, null);
+
+                obserableProp.PropertyChanged += (sender, args) =>
+                {
+                    var registerName = $"{info.Name}.{args.PropertyName}";
+                    this.Run(registerName);
+                };
+            }
+        }
+
 
         private void ActiveListener()
         {
             //Subscribe
             this._vmInstance.PropertyChanged += (sender, args) => { this.Run(args.PropertyName); };
             this.ActiveListenerOnObservableCollection(this._vmInstance);
+            this.ActiveListenerForObservableProperties(this._vmInstance);
         }
 
         #endregion
