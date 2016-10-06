@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -208,18 +209,14 @@ namespace Mvb.Core.Components
         /// Active listener for observable property
         /// </summary>
         /// <param name="obj"></param>
-        private void ActiveListenerForObservableProperties(object obj)
+        private void ActiveListenerForMvbBindable(object obj)
         {
             var typeInfo = obj.GetType().GetTypeInfo();
 
             foreach (var info in typeInfo.DeclaredProperties)
             {
-                var isObservable =
-                    info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IMvbNotifyPropertyChanged));
-
-                if (!isObservable) continue;
-
-                var obserableProp = (IMvbNotifyPropertyChanged)info.GetValue(obj, null);
+                var obserableProp = info.GetValue(obj, null) as MvbBindable;
+                if (obserableProp == null) return;
 
                 obserableProp.PropertyChanged += (sender, args) =>
                 {
@@ -235,7 +232,7 @@ namespace Mvb.Core.Components
             //Subscribe
             this._vmInstance.PropertyChanged += (sender, args) => { this.Run(args.PropertyName); };
             this.ActiveListenerOnObservableCollection(this._vmInstance);
-            this.ActiveListenerForObservableProperties(this._vmInstance);
+            this.ActiveListenerForMvbBindable(this._vmInstance);
         }
 
         #endregion
