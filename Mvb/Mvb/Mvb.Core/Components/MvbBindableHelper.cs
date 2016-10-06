@@ -1,8 +1,9 @@
 ﻿using Mvb.Core.Abstract;
+using Mvb.Core.Base;
 
 namespace Mvb.Core.Components
 {
-    public class MvbBindableHelper<T> where T : IMvbNotifyPropertyChanged
+    public class MvbBindableHelper<T> : MvbBindable
     {
         public T Item { get; private set; }
 
