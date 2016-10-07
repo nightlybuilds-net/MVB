@@ -1,11 +1,16 @@
-﻿using Mvb.Core.Abstract;
-using Mvb.Core.Base;
+﻿using Mvb.Core.Base;
 
 namespace Mvb.Core.Components
 {
     public class MvbBindableHelper<T> : MvbBindable
     {
-        public T Item { get; private set; }
+        private T _item;
+
+        public T Item
+        {
+            get { return this._item; }
+            protected set { this.SetProperty(ref this._item, value); }
+        }
 
         public void SetItem(T item)
         {
