@@ -55,7 +55,7 @@ namespace Mvb.Core.Components
         /// <param name="action">action</param>
         public void AddAction<TSource>(Expression<Func<TSource, object>> property, Action action) where TSource : MvbBase
         {
-            var propName = this.GetPropertyName(property);
+            var propName = this.GetCompositePropertyName(property);
             this.AddAction(propName, action);
         }
 
@@ -68,7 +68,7 @@ namespace Mvb.Core.Components
         public void AddActionForCollection<TSource>(Expression<Func<TSource, object>> property,
             Action<MvbCollectionUpdateArgs> action) where TSource : MvbBase
         {
-            var propName = this.GetPropertyName(property);
+            var propName = this.GetCompositePropertyName(property);
 
             this.AddActionForCollection(propName, action);
         }
@@ -94,7 +94,7 @@ namespace Mvb.Core.Components
         /// <param name="property"></param>
         public void Run<TSource>(Expression<Func<TSource, object>> property) where TSource : MvbBase
         {
-            var propName = this.GetPropertyName(property);
+            var propName = this.GetCompositePropertyName(property);
             this.Run(propName);
         }
 
@@ -118,7 +118,7 @@ namespace Mvb.Core.Components
         /// <param name="args"></param>
         public void RunCollection<TSource>(Expression<Func<TSource, object>> property, MvbCollectionUpdateArgs args) where TSource : MvbBase
         {
-            var propName = this.GetPropertyName(property);
+            var propName = this.GetCompositePropertyName(property);
             this.RunCollection(propName, args);
         }
 
@@ -144,9 +144,55 @@ namespace Mvb.Core.Components
             this._runDictionary.Clear();
         }
 
+       
+        public void SetMvbBindableInstance<T,TK>(Expression<Func<T, object>> property, Func<TK> newIstance) where T : MvbBase where TK : IMvbBindable
+        {
+            var bindableInstance =  newIstance.Invoke();
+            var propertyName = this.GetPropertyName(property);
+            var vmtype = this._vmInstance.GetType();
+
+            if(vmtype != typeof(T))
+                throw new Exception($"Wrong type instance. instance must be of type: {vmtype}");
+
+            var typeInfo = vmtype.GetTypeInfo();
+
+            var propertyOnObj = typeInfo.DeclaredProperties.Single(s => s.Name == propertyName);
+            var oldObj = propertyOnObj.GetValue(this._vmInstance, null) as IMvbBindable;
+
+            //Clear ols handler
+            oldObj?.ClearHandler();
+
+            bindableInstance.PropertyChanged += (sender, args) =>
+            {
+                var registerName = $"{propertyOnObj.Name}.{args.PropertyName}";
+                this.Run(registerName);
+            };
+
+            //set new object
+            propertyOnObj.SetValue(this._vmInstance, bindableInstance);
+        }
+
         #region PRIVATE
 
         private string GetPropertyName<T>(Expression<Func<T, object>> property)
+        {
+            LambdaExpression lambda = property;
+            MemberExpression memberExpression;
+
+            if (lambda.Body is UnaryExpression)
+            {
+                var unaryExpression = (UnaryExpression)lambda.Body;
+                memberExpression = (MemberExpression)unaryExpression.Operand;
+            }
+            else
+            {
+                memberExpression = (MemberExpression)lambda.Body;
+            }
+
+            return ((PropertyInfo)memberExpression.Member).Name;
+        }
+
+        private string GetCompositePropertyName<T>(Expression<Func<T, object>> property)
         {
             LambdaExpression lambda = property;
             MemberExpression memberExpression;
@@ -162,12 +208,18 @@ namespace Mvb.Core.Components
             }
 
             //Check composite ex binder.MyObject.MyProperty => MyObject.MyProperty
+            var propName = ((PropertyInfo)memberExpression.Member).Name;
             var body = lambda.Body.ToString();
-            var index = body.IndexOf('.') + 1;
-            body = body.Substring(index, body.Length - index);
-            var isComposite = body.Contains(".");
+            var bodySplitted = body.Split('.');
+            var isComposite = bodySplitted.Length > 2;
 
-            return !isComposite ? ((PropertyInfo)memberExpression.Member).Name : body;
+            if (!isComposite) return propName;
+
+            var splittedlist = bodySplitted.ToList();
+            splittedlist.RemoveAt(0);
+            splittedlist.RemoveAt(splittedlist.Count-1);
+
+            return $"{string.Join(".",splittedlist)}.{propName}";
         }
 
         private void ActiveListenerOnObservableCollection(object obj)
@@ -224,6 +276,11 @@ namespace Mvb.Core.Components
                     this.Run(registerName);
                 };
             }
+        }
+
+        private void ObserablePropOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            throw new NotImplementedException();
         }
 
 
