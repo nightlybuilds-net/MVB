@@ -145,10 +145,32 @@ namespace Mvb.Core.Components
         }
 
        
-        public void SetMvbBindableInstance<T,TK>(Expression<Func<T, object>> property, Func<TK> newIstance) where T : MvbBase where TK : IMvbBindable
+        /// <summary>
+        /// Create istance of MvbBindable on this Binder
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TK"></typeparam>
+        /// <param name="property"></param>
+        /// <param name="newIstance"></param>
+        public void SetMvbBindableInstance<T,TK>(Expression<Func<T, TK>> property, Func<TK> newIstance) where T : MvbBase where TK : IMvbBindable
         {
             var bindableInstance =  newIstance.Invoke();
-            var propertyName = this.GetPropertyName(property);
+
+            #region GET property name
+            LambdaExpression lambda = property;
+            MemberExpression memberExpression;
+
+            if (lambda.Body is UnaryExpression)
+            {
+                var unaryExpression = (UnaryExpression)lambda.Body;
+                memberExpression = (MemberExpression)unaryExpression.Operand;
+            }
+            else
+                memberExpression = (MemberExpression)lambda.Body;
+
+            var propertyName = ((PropertyInfo)memberExpression.Member).Name; 
+            #endregion
+
             var vmtype = this._vmInstance.GetType();
 
             if(vmtype != typeof(T))
