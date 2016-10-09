@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -54,7 +55,7 @@ namespace Mvb.Core.Components
         /// <param name="action">action</param>
         public void AddAction<TSource>(Expression<Func<TSource, object>> property, Action action) where TSource : MvbBase
         {
-            var propName = this.GetPropertyName(property);
+            var propName = this.GetCompositePropertyName(property);
             this.AddAction(propName, action);
         }
 
@@ -67,7 +68,7 @@ namespace Mvb.Core.Components
         public void AddActionForCollection<TSource>(Expression<Func<TSource, object>> property,
             Action<MvbCollectionUpdateArgs> action) where TSource : MvbBase
         {
-            var propName = this.GetPropertyName(property);
+            var propName = this.GetCompositePropertyName(property);
 
             this.AddActionForCollection(propName, action);
         }
@@ -93,7 +94,7 @@ namespace Mvb.Core.Components
         /// <param name="property"></param>
         public void Run<TSource>(Expression<Func<TSource, object>> property) where TSource : MvbBase
         {
-            var propName = this.GetPropertyName(property);
+            var propName = this.GetCompositePropertyName(property);
             this.Run(propName);
         }
 
@@ -117,7 +118,7 @@ namespace Mvb.Core.Components
         /// <param name="args"></param>
         public void RunCollection<TSource>(Expression<Func<TSource, object>> property, MvbCollectionUpdateArgs args) where TSource : MvbBase
         {
-            var propName = this.GetPropertyName(property);
+            var propName = this.GetCompositePropertyName(property);
             this.RunCollection(propName, args);
         }
 
@@ -143,9 +144,80 @@ namespace Mvb.Core.Components
             this._runDictionary.Clear();
         }
 
+       
+        /// <summary>
+        /// Create istance of MvbBindable on this Binder
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TK"></typeparam>
+        /// <param name="property"></param>
+        /// <param name="newIstance"></param>
+        public void SetMvbBindableInstance<T,TK>(Expression<Func<T, TK>> property, Func<TK> newIstance) where T : MvbBase where TK : IMvbBindable
+        {
+            var bindableInstance =  newIstance.Invoke();
+
+            #region GET property name
+            LambdaExpression lambda = property;
+            MemberExpression memberExpression;
+
+            if (lambda.Body is UnaryExpression)
+            {
+                var unaryExpression = (UnaryExpression)lambda.Body;
+                memberExpression = (MemberExpression)unaryExpression.Operand;
+            }
+            else
+                memberExpression = (MemberExpression)lambda.Body;
+
+            var propertyName = ((PropertyInfo)memberExpression.Member).Name; 
+            #endregion
+
+            var vmtype = this._vmInstance.GetType();
+
+            if(vmtype != typeof(T))
+                throw new Exception($"Wrong type instance. instance must be of type: {vmtype}");
+
+            var typeInfo = vmtype.GetTypeInfo();
+
+            var propertyOnObj = typeInfo.DeclaredProperties.Single(s => s.Name == propertyName);
+            var oldObj = propertyOnObj.GetValue(this._vmInstance, null) as IMvbBindable;
+
+            //Clear ols handler
+            oldObj?.ClearHandler();
+
+            //set new object
+            propertyOnObj.SetValue(this._vmInstance, bindableInstance);
+
+            //Active PropertyChanged if not null
+            if (bindableInstance == null) return;
+           
+            bindableInstance.PropertyChanged += (sender, args) =>
+            {
+                var registerName = $"{propertyOnObj.Name}.{args.PropertyName}";
+                this.Run(registerName);
+            };
+        }
+
         #region PRIVATE
 
         private string GetPropertyName<T>(Expression<Func<T, object>> property)
+        {
+            LambdaExpression lambda = property;
+            MemberExpression memberExpression;
+
+            if (lambda.Body is UnaryExpression)
+            {
+                var unaryExpression = (UnaryExpression)lambda.Body;
+                memberExpression = (MemberExpression)unaryExpression.Operand;
+            }
+            else
+            {
+                memberExpression = (MemberExpression)lambda.Body;
+            }
+
+            return ((PropertyInfo)memberExpression.Member).Name;
+        }
+
+        private string GetCompositePropertyName<T>(Expression<Func<T, object>> property)
         {
             LambdaExpression lambda = property;
             MemberExpression memberExpression;
@@ -161,12 +233,18 @@ namespace Mvb.Core.Components
             }
 
             //Check composite ex binder.MyObject.MyProperty => MyObject.MyProperty
+            var propName = ((PropertyInfo)memberExpression.Member).Name;
             var body = lambda.Body.ToString();
-            var index = body.IndexOf('.') + 1;
-            body = body.Substring(index, body.Length - index);
-            var isComposite = body.Contains(".");
+            var bodySplitted = body.Split('.');
+            var isComposite = bodySplitted.Length > 2;
 
-            return !isComposite ? ((PropertyInfo)memberExpression.Member).Name : body;
+            if (!isComposite) return propName;
+
+            var splittedlist = bodySplitted.ToList();
+            splittedlist.RemoveAt(0);
+            splittedlist.RemoveAt(splittedlist.Count-1);
+
+            return $"{string.Join(".",splittedlist)}.{propName}";
         }
 
         private void ActiveListenerOnObservableCollection(object obj)
@@ -208,18 +286,14 @@ namespace Mvb.Core.Components
         /// Active listener for observable property
         /// </summary>
         /// <param name="obj"></param>
-        private void ActiveListenerForObservableProperties(object obj)
+        private void ActiveListenerForMvbBindable(object obj)
         {
             var typeInfo = obj.GetType().GetTypeInfo();
 
             foreach (var info in typeInfo.DeclaredProperties)
             {
-                var isObservable =
-                    info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IMvbNotifyPropertyChanged));
-
-                if (!isObservable) continue;
-
-                var obserableProp = (IMvbNotifyPropertyChanged)info.GetValue(obj, null);
+                var obserableProp = info.GetValue(obj, null) as MvbBindable;
+                if (obserableProp == null) return;
 
                 obserableProp.PropertyChanged += (sender, args) =>
                 {
@@ -229,13 +303,18 @@ namespace Mvb.Core.Components
             }
         }
 
+        private void ObserablePropOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            throw new NotImplementedException();
+        }
+
 
         private void ActiveListener()
         {
             //Subscribe
             this._vmInstance.PropertyChanged += (sender, args) => { this.Run(args.PropertyName); };
             this.ActiveListenerOnObservableCollection(this._vmInstance);
-            this.ActiveListenerForObservableProperties(this._vmInstance);
+            this.ActiveListenerForMvbBindable(this._vmInstance);
         }
 
         #endregion

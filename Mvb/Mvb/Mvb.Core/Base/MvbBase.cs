@@ -1,4 +1,7 @@
-﻿using Mvb.Core.Components;
+﻿using System;
+using System.Linq.Expressions;
+using System.Reflection;
+using Mvb.Core.Components;
 
 namespace Mvb.Core.Base
 {
@@ -10,5 +13,6 @@ namespace Mvb.Core.Base
         {
             this.Binder = new MvBinder(this);
         }
+
     }
 }
