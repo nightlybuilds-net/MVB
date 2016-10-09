@@ -9,12 +9,31 @@ namespace Mvb.Core.Base
     /// <summary>
     ///     Implementation of IMvbNotifyPropertyChanged.
     /// </summary>
-    public abstract class MvbBindable : IMvbNotifyPropertyChanged
+    public abstract class MvbBindable : IMvbBindable
     {
        
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<MvbPropertyChanged> MvbPropertyChanged;
-       
+        public void ClearHandler()
+        {
+            //clear propertychanged
+            var invocationList = this.PropertyChanged?.GetInvocationList();
+            if (invocationList != null)
+            {
+                foreach (var d in invocationList)
+                    this.PropertyChanged -= d as PropertyChangedEventHandler;
+            }
+
+            //clear mvbpropertychanged
+            var mvbInvocationList = this.MvbPropertyChanged?.GetInvocationList();
+            if (mvbInvocationList != null)
+            {
+                foreach (var d in mvbInvocationList)
+                    this.MvbPropertyChanged -= d as EventHandler<MvbPropertyChanged>;
+            }
+
+        }
+
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
         {
             if (Equals(storage, value)) return false;
