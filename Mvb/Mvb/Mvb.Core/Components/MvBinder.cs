@@ -184,14 +184,17 @@ namespace Mvb.Core.Components
             //Clear ols handler
             oldObj?.ClearHandler();
 
+            //set new object
+            propertyOnObj.SetValue(this._vmInstance, bindableInstance);
+
+            //Active PropertyChanged if not null
+            if (bindableInstance == null) return;
+           
             bindableInstance.PropertyChanged += (sender, args) =>
             {
                 var registerName = $"{propertyOnObj.Name}.{args.PropertyName}";
                 this.Run(registerName);
             };
-
-            //set new object
-            propertyOnObj.SetValue(this._vmInstance, bindableInstance);
         }
 
         #region PRIVATE
