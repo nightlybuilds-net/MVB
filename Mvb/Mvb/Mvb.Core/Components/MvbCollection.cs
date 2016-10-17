@@ -13,6 +13,16 @@ namespace Mvb.Core.Components
     public class MvbCollection<T> : ObservableCollection<T>, IMvbCollection
     {
         public event EventHandler<MvbCollectionItemChanged> MvbItemCollectionChanged;
+        public void ClearMvbCollectionItemChanged()
+        {
+            //clear MvbItemCollectionChanged
+            var invocationList = this.MvbItemCollectionChanged?.GetInvocationList();
+            if (invocationList != null)
+            {
+                foreach (var d in invocationList)
+                    this.PropertyChanged -= d as PropertyChangedEventHandler;
+            }
+        }
 
 
         public MvbCollection()

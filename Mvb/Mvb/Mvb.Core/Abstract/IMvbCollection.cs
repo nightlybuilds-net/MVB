@@ -7,5 +7,6 @@ namespace Mvb.Core.Abstract
     public interface IMvbCollection : INotifyCollectionChanged
     {
         event EventHandler<MvbCollectionItemChanged> MvbItemCollectionChanged;
+        void ClearMvbCollectionItemChanged();
     }
 }
