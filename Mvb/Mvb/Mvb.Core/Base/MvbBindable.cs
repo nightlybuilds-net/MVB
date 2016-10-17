@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Mvb.Core.Abstract;
 using Mvb.Core.Args;
@@ -30,6 +32,22 @@ namespace Mvb.Core.Base
             {
                 foreach (var d in mvbInvocationList)
                     this.MvbPropertyChanged -= d as EventHandler<MvbPropertyChanged>;
+            }
+
+            var thisType = this.GetType().GetTypeInfo();
+
+            // Clear MvbCollectionItemChanged on children
+            foreach (var info in thisType.DeclaredProperties)
+            {
+                var isMvbCollection =
+                    info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IMvbCollection));
+
+                if (!isMvbCollection) continue;
+
+                var obserableProp = (IMvbCollection)info.GetValue(this, null);
+                if (obserableProp == null) continue;
+
+                obserableProp.ClearMvbCollectionItemChanged();
             }
 
         }

@@ -195,6 +195,9 @@ namespace Mvb.Core.Components
                 var registerName = $"{propertyOnObj.Name}.{args.PropertyName}";
                 this.Run(registerName);
             };
+
+            //Activate sub collections
+            this.ActiveListenerOnObservableCollection(bindableInstance, propertyOnObj.Name);
         }
 
         #region PRIVATE
@@ -247,7 +250,7 @@ namespace Mvb.Core.Components
             return $"{string.Join(".",splittedlist)}.{propName}";
         }
 
-        private void ActiveListenerOnObservableCollection(object obj)
+        private void ActiveListenerOnObservableCollection(object obj, string propertyNameSuffix = null)
         {
             var typeInfo = obj.GetType().GetTypeInfo();
 
@@ -259,6 +262,9 @@ namespace Mvb.Core.Components
                 if (!isMvbCollection) continue;
 
                 var obserableProp = (IMvbCollection) info.GetValue(obj, null);
+                if(obserableProp == null) continue;
+
+                var runPropertyName = propertyNameSuffix != null ? $"{propertyNameSuffix}.{info.Name}" : info.Name;
 
                 obserableProp.CollectionChanged += (sender, args) =>
                 {
@@ -267,7 +273,7 @@ namespace Mvb.Core.Components
                         MvbUpdateAction = MvbUpdateAction.CollectionChanged,
                         NotifyCollectionChangedEventArgs = args
                     };
-                    this.RunCollection(info.Name, mvbArgs);
+                    this.RunCollection(runPropertyName, mvbArgs);
                 };
 
                 obserableProp.MvbItemCollectionChanged += (sender, args) =>
@@ -293,21 +299,19 @@ namespace Mvb.Core.Components
             foreach (var info in typeInfo.DeclaredProperties)
             {
                 var obserableProp = info.GetValue(obj, null) as MvbBindable;
-                if (obserableProp == null) return;
+                if (obserableProp == null) continue;
 
                 obserableProp.PropertyChanged += (sender, args) =>
                 {
                     var registerName = $"{info.Name}.{args.PropertyName}";
                     this.Run(registerName);
                 };
+
+                //Activate sub collections
+                this.ActiveListenerOnObservableCollection(obserableProp, info.Name);
             }
         }
-
-        private void ObserablePropOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            throw new NotImplementedException();
-        }
-
+       
 
         private void ActiveListener()
         {
