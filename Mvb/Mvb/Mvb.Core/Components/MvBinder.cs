@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -144,7 +141,6 @@ namespace Mvb.Core.Components
             this._runDictionary.Clear();
         }
 
-       
         /// <summary>
         /// Create istance of MvbBindable on this Binder
         /// </summary>
@@ -156,7 +152,10 @@ namespace Mvb.Core.Components
         {
             var bindableInstance =  newIstance.Invoke();
 
-            #region GET property name
+            var propertyTree = new Queue<string>();
+
+            #region PROPERTY TREE
+
             LambdaExpression lambda = property;
             MemberExpression memberExpression;
 
@@ -166,33 +165,67 @@ namespace Mvb.Core.Components
                 memberExpression = (MemberExpression)unaryExpression.Operand;
             }
             else
+            {
                 memberExpression = (MemberExpression)lambda.Body;
+            }
 
-            var propertyName = ((PropertyInfo)memberExpression.Member).Name; 
+            //Check composite ex binder.MyObject.MyProperty => MyObject.MyProperty
+            var propName = ((PropertyInfo)memberExpression.Member).Name;
+            var body = lambda.Body.ToString();
+            var bodySplitted = body.Split('.');
+            var isComposite = bodySplitted.Length > 2;
+
+            if (!isComposite)
+                propertyTree.Enqueue(propName);
+            else
+            {
+                var splittedlist = bodySplitted.ToList();
+                splittedlist.RemoveAt(0);
+                foreach (var s in splittedlist)
+                    propertyTree.Enqueue(s);
+            }
+            var theDeepProperty = string.Join(".", propertyTree);
+
             #endregion
 
             var vmtype = this._vmInstance.GetType();
-
             if(vmtype != typeof(T))
                 throw new Exception($"Wrong type instance. instance must be of type: {vmtype}");
 
-            var typeInfo = vmtype.GetTypeInfo();
+            PropertyInfo propertyOnObj = null;
+            object lastParent = this._vmInstance;
 
-            var propertyOnObj = typeInfo.DeclaredProperties.Single(s => s.Name == propertyName);
-            var oldObj = propertyOnObj.GetValue(this._vmInstance, null) as IMvbBindable;
+            while (propertyTree.Any())
+            {
+                var propertyName = propertyTree.Dequeue();
+                var parentTypeInfo = lastParent.GetType().GetTypeInfo();
 
+                propertyOnObj = parentTypeInfo.DeclaredProperties.Single(s => s.Name == propertyName);
+
+                if(propertyTree.Count > 0)
+                    lastParent = propertyOnObj.GetValue(lastParent);
+            }
+
+
+            if(propertyOnObj == null)
+                throw new Exception("Deep property not found!");
+
+            var oldObj = propertyOnObj.GetValue(lastParent, null) as IMvbBindable;
+
+
+            // Clear and Active PropertyChanged
             //Clear ols handler
             oldObj?.ClearHandler();
 
             //set new object
-            propertyOnObj.SetValue(this._vmInstance, bindableInstance);
+            propertyOnObj.SetValue(lastParent, bindableInstance);
 
             //Active PropertyChanged if not null
             if (bindableInstance == null) return;
            
             bindableInstance.PropertyChanged += (sender, args) =>
             {
-                var registerName = $"{propertyOnObj.Name}.{args.PropertyName}";
+                var registerName = $"{theDeepProperty}.{args.PropertyName}";
                 this.Run(registerName);
             };
 
@@ -201,7 +234,12 @@ namespace Mvb.Core.Components
         }
 
         #region PRIVATE
-
+        /// <summary>
+        /// TODO Clear unused
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="property"></param>
+        /// <returns></returns>
         private string GetPropertyName<T>(Expression<Func<T, object>> property)
         {
             LambdaExpression lambda = property;
@@ -249,7 +287,7 @@ namespace Mvb.Core.Components
 
             return $"{string.Join(".",splittedlist)}.{propName}";
         }
-
+        
         private void ActiveListenerOnObservableCollection(object obj, string propertyNameSuffix = null)
         {
             var typeInfo = obj.GetType().GetTypeInfo();
@@ -265,7 +303,7 @@ namespace Mvb.Core.Components
                 if(obserableProp == null) continue;
 
                 var runPropertyName = propertyNameSuffix != null ? $"{propertyNameSuffix}.{info.Name}" : info.Name;
-
+                runPropertyName = runPropertyName.TrimStart('.');
                 obserableProp.CollectionChanged += (sender, args) =>
                 {
                     var mvbArgs = new MvbCollectionUpdateArgs
@@ -287,13 +325,28 @@ namespace Mvb.Core.Components
                 };
             }
         }
-
-        /// <summary>
-        /// Active listener for observable property
-        /// </summary>
-        /// <param name="obj"></param>
-        private void ActiveListenerForMvbBindable(object obj)
+        
+        private void ActiveListener()
         {
+            //Subscribe
+            this.RecursivelyActiveListener(this._vmInstance);
+        }
+
+        private void RecursivelyActiveListener(object obj, string parent = "")
+        {
+            // Active on main object
+            var mainBindable = obj as MvbBindable;
+            if (mainBindable != null)
+            {
+                mainBindable.PropertyChanged += (sender, args) =>
+                {
+                    var registerName = string.IsNullOrWhiteSpace(parent) ? $"{args.PropertyName}" : $"{parent}.{args.PropertyName}";
+                    this.Run(registerName);
+                };
+            }
+
+            this.ActiveListenerOnObservableCollection(obj, parent);
+
             var typeInfo = obj.GetType().GetTypeInfo();
 
             foreach (var info in typeInfo.DeclaredProperties)
@@ -301,24 +354,10 @@ namespace Mvb.Core.Components
                 var obserableProp = info.GetValue(obj, null) as MvbBindable;
                 if (obserableProp == null) continue;
 
-                obserableProp.PropertyChanged += (sender, args) =>
-                {
-                    var registerName = $"{info.Name}.{args.PropertyName}";
-                    this.Run(registerName);
-                };
-
-                //Activate sub collections
-                this.ActiveListenerOnObservableCollection(obserableProp, info.Name);
+                var register = $"{parent}.{info.Name}";
+                register = register.TrimStart('.');
+                this.RecursivelyActiveListener(obserableProp, register);
             }
-        }
-       
-
-        private void ActiveListener()
-        {
-            //Subscribe
-            this._vmInstance.PropertyChanged += (sender, args) => { this.Run(args.PropertyName); };
-            this.ActiveListenerOnObservableCollection(this._vmInstance);
-            this.ActiveListenerForMvbBindable(this._vmInstance);
         }
 
         #endregion
