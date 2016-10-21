@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -144,7 +141,6 @@ namespace Mvb.Core.Components
             this._runDictionary.Clear();
         }
 
-       
         /// <summary>
         /// Create istance of MvbBindable on this Binder
         /// </summary>
@@ -193,7 +189,6 @@ namespace Mvb.Core.Components
             #endregion
 
             var vmtype = this._vmInstance.GetType();
-
             if(vmtype != typeof(T))
                 throw new Exception($"Wrong type instance. instance must be of type: {vmtype}");
 
@@ -217,6 +212,8 @@ namespace Mvb.Core.Components
 
             var oldObj = propertyOnObj.GetValue(lastParent, null) as IMvbBindable;
 
+
+            // Clear and Active PropertyChanged
             //Clear ols handler
             oldObj?.ClearHandler();
 
@@ -237,7 +234,12 @@ namespace Mvb.Core.Components
         }
 
         #region PRIVATE
-
+        /// <summary>
+        /// TODO Clear unused
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="property"></param>
+        /// <returns></returns>
         private string GetPropertyName<T>(Expression<Func<T, object>> property)
         {
             LambdaExpression lambda = property;
@@ -285,10 +287,7 @@ namespace Mvb.Core.Components
 
             return $"{string.Join(".",splittedlist)}.{propName}";
         }
-
-
         
-
         private void ActiveListenerOnObservableCollection(object obj, string propertyNameSuffix = null)
         {
             var typeInfo = obj.GetType().GetTypeInfo();
@@ -326,39 +325,11 @@ namespace Mvb.Core.Components
                 };
             }
         }
-
-        /// <summary>
-        /// Active listener for observable property
-        /// </summary>
-        /// <param name="obj"></param>
-        private void ActiveListenerForMvbBindable(object obj)
-        {
-            var typeInfo = obj.GetType().GetTypeInfo();
-
-            foreach (var info in typeInfo.DeclaredProperties)
-            {
-                var obserableProp = info.GetValue(obj, null) as MvbBindable;
-                if (obserableProp == null) continue;
-
-                obserableProp.PropertyChanged += (sender, args) =>
-                {
-                    var registerName = $"{info.Name}.{args.PropertyName}";
-                    this.Run(registerName);
-                };
-
-                //Activate sub collections
-                this.ActiveListenerOnObservableCollection(obserableProp, info.Name);
-            }
-        }
-       
-
+        
         private void ActiveListener()
         {
             //Subscribe
             this.RecursivelyActiveListener(this._vmInstance);
-            //this._vmInstance.PropertyChanged += (sender, args) => { this.Run(args.PropertyName); };
-            //this.ActiveListenerOnObservableCollection(this._vmInstance);
-            //this.ActiveListenerForMvbBindable(this._vmInstance);
         }
 
         private void RecursivelyActiveListener(object obj, string parent = "")
