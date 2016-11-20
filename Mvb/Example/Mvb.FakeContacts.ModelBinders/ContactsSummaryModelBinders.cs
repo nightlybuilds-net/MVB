@@ -6,7 +6,7 @@ namespace Mvb.FakeContacts.ModelBinders
     {
         public ContactsSummaryModelBinders()
         {
-            MvbMessenger.Subscribe<ContactsModelBinders, int>(this, BindersMessages.ContactsLoaded.ToString(), (model, msg) =>
+            base.Subscribe<ContactsModelBinders, int>(this, BindersMessages.ContactsLoaded.ToString(), (model, msg) =>
             {
                 this.Summary = msg == 0 ? "No contacts found!" : $"There are {msg} contacts!!";
             });
