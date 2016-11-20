@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mvb.Core.Abstract;
 
 namespace Mvb.Core.Components
 {
-    public static class MvbMessenger
+    public class MvbMessenger : IMvbMessenger
     {
-        private static readonly
-            Dictionary<Tuple<string, Type, Type>, List<Tuple<WeakReference, Action<object, object>>>> Calls =
+        private readonly
+            Dictionary<Tuple<string, Type, Type>, List<Tuple<WeakReference, Action<object, object>>>> _calls =
                 new Dictionary<Tuple<string, Type, Type>, List<Tuple<WeakReference, Action<object, object>>>>();
 
         /// <summary>
@@ -18,11 +19,11 @@ namespace Mvb.Core.Components
         /// <param name="sender">Sender</param>
         /// <param name="message">Message</param>
         /// <param name="args">Args</param>
-        public static void Send<TSender, TArgs>(TSender sender, string message, TArgs args) where TSender : class
+        public void Send<TSender, TArgs>(TSender sender, string message, TArgs args) where TSender : class
         {
             if (sender == null)
                 throw new ArgumentNullException(nameof(sender));
-            InnerSend(message, typeof(TSender), typeof(TArgs), sender, args);
+            this.InnerSend(message, typeof(TSender), typeof(TArgs), sender, args);
         }
 
         /// <summary>
@@ -31,11 +32,11 @@ namespace Mvb.Core.Components
         /// <typeparam name="TSender">TSender</typeparam>
         /// <param name="sender">Sender</param>
         /// <param name="message">Message</param>
-        public static void Send<TSender>(TSender sender, string message) where TSender : class
+        public void Send<TSender>(TSender sender, string message) where TSender : class
         {
             if (sender == null)
                 throw new ArgumentNullException(nameof(sender));
-            InnerSend(message, typeof(TSender), null, sender, null);
+            this.InnerSend(message, typeof(TSender), null, sender, null);
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Mvb.Core.Components
         /// <param name="message">Message</param>
         /// <param name="callback">Action</param>
         /// <param name="source">source</param>
-        public static void Subscribe<TSender, TArgs>(object subscriber, string message, Action<TSender, TArgs> callback,
+        public void Subscribe<TSender, TArgs>(object subscriber, string message, Action<TSender, TArgs> callback,
             TSender source = null) where TSender : class
         {
             if (subscriber == null)
@@ -62,7 +63,7 @@ namespace Mvb.Core.Components
                     callback((TSender) sender, (TArgs) args);
             };
 
-            InnerSubscribe(subscriber, message, typeof(TSender), typeof(TArgs), wrap);
+            this.InnerSubscribe(subscriber, message, typeof(TSender), typeof(TArgs), wrap);
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace Mvb.Core.Components
         /// <param name="message">Message</param>
         /// <param name="callback">Action</param>
         /// <param name="source">source</param>
-        public static void Subscribe<TSender>(object subscriber, string message, Action<TSender> callback,
+        public void Subscribe<TSender>(object subscriber, string message, Action<TSender> callback,
             TSender source = null) where TSender : class
         {
             if (subscriber == null)
@@ -88,7 +89,7 @@ namespace Mvb.Core.Components
                     callback((TSender) sender);
             };
 
-            InnerSubscribe(subscriber, message, typeof(TSender), null, wrap);
+            this.InnerSubscribe(subscriber, message, typeof(TSender), null, wrap);
         }
 
         /// <summary>
@@ -98,9 +99,9 @@ namespace Mvb.Core.Components
         /// <typeparam name="TArgs">TArgs</typeparam>
         /// <param name="subscriber">Subscriber</param>
         /// <param name="message">Message</param>
-        public static void Unsubscribe<TSender, TArgs>(object subscriber, string message) where TSender : class
+        public void Unsubscribe<TSender, TArgs>(object subscriber, string message) where TSender : class
         {
-            InnerUnsubscribe(message, typeof(TSender), typeof(TArgs), subscriber);
+            this.InnerUnsubscribe(message, typeof(TSender), typeof(TArgs), subscriber);
         }
 
         /// <summary>
@@ -109,28 +110,27 @@ namespace Mvb.Core.Components
         /// <typeparam name="TSender">TSender</typeparam>
         /// <param name="subscriber">Subscriber</param>
         /// <param name="message">Message</param>
-        public static void Unsubscribe<TSender>(object subscriber, string message) where TSender : class
+        public void Unsubscribe<TSender>(object subscriber, string message) where TSender : class
         {
-            InnerUnsubscribe(message, typeof(TSender), null, subscriber);
+            this.InnerUnsubscribe(message, typeof(TSender), null, subscriber);
         }
 
         /// <summary>
         /// Remove all callbacks
         /// </summary>
-        public static void Reset()
+        public void Reset()
         {
-            Calls.Clear();
+            this._calls.Clear();
         }
 
-        #region PRIVATE
-        private static void InnerSend(string message, Type senderType, Type argType, object sender, object args)
+        private void InnerSend(string message, Type senderType, Type argType, object sender, object args)
         {
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
             var key = new Tuple<string, Type, Type>(message, senderType, argType);
-            if (!Calls.ContainsKey(key))
+            if (!this._calls.ContainsKey(key))
                 return;
-            var actions = Calls[key];
+            var actions = this._calls[key];
             if (actions == null || !actions.Any())
                 return;
 
@@ -142,25 +142,25 @@ namespace Mvb.Core.Components
             }
         }
 
-        private static void InnerSubscribe(object subscriber, string message, Type senderType, Type argType,
+        private void InnerSubscribe(object subscriber, string message, Type senderType, Type argType,
             Action<object, object> callback)
         {
             if (message == null)
                 throw new ArgumentNullException(nameof(message));
             var key = new Tuple<string, Type, Type>(message, senderType, argType);
             var value = new Tuple<WeakReference, Action<object, object>>(new WeakReference(subscriber), callback);
-            if (Calls.ContainsKey(key))
+            if (this._calls.ContainsKey(key))
             {
-                Calls[key].Add(value);
+                this._calls[key].Add(value);
             }
             else
             {
                 var list = new List<Tuple<WeakReference, Action<object, object>>> { value };
-                Calls[key] = list;
+                this._calls[key] = list;
             }
         }
 
-        private static void InnerUnsubscribe(string message, Type senderType, Type argType, object subscriber)
+        private void InnerUnsubscribe(string message, Type senderType, Type argType, object subscriber)
         {
             if (subscriber == null)
                 throw new ArgumentNullException(nameof(subscriber));
@@ -168,12 +168,11 @@ namespace Mvb.Core.Components
                 throw new ArgumentNullException(nameof(message));
 
             var key = new Tuple<string, Type, Type>(message, senderType, argType);
-            if (!Calls.ContainsKey(key))
+            if (!this._calls.ContainsKey(key))
                 return;
-            Calls[key].RemoveAll(tuple => !tuple.Item1.IsAlive || tuple.Item1.Target == subscriber);
-            if (!Calls[key].Any())
-                Calls.Remove(key);
-        } 
-        #endregion
+            this._calls[key].RemoveAll(tuple => !tuple.Item1.IsAlive || tuple.Item1.Target == subscriber);
+            if (!this._calls[key].Any())
+                this._calls.Remove(key);
+        }
     }
 }
