@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Mvb.Core.Base;
 using Mvb.Core.Components;
 using Mvb.Core.Components.BinderActions;
 using Mvb.FakeContacts.Abstract;
@@ -45,8 +46,8 @@ namespace Mvb.FakeContacts.ModelBinders
 				{
 					this.Contacts.Reset(contacts.Result);
 
-					//Notify recovery of contacts to others binders
-					MvbMessenger.Send(this, BindersMessages.ContactsLoaded.ToString(), contacts.Result.Count());
+                    //Notify recovery of contacts to others binders
+                    base.Send(this, BindersMessages.ContactsLoaded.ToString(), contacts.Result.Count());
 
                     //Run OnContactReceived UIActions
                     this.OnContactReceived.Invoke(contacts.Result.Count());
