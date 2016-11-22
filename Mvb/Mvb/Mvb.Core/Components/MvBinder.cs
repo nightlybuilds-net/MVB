@@ -112,14 +112,20 @@ namespace Mvb.Core.Components
             ICollection<Tuple<WeakReference,Action>> value;
             if (!this._runDictionary.TryGetValue(property, out value)) return;
 
+            var toRemove = new List<Tuple<WeakReference, Action>>();
+
             // Run every action on live subscriber
             foreach (var tuple in value)
             {
                 if (tuple.Item1.IsAlive)
                     this._uiRunner.Run(tuple.Item2);
                 else
-                    this._runDictionary[property].Remove(tuple);
+                    toRemove.Add(tuple);
             }
+
+            // Clear action on dead objects
+            foreach (var toRemoveItem in toRemove)
+                value.Remove(toRemoveItem);
         }
 
         /// <summary>
@@ -143,13 +149,20 @@ namespace Mvb.Core.Components
             ICollection<Tuple<WeakReference,Action<MvbCollectionUpdateArgs>>> value;
             if (!this._runCollectionDictionary.TryGetValue(property, out value)) return;
 
+            var toRemove = new List<Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>>();
+
+            // Run every action on live subscriber
             foreach (var tuple in value)
             {
                 if (tuple.Item1.IsAlive)
-                    this._uiRunner.Run(tuple.Item2,args);
+                    this._uiRunner.Run(tuple.Item2, args);
                 else
-                    this._runCollectionDictionary[property].Remove(tuple);
+                    toRemove.Add(tuple);
             }
+
+            // Clear action on dead objects
+            foreach (var toRemoveItem in toRemove)
+                value.Remove(toRemoveItem);
         }
 
         /// <summary>
