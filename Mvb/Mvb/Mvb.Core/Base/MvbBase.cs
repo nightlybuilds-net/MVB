@@ -46,9 +46,9 @@ namespace Mvb.Core.Base
             Messenger.Unsubscribe<TSender>(subscriber, message);
         }
 
-        public void Reset()
+        public void ResetMessenger()
         {
-            Messenger.Reset();
+            Messenger.ResetMessenger();
         } 
         #endregion
     }
