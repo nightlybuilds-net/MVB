@@ -21,8 +21,6 @@ namespace Mvb.FakeContacts.Wpf.App
     {
         private readonly ContactsModelBinders _contactsMb;
         private readonly ContactsSummaryModelBinders _contactSummaryMb;
-        private TestWeakRef t2;
-        private TestWeakRef t1;
 
         public MainWindow()
         {
@@ -116,7 +114,7 @@ namespace Mvb.FakeContacts.Wpf.App
             });
 
             //MvbAction
-            this._contactsMb.OnContactReceived.AddAction(i =>
+            this._contactsMb.OnContactReceived.AddAction(this,i =>
             {
                 this.NotificationTray.NotificationsSource.Show($"MvbActions are Awesome! There are {i} contacts!",NotificationType.Success);
             });
