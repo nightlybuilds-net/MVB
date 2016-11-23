@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Mvb.Core.Abstract;
 
 namespace Mvb.Core.Components.BinderActions
@@ -19,6 +20,19 @@ namespace Mvb.Core.Components.BinderActions
         public void AddAction(object subscriber, Action action)
         {
             this._bindersAction.Add(new Tuple<WeakReference, Action>(new WeakReference(subscriber),action));
+        }
+
+        public void Clear()
+        {
+            this._bindersAction.Clear();
+        }
+
+        public void Clear(object subscriber)
+        {
+            var toRemove = this._bindersAction.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+            foreach (var tuple in toRemove)
+                this._bindersAction.Remove(tuple);
         }
 
         public void Invoke()
@@ -57,6 +71,19 @@ namespace Mvb.Core.Components.BinderActions
         public void AddAction(object subscriber, Action<T> action)
         {
             this._bindersAction.Add(new Tuple<WeakReference, Action<T>>(new WeakReference(subscriber),action));
+        }
+
+        public void Clear()
+        {
+            this._bindersAction.Clear();
+        }
+
+        public void Clear(object subscriber)
+        {
+            var toRemove = this._bindersAction.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+            foreach (var tuple in toRemove)
+                this._bindersAction.Remove(tuple);
         }
 
         public void Invoke(T arg)
