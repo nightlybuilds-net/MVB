@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Linq;
 using Mvb.Core.Abstract;
 using Mvb.Core.Args;
-using Mvb.Core.Base;
 
 namespace Mvb.Core.Components
 {

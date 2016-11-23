@@ -52,7 +52,7 @@ namespace Mvb.FakeContacts.Wpf.App
 		private void InitModelBinders()
         {
             //Actions for 'IsBusy'
-            this._contactsMb.Binder.AddAction<ContactsModelBinders>(b => b.IsBusy, () =>
+            this._contactsMb.Binder.AddAction<ContactsModelBinders>(this,b => b.IsBusy, () =>
             {
                 this.SummaryLbl.Background = this._contactsMb.IsBusy ? Brushes.Red : Brushes.Transparent;
                 this.LoadBtn.IsEnabled = !this._contactsMb.IsBusy;
@@ -63,7 +63,7 @@ namespace Mvb.FakeContacts.Wpf.App
             });
 
             //Actions for 'Summary'
-            this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(b => b.Summary, () =>
+            this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(this,b => b.Summary, () =>
             {
                 this.SummaryLbl.Content = this._contactSummaryMb.Summary;
             });
@@ -71,7 +71,7 @@ namespace Mvb.FakeContacts.Wpf.App
             this._contactSummaryMb.Binder.Run<ContactsSummaryModelBinders>(b => b.Summary);
 
             //Actions for 'Contacts' collections
-            this._contactsMb.Binder.AddActionForCollection<ContactsModelBinders>(b => b.Contacts, args =>
+            this._contactsMb.Binder.AddActionForCollection<ContactsModelBinders>(this,b => b.Contacts, args =>
             {
                 if (args.MvbUpdateAction == MvbUpdateAction.CollectionChanged)
                 {
@@ -114,7 +114,7 @@ namespace Mvb.FakeContacts.Wpf.App
             });
 
             //MvbAction
-            this._contactsMb.OnContactReceived.AddAction(i =>
+            this._contactsMb.OnContactReceived.AddAction(this,i =>
             {
                 this.NotificationTray.NotificationsSource.Show($"MvbActions are Awesome! There are {i} contacts!",NotificationType.Success);
             });
