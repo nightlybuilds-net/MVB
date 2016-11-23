@@ -50,7 +50,7 @@ namespace Mvb.FakeContacts.WinForm.App
         private void InitModelBinders()
         {
             //Actions for 'IsBusy'
-            this._contactsMb.Binder.AddAction<ContactsModelBinders>(b => b.IsBusy, () =>
+            this._contactsMb.Binder.AddAction<ContactsModelBinders>(this,b => b.IsBusy, () =>
             {
                 this.SummaryLbl.MvbInvoke(label =>
                 {
@@ -76,7 +76,7 @@ namespace Mvb.FakeContacts.WinForm.App
             });
 
             //Actions for 'Summary'
-            this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(b => b.Summary, () =>
+            this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(this,b => b.Summary, () =>
             {
                 this.SummaryLbl.MvbInvoke(label =>
                 {
@@ -87,7 +87,7 @@ namespace Mvb.FakeContacts.WinForm.App
             this._contactSummaryMb.Binder.Run<ContactsSummaryModelBinders>(b => b.Summary);
 
             //Actions for 'Contacts' collections
-            this._contactsMb.Binder.AddActionForCollection<ContactsModelBinders>(b => b.Contacts, args =>
+            this._contactsMb.Binder.AddActionForCollection<ContactsModelBinders>(this,b => b.Contacts, args =>
             {
                 if (args.MvbUpdateAction == MvbUpdateAction.CollectionChanged)
                 {
@@ -135,7 +135,7 @@ namespace Mvb.FakeContacts.WinForm.App
             });
 
             //MvbAction
-            this._contactsMb.OnContactReceived.AddAction(i =>
+            this._contactsMb.OnContactReceived.AddAction(this,i =>
             {
                 this.MvbInvoke(form => MessageBox.Show(form, $"MvbActions are Awesome! There are {i} contacts!")) ;
             });
