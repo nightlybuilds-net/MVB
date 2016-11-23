@@ -165,13 +165,93 @@ namespace Mvb.Core.Components
                 value.Remove(toRemoveItem);
         }
 
+        #region CLEAR
+
+        /// <summary>
+        /// Clear Action by propertyname
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="subscriber"></param>
+        /// <param name="property"></param>
+        public void ClearActions<TSource>(object subscriber, Expression<Func<TSource, object>> property)
+        {
+            var propertyName = this.GetCompositePropertyName(property);
+            this.ClearActions(subscriber,propertyName);
+        }
+
+        /// <summary>
+        /// Clear action of subscriber for passed property
+        /// </summary>
+        /// <param name="subscriber"></param>
+        /// <param name="property"></param>
+        public void ClearActions(object subscriber, string property)
+        {
+            if (this._runDictionary.ContainsKey(property))
+            {
+                var tuples = this._runDictionary[property];
+                var toRemove = tuples.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+                foreach (var tuple in toRemove)
+                    tuples.Remove(tuple);
+            }
+
+            if (this._runCollectionDictionary.ContainsKey(property))
+            {
+                var tuples = this._runCollectionDictionary[property];
+                var toRemove = tuples.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+                foreach (var tuple in toRemove)
+                    tuples.Remove(tuple);
+            }
+        }
+
+
         /// <summary>
         /// Remove All actions
         /// </summary>
         public void ClearActions()
         {
             this._runDictionary.Clear();
+            this._runCollectionDictionary.Clear();
         }
+
+
+        /// <summary>
+        /// Clear all action of passednsubscriber
+        /// </summary>
+        /// <param name="subscriber"></param>
+        public void ClearActions(object subscriber)
+        {
+            // simply action
+            var dictionaryWithSubscriber =
+                this._runDictionary.Where(w => w.Value.Select(s => s.Item1.Target).Contains(subscriber));
+
+            foreach (var keyValuePair in dictionaryWithSubscriber)
+            {
+                var actions = keyValuePair.Value;
+                var toRemove = actions.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+                foreach (var tuple in toRemove)
+                    actions.Remove(tuple);
+            }
+
+            // collection actions
+            var dictionarCollectionyWithSubscriber =
+                this._runCollectionDictionary.Where(w => w.Value.Select(s => s.Item1.Target).Contains(subscriber));
+
+            foreach (var keyValuePair in dictionarCollectionyWithSubscriber)
+            {
+                var actions = keyValuePair.Value;
+                var toRemove = actions.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+                foreach (var tuple in toRemove)
+                    actions.Remove(tuple);
+            }
+        }
+
+
+       
+        #endregion
 
         /// <summary>
         /// Create istance of MvbBindable on this Binder
