@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -14,8 +11,8 @@ namespace Mvb.Core.Components
 {
     public class MvBinder
     {
-        private readonly Dictionary<string, ICollection<Action<MvbCollectionUpdateArgs>>> _runCollectionDictionary;
-        private readonly Dictionary<string, ICollection<Action>> _runDictionary;
+        private readonly Dictionary<string, ICollection<Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>>> _runCollectionDictionary;
+        private readonly Dictionary<string, ICollection<Tuple<WeakReference,Action>>> _runDictionary;
 
         private readonly IUiRunner _uiRunner;
         private readonly MvbBase _vmInstance;
@@ -23,8 +20,8 @@ namespace Mvb.Core.Components
         public MvBinder(MvbBase vmInstance)
         {
             this._vmInstance = vmInstance;
-            this._runDictionary = new Dictionary<string, ICollection<Action>>();
-            this._runCollectionDictionary = new Dictionary<string, ICollection<Action<MvbCollectionUpdateArgs>>>();
+            this._runDictionary = new Dictionary<string, ICollection<Tuple<WeakReference, Action>>>();
+            this._runCollectionDictionary = new Dictionary<string, ICollection<Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>>>();
 
             //On UiThread Runner
             this._uiRunner = UiRunnerDispenser.GetRunner();
@@ -38,53 +35,61 @@ namespace Mvb.Core.Components
         /// </summary>
         /// <param name="id">property name</param>
         /// <param name="action">action</param>
-        public void AddAction(string id, Action action)
+        /// <param name="subscriber">subscriber</param>
+        public void AddAction(object subscriber,string id, Action action)
         {
             //add to list
+            var weakref = new WeakReference(subscriber);
+
             if (this._runDictionary.ContainsKey(id))
-                this._runDictionary[id].Add(action);
+                this._runDictionary[id].Add(new Tuple<WeakReference, Action>(weakref, action));
             else
-                this._runDictionary.Add(id, new List<Action> {action});
+                this._runDictionary.Add(id, new List<Tuple<WeakReference, Action>>() {new Tuple<WeakReference, Action>(weakref,action)});
         }
 
         /// <summary>
         /// Add action for property
         /// </summary>
         /// <typeparam name="TSource">TSource</typeparam>
+        /// <param name="subscriber">subscriber</param>
         /// <param name="property">property</param>
         /// <param name="action">action</param>
-        public void AddAction<TSource>(Expression<Func<TSource, object>> property, Action action) where TSource : MvbBase
+        public void AddAction<TSource>(object subscriber,Expression<Func<TSource, object>> property, Action action ) where TSource : MvbBase
         {
             var propName = this.GetCompositePropertyName(property);
-            this.AddAction(propName, action);
+            this.AddAction(subscriber,propName, action);
         }
 
         /// <summary>
         /// Add action for collection property
         /// </summary>
         /// <typeparam name="TSource">TSource IMvbCollection</typeparam>
+        /// <param name="subscriber"></param>
         /// <param name="property"></param>
         /// <param name="action"></param>
-        public void AddActionForCollection<TSource>(Expression<Func<TSource, object>> property,
+        public void AddActionForCollection<TSource>(object subscriber, Expression<Func<TSource, object>> property,
             Action<MvbCollectionUpdateArgs> action) where TSource : MvbBase
         {
             var propName = this.GetCompositePropertyName(property);
 
-            this.AddActionForCollection(propName, action);
+            this.AddActionForCollection(subscriber,propName, action);
         }
 
         /// <summary>
         /// Add action for collection property
         /// </summary>
+        /// <param name="subscriber">subscriber object</param>
         /// <param name="propertyName"></param>
         /// <param name="action"></param>
-        public void AddActionForCollection(string propertyName, Action<MvbCollectionUpdateArgs> action)
+        public void AddActionForCollection(object subscriber,string propertyName, Action<MvbCollectionUpdateArgs> action)
         {
+            var weakref = new WeakReference(subscriber);
+
             //add to list
             if (this._runCollectionDictionary.ContainsKey(propertyName))
-                this._runCollectionDictionary[propertyName].Add(action);
+                this._runCollectionDictionary[propertyName].Add(new Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>(weakref, action));
             else
-                this._runCollectionDictionary.Add(propertyName, new List<Action<MvbCollectionUpdateArgs>> {action});
+                this._runCollectionDictionary.Add(propertyName, new List<Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>>() { new Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>(weakref, action) });
         }
 
         /// <summary>
@@ -104,11 +109,23 @@ namespace Mvb.Core.Components
         /// <param name="property"></param>
         public void Run(string property)
         {
-            ICollection<Action> value;
+            ICollection<Tuple<WeakReference,Action>> value;
             if (!this._runDictionary.TryGetValue(property, out value)) return;
 
-            foreach (var action in value)
-                this._uiRunner.Run(action);
+            var toRemove = new List<Tuple<WeakReference, Action>>();
+
+            // Run every action on live subscriber
+            foreach (var tuple in value)
+            {
+                if (tuple.Item1.IsAlive)
+                    this._uiRunner.Run(tuple.Item2);
+                else
+                    toRemove.Add(tuple);
+            }
+
+            // Clear action on dead objects
+            foreach (var toRemoveItem in toRemove)
+                value.Remove(toRemoveItem);
         }
 
         /// <summary>
@@ -129,12 +146,65 @@ namespace Mvb.Core.Components
         /// <param name="args"></param>
         public void RunCollection(string property, MvbCollectionUpdateArgs args)
         {
-            ICollection<Action<MvbCollectionUpdateArgs>> value;
+            ICollection<Tuple<WeakReference,Action<MvbCollectionUpdateArgs>>> value;
             if (!this._runCollectionDictionary.TryGetValue(property, out value)) return;
 
-            foreach (var action in value)
-                this._uiRunner.Run(action, args);
+            var toRemove = new List<Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>>();
+
+            // Run every action on live subscriber
+            foreach (var tuple in value)
+            {
+                if (tuple.Item1.IsAlive)
+                    this._uiRunner.Run(tuple.Item2, args);
+                else
+                    toRemove.Add(tuple);
+            }
+
+            // Clear action on dead objects
+            foreach (var toRemoveItem in toRemove)
+                value.Remove(toRemoveItem);
         }
+
+        #region CLEAR
+
+        /// <summary>
+        /// Clear Action by propertyname
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="subscriber"></param>
+        /// <param name="property"></param>
+        public void ClearActions<TSource>(object subscriber, Expression<Func<TSource, object>> property)
+        {
+            var propertyName = this.GetCompositePropertyName(property);
+            this.ClearActions(subscriber,propertyName);
+        }
+
+        /// <summary>
+        /// Clear action of subscriber for passed property
+        /// </summary>
+        /// <param name="subscriber"></param>
+        /// <param name="property"></param>
+        public void ClearActions(object subscriber, string property)
+        {
+            if (this._runDictionary.ContainsKey(property))
+            {
+                var tuples = this._runDictionary[property];
+                var toRemove = tuples.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+                foreach (var tuple in toRemove)
+                    tuples.Remove(tuple);
+            }
+
+            if (this._runCollectionDictionary.ContainsKey(property))
+            {
+                var tuples = this._runCollectionDictionary[property];
+                var toRemove = tuples.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+                foreach (var tuple in toRemove)
+                    tuples.Remove(tuple);
+            }
+        }
+
 
         /// <summary>
         /// Remove All actions
@@ -142,9 +212,47 @@ namespace Mvb.Core.Components
         public void ClearActions()
         {
             this._runDictionary.Clear();
+            this._runCollectionDictionary.Clear();
         }
 
+
+        /// <summary>
+        /// Clear all action of passednsubscriber
+        /// </summary>
+        /// <param name="subscriber"></param>
+        public void ClearActions(object subscriber)
+        {
+            // simply action
+            var dictionaryWithSubscriber =
+                this._runDictionary.Where(w => w.Value.Select(s => s.Item1.Target).Contains(subscriber));
+
+            foreach (var keyValuePair in dictionaryWithSubscriber)
+            {
+                var actions = keyValuePair.Value;
+                var toRemove = actions.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+                foreach (var tuple in toRemove)
+                    actions.Remove(tuple);
+            }
+
+            // collection actions
+            var dictionarCollectionyWithSubscriber =
+                this._runCollectionDictionary.Where(w => w.Value.Select(s => s.Item1.Target).Contains(subscriber));
+
+            foreach (var keyValuePair in dictionarCollectionyWithSubscriber)
+            {
+                var actions = keyValuePair.Value;
+                var toRemove = actions.Where(w => w.Item1.Target.Equals(subscriber)).ToList();
+
+                foreach (var tuple in toRemove)
+                    actions.Remove(tuple);
+            }
+        }
+
+
        
+        #endregion
+
         /// <summary>
         /// Create istance of MvbBindable on this Binder
         /// </summary>
@@ -156,7 +264,10 @@ namespace Mvb.Core.Components
         {
             var bindableInstance =  newIstance.Invoke();
 
-            #region GET property name
+            var propertyTree = new Queue<string>();
+
+            #region PROPERTY TREE
+
             LambdaExpression lambda = property;
             MemberExpression memberExpression;
 
@@ -166,39 +277,81 @@ namespace Mvb.Core.Components
                 memberExpression = (MemberExpression)unaryExpression.Operand;
             }
             else
+            {
                 memberExpression = (MemberExpression)lambda.Body;
+            }
 
-            var propertyName = ((PropertyInfo)memberExpression.Member).Name; 
+            //Check composite ex binder.MyObject.MyProperty => MyObject.MyProperty
+            var propName = ((PropertyInfo)memberExpression.Member).Name;
+            var body = lambda.Body.ToString();
+            var bodySplitted = body.Split('.');
+            var isComposite = bodySplitted.Length > 2;
+
+            if (!isComposite)
+                propertyTree.Enqueue(propName);
+            else
+            {
+                var splittedlist = bodySplitted.ToList();
+                splittedlist.RemoveAt(0);
+                foreach (var s in splittedlist)
+                    propertyTree.Enqueue(s);
+            }
+            var theDeepProperty = string.Join(".", propertyTree);
+
             #endregion
 
             var vmtype = this._vmInstance.GetType();
-
             if(vmtype != typeof(T))
                 throw new Exception($"Wrong type instance. instance must be of type: {vmtype}");
 
-            var typeInfo = vmtype.GetTypeInfo();
+            PropertyInfo propertyOnObj = null;
+            object lastParent = this._vmInstance;
 
-            var propertyOnObj = typeInfo.DeclaredProperties.Single(s => s.Name == propertyName);
-            var oldObj = propertyOnObj.GetValue(this._vmInstance, null) as IMvbBindable;
+            while (propertyTree.Any())
+            {
+                var propertyName = propertyTree.Dequeue();
+                var parentTypeInfo = lastParent.GetType().GetTypeInfo();
 
+                propertyOnObj = parentTypeInfo.DeclaredProperties.Single(s => s.Name == propertyName);
+
+                if(propertyTree.Count > 0)
+                    lastParent = propertyOnObj.GetValue(lastParent);
+            }
+
+
+            if(propertyOnObj == null)
+                throw new Exception("Deep property not found!");
+
+            var oldObj = propertyOnObj.GetValue(lastParent, null) as IMvbBindable;
+
+
+            // Clear and Active PropertyChanged
             //Clear ols handler
             oldObj?.ClearHandler();
 
             //set new object
-            propertyOnObj.SetValue(this._vmInstance, bindableInstance);
+            propertyOnObj.SetValue(lastParent, bindableInstance);
 
             //Active PropertyChanged if not null
             if (bindableInstance == null) return;
            
             bindableInstance.PropertyChanged += (sender, args) =>
             {
-                var registerName = $"{propertyOnObj.Name}.{args.PropertyName}";
+                var registerName = $"{theDeepProperty}.{args.PropertyName}";
                 this.Run(registerName);
             };
+
+            //Activate sub collections
+            this.ActiveListenerOnObservableCollection(bindableInstance, propertyOnObj.Name);
         }
 
         #region PRIVATE
-
+        /// <summary>
+        /// TODO Clear unused
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="property"></param>
+        /// <returns></returns>
         private string GetPropertyName<T>(Expression<Func<T, object>> property)
         {
             LambdaExpression lambda = property;
@@ -246,8 +399,8 @@ namespace Mvb.Core.Components
 
             return $"{string.Join(".",splittedlist)}.{propName}";
         }
-
-        private void ActiveListenerOnObservableCollection(object obj)
+        
+        private void ActiveListenerOnObservableCollection(object obj, string propertyNameSuffix = null)
         {
             var typeInfo = obj.GetType().GetTypeInfo();
 
@@ -259,7 +412,10 @@ namespace Mvb.Core.Components
                 if (!isMvbCollection) continue;
 
                 var obserableProp = (IMvbCollection) info.GetValue(obj, null);
+                if(obserableProp == null) continue;
 
+                var runPropertyName = propertyNameSuffix != null ? $"{propertyNameSuffix}.{info.Name}" : info.Name;
+                runPropertyName = runPropertyName.TrimStart('.');
                 obserableProp.CollectionChanged += (sender, args) =>
                 {
                     var mvbArgs = new MvbCollectionUpdateArgs
@@ -267,7 +423,7 @@ namespace Mvb.Core.Components
                         MvbUpdateAction = MvbUpdateAction.CollectionChanged,
                         NotifyCollectionChangedEventArgs = args
                     };
-                    this.RunCollection(info.Name, mvbArgs);
+                    this.RunCollection(runPropertyName, mvbArgs);
                 };
 
                 obserableProp.MvbItemCollectionChanged += (sender, args) =>
@@ -281,40 +437,39 @@ namespace Mvb.Core.Components
                 };
             }
         }
-
-        /// <summary>
-        /// Active listener for observable property
-        /// </summary>
-        /// <param name="obj"></param>
-        private void ActiveListenerForMvbBindable(object obj)
+        
+        private void ActiveListener()
         {
+            //Subscribe
+            this.RecursivelyActiveListener(this._vmInstance);
+        }
+
+        private void RecursivelyActiveListener(object obj, string parent = "")
+        {
+            // Active on main object
+            var mainBindable = obj as MvbBindable;
+            if (mainBindable != null)
+            {
+                mainBindable.PropertyChanged += (sender, args) =>
+                {
+                    var registerName = string.IsNullOrWhiteSpace(parent) ? $"{args.PropertyName}" : $"{parent}.{args.PropertyName}";
+                    this.Run(registerName);
+                };
+            }
+
+            this.ActiveListenerOnObservableCollection(obj, parent);
+
             var typeInfo = obj.GetType().GetTypeInfo();
 
             foreach (var info in typeInfo.DeclaredProperties)
             {
                 var obserableProp = info.GetValue(obj, null) as MvbBindable;
-                if (obserableProp == null) return;
+                if (obserableProp == null) continue;
 
-                obserableProp.PropertyChanged += (sender, args) =>
-                {
-                    var registerName = $"{info.Name}.{args.PropertyName}";
-                    this.Run(registerName);
-                };
+                var register = $"{parent}.{info.Name}";
+                register = register.TrimStart('.');
+                this.RecursivelyActiveListener(obserableProp, register);
             }
-        }
-
-        private void ObserablePropOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        private void ActiveListener()
-        {
-            //Subscribe
-            this._vmInstance.PropertyChanged += (sender, args) => { this.Run(args.PropertyName); };
-            this.ActiveListenerOnObservableCollection(this._vmInstance);
-            this.ActiveListenerForMvbBindable(this._vmInstance);
         }
 
         #endregion

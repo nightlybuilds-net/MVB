@@ -83,7 +83,7 @@ namespace Mvb.FakeContacts.Droid.App
 		private void InitModelBinders()
 		{
 			//Actions for 'IsBusy'
-			this._contactsMb.Binder.AddAction<ContactsModelBinders>(b => b.IsBusy, () =>
+			this._contactsMb.Binder.AddAction<ContactsModelBinders>(this,b => b.IsBusy, () =>
 				{
 					this._summaryText.SetBackgroundColor(this._contactsMb.IsBusy ? Color.Red : Color.Transparent);
 					this._reloadButton.Enabled = !this._contactsMb.IsBusy;
@@ -97,7 +97,7 @@ namespace Mvb.FakeContacts.Droid.App
 				});
 
 			//Actions for 'Summary'
-			this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(b => b.Summary, () =>
+			this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(this,b => b.Summary, () =>
 			  {
 				  this._summaryText.Text = this._contactSummaryMb.Summary;
 			  });
@@ -105,7 +105,7 @@ namespace Mvb.FakeContacts.Droid.App
 			this._contactSummaryMb.Binder.Run<ContactsSummaryModelBinders>(b => b.Summary);
 
 			//Actions for 'Contacts' collections
-			this._contactsMb.Binder.AddActionForCollection<ContactsModelBinders>(b => b.Contacts, args =>
+			this._contactsMb.Binder.AddActionForCollection<ContactsModelBinders>(this,b => b.Contacts, args =>
 			  {
 				  if (args.MvbUpdateAction == MvbUpdateAction.CollectionChanged)
 				  {
@@ -141,7 +141,7 @@ namespace Mvb.FakeContacts.Droid.App
 			  });
 
             //Actions for "OncontactReceived"
-            this._contactsMb.OnContactReceived.AddAction(i =>
+            this._contactsMb.OnContactReceived.AddAction(this,i =>
             {
                 Toast.MakeText(this.ApplicationContext, $"That\'s awesome! Binder says that there are {i} contacts!", ToastLength.Long).Show();
             });
