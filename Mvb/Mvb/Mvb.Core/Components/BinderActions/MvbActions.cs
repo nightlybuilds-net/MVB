@@ -8,18 +8,19 @@ namespace Mvb.Core.Components.BinderActions
     public class MvbActions : IBinderActions
     {
         private readonly IUiRunner _uiRunner;
-        private readonly IList<Tuple<WeakReference,Action>> _bindersAction;
+        private readonly IList<Tuple<WeakReference,WeakReference<Action>>> _bindersAction;
 
         public MvbActions()
         {
             //On UiThread Runner
             this._uiRunner = UiRunnerDispenser.GetRunner();
-            this._bindersAction = new List<Tuple<WeakReference, Action>>();
+            this._bindersAction = new List<Tuple<WeakReference, WeakReference<Action>>>();
         }
 
         public void AddAction(object subscriber, Action action)
         {
-            this._bindersAction.Add(new Tuple<WeakReference, Action>(new WeakReference(subscriber),action));
+            this._bindersAction.Add(new Tuple<WeakReference, WeakReference<Action>>(
+                new WeakReference(subscriber), new WeakReference<Action>(action)));
         }
 
         public void Clear()
@@ -37,11 +38,14 @@ namespace Mvb.Core.Components.BinderActions
 
         public void Invoke()
         {
-            var toRemove = new List<Tuple<WeakReference, Action>>();
+            var toRemove = new List<Tuple<WeakReference, WeakReference<Action>>>();
             foreach (var tuple in this._bindersAction)
             {
-                if(tuple.Item1.IsAlive)
-                    this._uiRunner.Run(tuple.Item2);
+                Action action;
+                var extracted = tuple.Item2.TryGetTarget(out action);
+
+                if(tuple.Item1.IsAlive && extracted)
+                    this._uiRunner.Run(action);
                 else
                     toRemove.Add(tuple);
             }
@@ -57,20 +61,20 @@ namespace Mvb.Core.Components.BinderActions
     public class MvbActions<T> : IBinderActions<T>
     {
         private readonly IUiRunner _uiRunner;
-        private readonly IList<Tuple<WeakReference,Action<T>>> _bindersAction;
+        private readonly IList<Tuple<WeakReference,WeakReference<Action<T>>>> _bindersAction;
 
 
         public MvbActions()
         {
             //On UiThread Runner
             this._uiRunner = UiRunnerDispenser.GetRunner();
-            this._bindersAction = new List<Tuple<WeakReference, Action<T>>>();
+            this._bindersAction = new List<Tuple<WeakReference, WeakReference<Action<T>>>>();
         }
 
       
         public void AddAction(object subscriber, Action<T> action)
         {
-            this._bindersAction.Add(new Tuple<WeakReference, Action<T>>(new WeakReference(subscriber),action));
+            this._bindersAction.Add(new Tuple<WeakReference, WeakReference<Action<T>>>(new WeakReference(subscriber),new WeakReference<Action<T>>(action)));
         }
 
         public void Clear()
@@ -88,11 +92,14 @@ namespace Mvb.Core.Components.BinderActions
 
         public void Invoke(T arg)
         {
-            var toRemove = new List<Tuple<WeakReference, Action<T>>>();
+            var toRemove = new List<Tuple<WeakReference, WeakReference<Action<T>>>>();
             foreach (var tuple in this._bindersAction)
             {
-                if (tuple.Item1.IsAlive)
-                    this._uiRunner.Run(tuple.Item2,arg);
+                Action<T> action;
+                var extracted = tuple.Item2.TryGetTarget(out action);
+
+                if (tuple.Item1.IsAlive && extracted)
+                    this._uiRunner.Run(action,arg);
                 else
                     toRemove.Add(tuple);
             }
