@@ -6,7 +6,7 @@ namespace Mvb.Platform.Win.Wpf
     {
         public static void Init()
         {
-            UiRunnerDispenser.RegisterRunner(() => new WpfUiRunner());
+            Dispenser.RegisterRunner(() => new WpfUiRunner());
         }
     }
 }

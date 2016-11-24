@@ -7,7 +7,7 @@ namespace Mvb.Platform.MacOs
 	{
 		public static void Init()
 		{
-			UiRunnerDispenser.RegisterRunner(() => new MacOsUiRunner());
+			Dispenser.RegisterRunner(() => new MacOsUiRunner());
 		}
 	}
 }
