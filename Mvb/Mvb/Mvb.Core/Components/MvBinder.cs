@@ -24,7 +24,7 @@ namespace Mvb.Core.Components
             this._runCollectionDictionary = new Dictionary<string, ICollection<Tuple<WeakReference, WeakReference<Action<MvbCollectionUpdateArgs>>>>>();
 
             //On UiThread Runner
-            this._uiRunner = UiRunnerDispenser.GetRunner();
+            this._uiRunner = Dispenser.GetRunner();
 
             //Active listener on VM
             this.ActiveListener();
