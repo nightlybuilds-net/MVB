@@ -11,8 +11,8 @@ namespace Mvb.Core.Components
 {
     public class MvBinder
     {
-        private readonly Dictionary<string, ICollection<Tuple<WeakReference, WeakReference<Action<MvbCollectionUpdateArgs>>>>> _runCollectionDictionary;
-        private readonly Dictionary<string, ICollection<Tuple<WeakReference,WeakReference<Action>>>> _runDictionary;
+        private readonly Dictionary<string, ICollection<Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>>> _runCollectionDictionary;
+        private readonly Dictionary<string, ICollection<Tuple<WeakReference,Action>>> _runDictionary;
 
         private readonly IUiRunner _uiRunner;
         private readonly MvbBase _vmInstance;
@@ -20,8 +20,8 @@ namespace Mvb.Core.Components
         public MvBinder(MvbBase vmInstance)
         {
             this._vmInstance = vmInstance;
-            this._runDictionary = new Dictionary<string, ICollection<Tuple<WeakReference, WeakReference<Action>>>>();
-            this._runCollectionDictionary = new Dictionary<string, ICollection<Tuple<WeakReference, WeakReference<Action<MvbCollectionUpdateArgs>>>>>();
+            this._runDictionary = new Dictionary<string, ICollection<Tuple<WeakReference, Action>>>();
+            this._runCollectionDictionary = new Dictionary<string, ICollection<Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>>>();
 
             //On UiThread Runner
             this._uiRunner = Dispenser.GetRunner();
@@ -40,12 +40,11 @@ namespace Mvb.Core.Components
         {
             //add to list
             var weakref = new WeakReference(subscriber);
-            var weakAction = new WeakReference<Action>(action);
 
             if (this._runDictionary.ContainsKey(id))
-                this._runDictionary[id].Add(new Tuple<WeakReference, WeakReference<Action>>(weakref, weakAction));
+                this._runDictionary[id].Add(new Tuple<WeakReference, Action>(weakref, action));
             else
-                this._runDictionary.Add(id, new List<Tuple<WeakReference, WeakReference<Action>>>() {new Tuple<WeakReference, WeakReference<Action>>(weakref,weakAction)});
+                this._runDictionary.Add(id, new List<Tuple<WeakReference, Action>>() {new Tuple<WeakReference, Action>(weakref,action)});
         }
 
         /// <summary>
@@ -85,13 +84,12 @@ namespace Mvb.Core.Components
         public void AddActionForCollection(object subscriber,string propertyName, Action<MvbCollectionUpdateArgs> action)
         {
             var weakref = new WeakReference(subscriber);
-            var weakAction = new WeakReference<Action<MvbCollectionUpdateArgs>>(action);
 
             //add to list
             if (this._runCollectionDictionary.ContainsKey(propertyName))
-                this._runCollectionDictionary[propertyName].Add(new Tuple<WeakReference, WeakReference<Action<MvbCollectionUpdateArgs>>>(weakref, weakAction));
+                this._runCollectionDictionary[propertyName].Add(new Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>(weakref, action));
             else
-                this._runCollectionDictionary.Add(propertyName, new List<Tuple<WeakReference, WeakReference<Action<MvbCollectionUpdateArgs>>>>() { new Tuple<WeakReference, WeakReference<Action<MvbCollectionUpdateArgs>>>(weakref, weakAction) });
+                this._runCollectionDictionary.Add(propertyName, new List<Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>>() { new Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>(weakref, action) });
         }
 
         /// <summary>
@@ -111,19 +109,16 @@ namespace Mvb.Core.Components
         /// <param name="property"></param>
         public void Run(string property)
         {
-            ICollection<Tuple<WeakReference,WeakReference<Action>>> value;
+            ICollection<Tuple<WeakReference,Action>> value;
             if (!this._runDictionary.TryGetValue(property, out value)) return;
 
-            var toRemove = new List<Tuple<WeakReference, WeakReference<Action>>>();
+            var toRemove = new List<Tuple<WeakReference, Action>>();
 
             // Run every action on live subscriber
             foreach (var tuple in value)
             {
-                Action toRun;
-                var extracted = tuple.Item2.TryGetTarget(out toRun);
-
-                if (tuple.Item1.IsAlive && extracted)
-                    this._uiRunner.Run(toRun);
+                if (tuple.Item1.IsAlive)
+                    this._uiRunner.Run(tuple.Item2);
                 else
                     toRemove.Add(tuple);
             }
@@ -151,19 +146,16 @@ namespace Mvb.Core.Components
         /// <param name="args"></param>
         public void RunCollection(string property, MvbCollectionUpdateArgs args)
         {
-            ICollection<Tuple<WeakReference,WeakReference<Action<MvbCollectionUpdateArgs>>>> value;
+            ICollection<Tuple<WeakReference,Action<MvbCollectionUpdateArgs>>> value;
             if (!this._runCollectionDictionary.TryGetValue(property, out value)) return;
 
-            var toRemove = new List<Tuple<WeakReference, WeakReference<Action<MvbCollectionUpdateArgs>>>>();
+            var toRemove = new List<Tuple<WeakReference, Action<MvbCollectionUpdateArgs>>>();
 
             // Run every action on live subscriber
             foreach (var tuple in value)
             {
-                Action<MvbCollectionUpdateArgs> toRun;
-                var extracted = tuple.Item2.TryGetTarget(out toRun);
-
-                if (tuple.Item1.IsAlive && extracted)
-                    this._uiRunner.Run(toRun, args);
+                if (tuple.Item1.IsAlive)
+                    this._uiRunner.Run(tuple.Item2, args);
                 else
                     toRemove.Add(tuple);
             }
