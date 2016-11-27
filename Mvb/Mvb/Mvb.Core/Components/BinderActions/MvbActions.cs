@@ -13,7 +13,7 @@ namespace Mvb.Core.Components.BinderActions
         public MvbActions()
         {
             //On UiThread Runner
-            this._uiRunner = UiRunnerDispenser.GetRunner();
+            this._uiRunner = Dispenser.GetRunner();
             this._bindersAction = new List<Tuple<WeakReference, Action>>();
         }
 
@@ -63,7 +63,7 @@ namespace Mvb.Core.Components.BinderActions
         public MvbActions()
         {
             //On UiThread Runner
-            this._uiRunner = UiRunnerDispenser.GetRunner();
+            this._uiRunner = Dispenser.GetRunner();
             this._bindersAction = new List<Tuple<WeakReference, Action<T>>>();
         }
 

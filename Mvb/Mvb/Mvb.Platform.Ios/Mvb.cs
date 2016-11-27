@@ -6,7 +6,7 @@ namespace Mvb.Platform.Ios
     {
         public static void Init()
         {
-            UiRunnerDispenser.RegisterRunner(() => new IosUiRunner());
+            Dispenser.RegisterRunner(() => new IosUiRunner());
         }
     }
 }

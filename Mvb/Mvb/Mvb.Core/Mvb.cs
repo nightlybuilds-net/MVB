@@ -1,4 +1,5 @@
-﻿using Mvb.Core.Abstract;
+﻿using System;
+using Mvb.Core.Abstract;
 
 namespace Mvb.Core
 {
@@ -10,7 +11,15 @@ namespace Mvb.Core
         /// </summary>
         public static void NullInit()
         {
-            UiRunnerDispenser.RegisterRunner(() => new NullUiRunner());
+            Dispenser.RegisterRunner(() => new NullUiRunner());
+        }
+
+        /// <summary>
+        /// Register Custom MvbMessenger
+        /// </summary>
+        public static void RegisterMvbMessenger(Func<IMvbMessenger> mvbMessenger)
+        {
+            Dispenser.RegisterMessenger(mvbMessenger);
         }
     }
 }
