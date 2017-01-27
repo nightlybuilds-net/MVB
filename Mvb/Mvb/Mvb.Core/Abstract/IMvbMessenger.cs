@@ -65,6 +65,6 @@ namespace Mvb.Core.Abstract
         /// <summary>
         /// Remove all callbacks
         /// </summary>
-        void Reset();
+        void ResetMessenger();
     }
 }

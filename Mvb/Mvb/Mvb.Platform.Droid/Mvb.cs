@@ -6,7 +6,7 @@ namespace Mvb.Platform.Droid
     {
         public static void Init()
         {
-            UiRunnerDispenser.RegisterRunner(()=> new DroidUiRunner());
+            Dispenser.RegisterRunner(()=> new DroidUiRunner());
         }
     }
 }

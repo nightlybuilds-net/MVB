@@ -118,7 +118,7 @@ namespace Mvb.Core.Components
         /// <summary>
         /// Remove all callbacks
         /// </summary>
-        public void Reset()
+        public void ResetMessenger()
         {
             this._calls.Clear();
         }

@@ -15,6 +15,7 @@ namespace Mvb.FakeContacts.WinConsole.App
     {
         private static ContactsSummaryModelBinders _contactSummaryMb;
         private static ContactsModelBinders _contactMb;
+        private static object _sub = new object();
 
         static void Main(string[] args)
         {
@@ -62,14 +63,14 @@ namespace Mvb.FakeContacts.WinConsole.App
         private static void InitModelBinders()
         {
             //Actions for 'IsBusy'
-            _contactMb.Binder.AddAction<ContactsModelBinders>(b => b.IsBusy, () =>
+            _contactMb.Binder.AddAction<ContactsModelBinders>(_sub, b => b.IsBusy, () =>
             {
                 if(_contactMb.IsBusy)
                     Console.WriteLine("Loading contacts..");
             });
 
             //Actions for 'Summary'
-            _contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(b => b.Summary, () =>
+            _contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(_sub, b => b.Summary, () =>
             {
                 Console.WriteLine(_contactSummaryMb.Summary);
             });
@@ -77,7 +78,7 @@ namespace Mvb.FakeContacts.WinConsole.App
             _contactSummaryMb.Binder.Run<ContactsSummaryModelBinders>(b => b.Summary);
 
             //Actions for 'Contacts' collections
-            _contactMb.Binder.AddActionForCollection<ContactsModelBinders>(b => b.Contacts, args =>
+            _contactMb.Binder.AddActionForCollection<ContactsModelBinders>(_sub, b => b.Contacts, args =>
             {
                 if (args.MvbUpdateAction == MvbUpdateAction.CollectionChanged)
                 {
@@ -105,7 +106,7 @@ namespace Mvb.FakeContacts.WinConsole.App
                 }
             });
 
-            _contactMb.OnContactReceived.AddAction(i =>
+            _contactMb.OnContactReceived.AddAction(_sub, i =>
             {
                 Console.WriteLine($"MvbActions are Awesome! There are {i} contacts!");
             });

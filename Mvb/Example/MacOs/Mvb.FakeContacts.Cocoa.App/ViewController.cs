@@ -83,14 +83,14 @@ namespace Mvb.FakeContacts.Cocoa.App
 		void InitModelBinders()
 		{
 			//Actions for 'IsBusy'
-			this._contactsMb.Binder.AddAction<ContactsModelBinders>(b => b.IsBusy, () =>
+			this._contactsMb.Binder.AddAction<ContactsModelBinders>(this,b => b.IsBusy, () =>
 				{
 					this.SummaryLbl.BackgroundColor = this._contactsMb.IsBusy ? NSColor.Red : NSColor.Control;
 					this.LoadContactsBtn.Enabled = !this._contactsMb.IsBusy;
 				});
 
 			//Actions for 'Summary'
-			this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(b => b.Summary, () =>
+			this._contactSummaryMb.Binder.AddAction<ContactsSummaryModelBinders>(this,b => b.Summary, () =>
 			  {
 					this.SummaryLbl.StringValue = this._contactSummaryMb.Summary;
 			  });
@@ -98,7 +98,7 @@ namespace Mvb.FakeContacts.Cocoa.App
 			this._contactSummaryMb.Binder.Run<ContactsSummaryModelBinders>(b => b.Summary);
 
 			//Actions for 'Contacts' collections
-			this._contactsMb.Binder.AddActionForCollection<ContactsModelBinders>(b => b.Contacts, args =>
+			this._contactsMb.Binder.AddActionForCollection<ContactsModelBinders>(this,b => b.Contacts, args =>
 			  {
 				  if (args.MvbUpdateAction == MvbUpdateAction.CollectionChanged)
 				  {
@@ -129,7 +129,7 @@ namespace Mvb.FakeContacts.Cocoa.App
 			  });
 
 			//MvbActions
-			this._contactsMb.OnContactReceived.Add((i) => 
+			this._contactsMb.OnContactReceived.AddAction(this,(i) => 
 			{
 				var alert = new NSAlert()
 				{

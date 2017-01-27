@@ -37,7 +37,6 @@ namespace Mvb.FakeContacts.ModelBinders
 		public async void LoadContacts(bool loadAvatarAsync = true)
 		{
 			this.IsBusy = true;
-			await Task.Delay(1000);
 			await this._contactServices.GetContacts().ContinueWith(contacts =>
 			{
 				if (contacts.IsFaulted)

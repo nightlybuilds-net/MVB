@@ -35,5 +35,7 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcons.appiconset</string>
+	<key>NSContactsUsageDescription</key>
+	<string>New Entry</string>
 </dict>
 </plist>
