@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using Mvb.Core.Abstract;
 using Mvb.Core.Components;
+using Mvb.Core.Components.BinderActions;
 
 namespace Mvb.Core.Base
 {
@@ -13,6 +16,60 @@ namespace Mvb.Core.Base
         {
             this.Binder = new MvBinder(this);
         }
+
+		#region CLEAR BINDER
+		/// <summary>
+		/// Clears all subscribers from binder.
+		/// Clear all declared mvbaction too
+		/// </summary>
+		public void ClearAll()
+		{
+			// clear actions on binder
+			this.Binder?.ClearActions();
+
+			// clear actions on declared mvbaction
+			var typeInfo = this.GetType().GetTypeInfo();
+
+			foreach (var info in typeInfo.DeclaredProperties)
+			{
+				var isClearable =
+					info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IClearable));
+
+				if (!isClearable) continue;
+
+				var mvbActions = (IClearable)info.GetValue(this, null);
+				mvbActions.Clear();
+			}
+		}
+
+
+		/// <summary>
+		/// Clears passed subscriber from binder.
+		/// Clear all declared mvbaction too
+		/// </summary>
+		/// <param name="subscriber">Subscriber.</param>
+		public void ClearAll(object subscriber)
+		{
+			// clear actions on binder
+			this.Binder?.ClearActions(subscriber);
+
+			// clear actions on declared mvbaction
+			var typeInfo = this.GetType().GetTypeInfo();
+
+			foreach (var info in typeInfo.DeclaredProperties)
+			{
+				var isClearable =
+					info.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IClearable));
+
+				if (!isClearable) continue;
+
+				var mvbActions = (IClearable)info.GetValue(this, null);
+				mvbActions.Clear(subscriber);
+			}
+		}
+
+
+		#endregion
 
         #region MESSENGER
         public void Send<TSender, TArgs>(TSender sender, string message, TArgs args) where TSender : class
