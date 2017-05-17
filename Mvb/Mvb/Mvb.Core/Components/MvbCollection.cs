@@ -57,6 +57,24 @@ namespace Mvb.Core.Components
         }
 
 		/// <summary>
+		/// Remove the range.
+		/// </summary>
+		/// <param name="range">Range.</param>
+		public void RemoveRangeRange(IEnumerable<T> range)
+		{
+			var startIndexd = this.Items.Count - 1;
+			var enumerable = range as T[] ?? range.ToArray();
+			foreach (var item in enumerable)
+			{
+                this.Items.Remove(item);
+			}
+
+			this.OnPropertyChanged(new PropertyChangedEventArgs("Count"));
+			this.OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+            this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, enumerable.ToList(), startIndexd));
+		}
+
+		/// <summary>
 		/// Reset the collection and addrange the specified range.
 		/// This will fire a NotifyCollectionChanged for reset followed by a NotifyCollectionChanged for add
 		/// </summary>
