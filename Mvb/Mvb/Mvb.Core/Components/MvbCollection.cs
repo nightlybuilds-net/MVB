@@ -60,7 +60,7 @@ namespace Mvb.Core.Components
 		/// Remove the range.
 		/// </summary>
 		/// <param name="range">Range.</param>
-		public void RemoveRangeRange(IEnumerable<T> range)
+		public void RemoveRange(IEnumerable<T> range)
 		{
 			var startIndexd = this.Items.Count - 1;
 			var enumerable = range as T[] ?? range.ToArray();
